@@ -1,0 +1,114 @@
+/* ══════════════════════════════════════════════════════════════════
+   Médias et bandeaux — DIRECTION-ARTISTIQUE.md §7 et §10
+   ══════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* ── Ticker d'attributs : marquee lent, pause au survol. §10 ──── */
+  .ticker {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 6%,
+      #000 94%,
+      transparent
+    );
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+  .ticker__piste {
+    display: flex;
+    width: max-content;
+    animation: defile 40s linear infinite;
+  }
+  .ticker:hover .ticker__piste,
+  .ticker:focus-within .ticker__piste {
+    animation-play-state: paused;
+  }
+  @keyframes defile {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* ── Zone photo en attente de shooting. Elle doit être belle. ──── */
+  .photo-vide {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    background-color: var(--sur-photo);
+    border: 1px solid var(--color-trait-fort);
+    border-radius: var(--radius-photo);
+  }
+  .photo-vide__trame {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .photo-vide__centre {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    min-height: 0;
+    padding: var(--e-6);
+  }
+  .photo-vide__legende {
+    position: relative;
+    z-index: 1;
+    padding: var(--e-3) var(--e-4);
+    border-top: 1px solid var(--color-trait-fort);
+    background: var(--sur-photo);
+  }
+
+  /* ── Registres photo. §7 ──────────────────────────────────────── */
+  /* Noir et blanc contrasté, sans duotone : le mélange `multiply` sur un
+     aplat braise noyait l'image dès que le fond de page est devenu sombre. */
+  .photo-doc img {
+    filter: grayscale(1) contrast(1.12) brightness(1.04);
+  }
+  .photo-piece img {
+    filter: saturate(0.94) contrast(1.05);
+  }
+
+  /* ── Zoom au survol : l'image bouge, le cadre reste. ──────────── */
+  .cadre-media {
+    overflow: hidden;
+    border-radius: var(--radius-photo);
+  }
+  .cadre-media img {
+    transition: transform 400ms var(--ease-out);
+  }
+  .cadre-media:hover img {
+    transform: scale(1.025);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker__piste {
+    animation: none;
+    transform: none;
+  }
+  .ticker {
+    -webkit-mask-image: none;
+    mask-image: none;
+    overflow-x: auto;
+  }
+  .cadre-media:hover img {
+    transform: none;
+  }
+}
+
+@layer components {
+  /* La broche du geste signature : discrète sur téléphone pour laisser
+     la place aux cinq faits, imposante dès qu'il y a deux colonnes. */
+  .broche__taille {
+    height: clamp(170px, 26svh, 300px);
+  }
+  @media (min-width: 1024px) {
+    .broche__taille {
+      height: clamp(240px, 64svh, 720px);
+    }
+  }
+}

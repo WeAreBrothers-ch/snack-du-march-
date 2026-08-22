@@ -1,0 +1,134 @@
+/* ══════════════════════════════════════════════════════════════════
+   Grille, matières, motifs — DIRECTION-ARTISTIQUE.md §5 et §6
+   ══════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* ── Shell et grille ─────────────────────────────────────────── */
+  .shell {
+    max-width: var(--l-shell);
+    margin-inline: auto;
+    padding-inline: var(--marge);
+  }
+
+  .grille {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--gouttiere);
+  }
+  @media (min-width: 640px) {
+    .grille {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1024px) {
+    .grille {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+  }
+
+  .section-y {
+    padding-block: var(--section-y);
+  }
+
+  /* ── Grille de construction visible. Réf. R04, R08, R09, R10. ── */
+  .grille-visible {
+    position: relative;
+    isolation: isolate;
+  }
+  .grille-visible::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline: var(--marge);
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.55;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--color-trait) 0 1px,
+      transparent 1px calc((100% + var(--gouttiere)) / 4)
+    );
+  }
+  @media (min-width: 640px) {
+    .grille-visible::before {
+      background-image: repeating-linear-gradient(
+        to right,
+        var(--color-trait) 0 1px,
+        transparent 1px calc((100% + var(--gouttiere)) / 6)
+      );
+    }
+  }
+  @media (min-width: 1024px) {
+    .grille-visible::before {
+      background-image: repeating-linear-gradient(
+        to right,
+        var(--color-trait) 0 1px,
+        transparent 1px calc((100% + var(--gouttiere)) / 12)
+      );
+    }
+  }
+
+  /* ── Trame de lame : nos copeaux de viande. Motif propriétaire. ─ */
+  .trame-lame {
+    background-image: repeating-linear-gradient(
+      -62deg,
+      currentColor 0 1px,
+      transparent 1px 9px
+    );
+    opacity: 0.1;
+  }
+
+  /* La trame passe par un masque et non une image : elle prend ainsi
+     la couleur du texte courant et reste juste sur vert comme sur crème. */
+  .trame-copeau {
+    background-color: currentColor;
+    opacity: 0.14;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg stroke='%23000' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M4 40 L14 22'/%3E%3Cpath d='M20 44 L32 18'/%3E%3Cpath d='M36 38 L44 24'/%3E%3Cpath d='M10 14 L18 2'/%3E%3Cpath d='M28 12 L38 -2'/%3E%3C/g%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg stroke='%23000' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M4 40 L14 22'/%3E%3Cpath d='M20 44 L32 18'/%3E%3Cpath d='M36 38 L44 24'/%3E%3Cpath d='M10 14 L18 2'/%3E%3Cpath d='M28 12 L38 -2'/%3E%3C/g%3E%3C/svg%3E");
+    -webkit-mask-size: 48px 48px;
+    mask-size: 48px 48px;
+  }
+
+  /* ── Calage d'encre riso : 3 fois par page maximum. ───────────── */
+  .mal-cale {
+    position: relative;
+    isolation: isolate;
+    color: var(--color-texte);
+  }
+  .mal-cale::before {
+    content: attr(data-texte);
+    position: absolute;
+    inset: 0;
+    transform: translate(2px, 2px);
+    color: var(--color-braise);
+    z-index: -1;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  /* ── Galerie en appareillage de brique. ───────────────────────── */
+  .galerie {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gouttiere);
+  }
+  @media (min-width: 1024px) {
+    .galerie {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      /* La colonne décalée dépasse vers le bas : on réserve la place,
+         sinon elle recouvre ce qui suit la galerie. */
+      padding-bottom: clamp(24px, 5vw, 72px);
+    }
+    .galerie > :nth-child(3n + 2) {
+      transform: translateY(clamp(24px, 5vw, 72px));
+    }
+  }
+
+  /* ── Listes à filets : dernière ligne sans filet. ─────────────── */
+  .liste-filets > * {
+    border-bottom: 1px solid var(--color-trait);
+  }
+  .liste-filets > :last-child {
+    border-bottom: 0;
+  }
+}

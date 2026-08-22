@@ -1,26 +1,176 @@
 @import "tailwindcss";
+@import "./styles-surfaces.css";
+@import "./styles-typo.css";
+@import "./styles-motifs.css";
+@import "./styles-media.css";
+@import "./styles-composants.css";
+@import "./styles-impression.css";
+
+/* ══════════════════════════════════════════════════════════════════
+   SNACK DU MARCHÉ — Tokens de design
+   Référence : DIRECTION-ARTISTIQUE.md §3 (palette), §4 (typo), §5 (grille)
+
+   Palette v2 — inversée : le vert forêt est le fond, la crème est l'encre.
+   Le vert est relevé du screenshot de référence (#132714), légèrement
+   éclairci pour laisser exister une nuance plus profonde en dessous.
+   ══════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Garde-fous : on supprime les valeurs natives de Tailwind. ───
+     Les interdits de la DA (dégradés violets, rounded-lg, shadow-md)
+     deviennent techniquement impossibles, pas seulement déconseillés. */
+  --color-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --drop-shadow-*: initial;
+  --font-*: initial;
+
+  /* ── Palette absolue ────────────────────────────────────────────
+     Deux verts, deux crèmes, un rouge, un signal. Rien d'autre. */
+  --color-fond: #152b18;
+  --color-fond-profond: #0e1f11;
+  --color-creme: #e7e0d5;
+  --color-creme-clair: #fbf7ee;
+  --color-sauge: #9ea894;
+  --color-braise: #c4451f;
+  --color-braise-claire: #e2724a;
+  --color-braise-sombre: #a6360f;
+  --color-pistache: #c3d98c;
+
+  /* ── Tokens contextuels ─────────────────────────────────────────
+     Ils changent de valeur selon la surface qui les contient (voir
+     .surface-* plus bas). Une même classe `text-doux` est donc juste
+     sur fond vert comme sur fond crème : aucun composant n'a à savoir
+     sur quelle couleur il est posé. */
+  --color-texte: var(--sur-texte);
+  --color-doux: var(--sur-doux);
+  --color-trait: var(--sur-trait);
+  --color-trait-fort: var(--sur-trait-fort);
+  --color-accent: var(--sur-accent);
+
+  /* ── Familles ──────────────────────────────────────────────────── */
+  --font-display: var(--police-display), "Arial Narrow", system-ui, sans-serif;
+  --font-texte: var(--police-texte), "Helvetica Neue", Arial, sans-serif;
+
+  /* ── Rayons — 0 par défaut, 2px photos, pill boutons ───────────── */
+  --radius-0: 0px;
+  --radius-photo: 2px;
+  --radius-pill: 999px;
+
+  /* ── Courbes ───────────────────────────────────────────────────── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-snap: cubic-bezier(0.2, 0.9, 0.2, 1);
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+
+  /* ── Échelle typographique, mobile-first, fluide 360 → 1600 px ─── */
+  --fs-hero: clamp(3.75rem, 17vw, 12rem);
+  --fs-d1: clamp(2.75rem, 10vw, 6.5rem);
+  --fs-d2: clamp(2rem, 6.2vw, 4rem);
+  --fs-d3: clamp(1.5rem, 3.4vw, 2.25rem);
+  --fs-lead: clamp(1.1875rem, 2.1vw, 1.5rem);
+  --fs-body: clamp(1.0625rem, 0.9vw, 1.125rem);
+  --fs-small: 0.9375rem;
+  --fs-kicker: 0.75rem;
+  --fs-micro: 0.6875rem;
+
+  /* ── Interlignage ──────────────────────────────────────────────── */
+  --lh-hero: 0.84;
+  --lh-d1: 0.9;
+  --lh-d2: 0.98;
+  --lh-d3: 1.14;
+  --lh-lead: 1.34;
+  --lh-body: 1.55;
+
+  /* ── Approche ──────────────────────────────────────────────────── */
+  --ls-hero: -0.035em;
+  --ls-d1: -0.028em;
+  --ls-d2: -0.02em;
+  --ls-d3: -0.012em;
+  --ls-kicker: 0.16em;
+  --ls-micro: 0.2em;
+
+  /* ── Rythme vertical, base 4 px ────────────────────────────────── */
+  --e-1: 4px;
+  --e-2: 8px;
+  --e-3: 12px;
+  --e-4: 16px;
+  --e-5: 24px;
+  --e-6: 32px;
+  --e-7: 48px;
+  --e-8: 64px;
+  --e-9: 96px;
+  --e-10: 128px;
+  --e-11: 180px;
+
+  /* ── Page ──────────────────────────────────────────────────────── */
+  --marge: clamp(20px, 4.5vw, 56px);
+  --gouttiere: clamp(16px, 2vw, 28px);
+  --l-shell: 1440px;
+  --l-edito: 1080px;
+  --l-texte: 66ch;
+  --l-manifeste: 32ch;
+  --section-y: clamp(40px, 5vw, 84px);
+
+  /* ── Durées ────────────────────────────────────────────────────── */
+  --d-micro: 120ms;
+  --d-court: 260ms;
+  --d-moyen: 480ms;
+  --d-long: 640ms;
+  --stagger: 60ms;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    background-color: var(--color-fond);
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    background-color: var(--color-fond);
+    color: var(--color-texte);
+    font-family: var(--font-texte);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    font-synthesis-weight: none;
+    font-synthesis-style: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* clip et non hidden : hidden casserait position:sticky. */
+    overflow-x: clip;
+  }
+
+  /* Grain d'impression — fixe, comme l'encre reste sur le papier. §6.1
+     En overlay et non multiply : sur un fond sombre, multiply n'imprime rien. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    opacity: 0.09;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  ::selection {
+    background: var(--color-braise);
+    color: var(--color-creme-clair);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-braise-claire);
+    outline-offset: 3px;
+  }
+
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
 }

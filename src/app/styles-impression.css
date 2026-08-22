@@ -1,0 +1,132 @@
+/* ══════════════════════════════════════════════════════════════════
+   La carte, imprimée. Une vraie affiche A4, pas une capture de page.
+   ══════════════════════════════════════════════════════════════════ */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  /* Le site est vert foncé à l'écran. Sur papier, on repasse en noir
+     sur blanc : imprimer un aplat vert pleine page n'a aucun sens.
+     `color-scheme: light` est indispensable — sans lui, le navigateur
+     peint encore les marges de la feuille avec le fond sombre. */
+  :root {
+    color-scheme: light !important;
+  }
+  /* Le site est vert foncé à l'écran. Sur papier, on repasse en noir
+     sur blanc : imprimer un aplat vert pleine page n'a aucun sens. */
+  *,
+  *::before,
+  *::after {
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #000 !important;
+    border-color: #9a9a9a !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  body::after,
+  body > header,
+  body > footer,
+  .grille-visible::before,
+  .ticker,
+  [data-sans-impression] {
+    display: none !important;
+  }
+
+  .section-y {
+    padding-block: 0 !important;
+  }
+
+  .shell {
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  .t-hero,
+  .t-d1 {
+    font-size: 34pt !important;
+    line-height: 0.92 !important;
+  }
+  .t-d2 {
+    font-size: 17pt !important;
+  }
+  .t-d3 {
+    font-size: 11pt !important;
+  }
+  .t-small,
+  .t-body {
+    font-size: 8.5pt !important;
+  }
+  .prix {
+    font-size: 11pt !important;
+    color: #000 !important;
+  }
+  .micro,
+  .kicker {
+    font-size: 6.5pt !important;
+    color: #4a4a4a !important;
+  }
+
+  .t-small,
+  .t-body {
+    color: #333 !important;
+  }
+
+  /* Le cadre de la carte reste net. */
+  .page-carte .border-2 {
+    border-color: #000 !important;
+  }
+
+  .pill {
+    border-color: #999 !important;
+    color: #444 !important;
+  }
+
+  section {
+    break-inside: avoid;
+  }
+}
+
+/* ══ La carte, en deux colonnes sur A4 ══════════════════════════════ */
+
+@media print {
+  .page-carte__corps {
+    padding-block: 0 !important;
+  }
+
+  .carte-grille {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    column-gap: 10mm !important;
+    row-gap: 8mm !important;
+  }
+
+  .ligne-carte {
+    padding-block: 3.5mm !important;
+  }
+
+  .indice-detail {
+    display: none !important;
+  }
+
+  .pill {
+    padding: 1px 5px !important;
+    font-size: 6pt !important;
+  }
+
+  /* Les linogravures restent, mais discrètes. */
+  .carte-grille svg {
+    width: 14mm !important;
+    height: auto !important;
+  }
+}
