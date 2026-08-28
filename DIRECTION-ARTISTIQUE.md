@@ -371,27 +371,30 @@ déclare `color-scheme: dark` à l'écran, et on le force à `light` à l'impres
 
 | Rôle | Famille | Pourquoi celle-là |
 |---|---|---|
-| **Display** | **Bricolage Grotesque** (variable : `wght` 200–800, `wdth` 75–100, `opsz`) | Grotesque contemporain avec un axe de largeur : il condense jusqu'à 75 % sans devenir une fonte de titre creuse. Ses terminaisons coupées nettes et ses jonctions légèrement brutes lui donnent le caractère d'un caractère d'imprimeur, pas d'un caractère d'écran. C'est exactement l'entre-deux « artisanal × moderne » : il n'est ni Anton (brutal, sans finesse), ni Bebas (startup 2018), ni un serif (gastro froid). |
-| **Texte** | **Instrument Sans** (variable : `wght` 400–700, `wdth`) | Néo-grotesque suisse contemporain, très lisible en petit corps français, avec un vrai italique dessiné (indispensable pour le manifeste, cf. R09). Ce n'est pas Inter — c'est le point. |
+| **Display** | **Tanker** (Ruosi Huang / Indian Type Foundry — une seule graisse, licence libre FFL, auto-hébergée) | Grotesque d'affichage compressé et unicase : les bas-de-casse reprennent le dessin des capitales, donc tout titre se compose en capitales, quoi qu'il arrive. Fûts très épais, contreformes réduites, angles adoucis : l'énergie d'une enseigne peinte plutôt que d'un caractère d'écran. Il n'a aucun axe variable — la hiérarchie ne passe donc que par le corps, jamais par la graisse. |
+| **Texte** | **Erode** (Nikhil Ranganathan / Indian Type Foundry — variable `wght` 300–700, romain et italique, licence libre FFL, auto-hébergée) | Romain à empattements aux contours légèrement érodés : les angles sont mangés comme une lettre imprimée au plomb sur un papier qui boit. Il apporte la chaleur et le côté « imprimé » que la maison revendique, avec un vrai italique dessiné (indispensable pour le manifeste, cf. R09). Sa hauteur d'x est basse : les corps de texte sont montés d'un cran par rapport à un grotesque. |
 
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<!-- Aucune requête tierce : les deux familles vivent dans assets/fonts/. -->
+<link rel="preload" href="assets/fonts/Tanker-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Erode-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Erode-VariableItalic.woff2" as="font" type="font/woff2" crossorigin>
 ```
 
 > **En production : self-host obligatoire.** Sous-set latin + latin-ext (indispensable pour `ü`, `ç`, `ş`, `ğ` de Hüseyin, Sertaç, dürüm, şiş). Format `.woff2` variable, `font-display: swap`, `preload` sur les deux fichiers. Objectif : **2 requêtes de fonte, < 90 ko au total.**
 
 ### Pourquoi pas de troisième famille monospace
 
-Six références sur treize utilisent une micro-typographie à effet « fiche technique ». Quatre le font en monospace. **On refuse la troisième fonte** (poids, cohérence, CLS) et on reproduit l'effet avec Instrument Sans en capitales très espacées. Le style `.kicker` ci-dessous fait le travail à 100 %, pour 0 ko supplémentaire.
+Six références sur treize utilisent une micro-typographie à effet « fiche technique ». Quatre le font en monospace. **On refuse la troisième fonte** (poids, cohérence, CLS) et on reproduit l'effet avec Erode en capitales très espacées. Le style `.kicker` ci-dessous fait le travail à 100 %, pour 0 ko supplémentaire.
 
 ### Tokens typographiques
 
 ```css
 :root {
-  --ff-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
-  --ff-texte:   "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --ff-display: "Tanker", "Haettenschweiler", "Arial Narrow", system-ui, sans-serif;
+  --ff-texte:   "Erode", Georgia, "Times New Roman", serif;
 
   /* ── Échelle, mobile-first, fluide 360 px → 1600 px ────── */
   --fs-hero:    clamp(3.75rem, 17vw, 12rem);     /*  60 → 192 px  wordmark du hero        */
@@ -1152,7 +1155,7 @@ Le marquee est **stoppé et non masqué** : le texte reste visible en entier (si
 27. Souligner autrement qu'un lien.
 28. Une graisse en dessous de 400.
 29. Chiffres proportionnels dans un prix ou un horaire.
-30. `font-style: italic` synthétique — on charge le vrai italique d'Instrument Sans.
+30. `font-style: italic` synthétique — on charge le vrai italique d'Erode.
 
 ### Interdits d'animation
 31. Révélation de titre lettre par lettre / split-text.

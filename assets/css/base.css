@@ -1,0 +1,314 @@
+/* ══════════════════════════════════════════════════════════════════
+   SNACK DU MARCHÉ — Socle : remise à zéro, jetons de design, surfaces
+   Référence : DIRECTION-ARTISTIQUE.md §3 (palette), §4 (typo), §5 (grille)
+
+   Palette v2 — inversée : le vert forêt est le fond, la crème est l'encre.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 0. Fontes auto-hébergées ──────────────────────────────────────
+   Les deux viennent de Fontshare (Indian Type Foundry), sous licence
+   libre FFL — voir LICENCE-Tanker.txt et LICENCE-Erode.txt.
+   Aucune requête vers un serveur tiers : tout part de assets/fonts/.
+
+   Tanker  — affichage, une seule graisse, unicase.
+   Erode   — texte, fonte variable 300–700 en romain et en italique :
+             deux fichiers couvrent toutes les graisses du site. */
+
+@font-face {
+  font-family: "Tanker";
+  src: url("../fonts/Tanker-Regular.woff2") format("woff2"),
+       url("../fonts/Tanker-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Erode";
+  src: url("../fonts/Erode-Variable.woff2") format("woff2"),
+       url("../fonts/Erode-Variable.woff") format("woff");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Erode";
+  src: url("../fonts/Erode-VariableItalic.woff2") format("woff2"),
+       url("../fonts/Erode-VariableItalic.woff") format("woff");
+  font-weight: 300 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ── 1. Remise à zéro minimale ─────────────────────────────────────
+   Juste ce qu'il faut pour que tous les navigateurs partent du même
+   point. Rien de décoratif ici. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd,
+address,
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  margin: 0;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ── 2. Palette absolue ────────────────────────────────────────────
+   Deux verts, deux crèmes, un rouge, un signal. Rien d'autre. */
+
+:root {
+  --vert-fond: #152b18;
+  --vert-profond: #0e1f11;
+  --creme: #e7e0d5;
+  --creme-clair: #fbf7ee;
+  --sauge: #9ea894;
+  --braise: #c4451f;
+  --braise-claire: #e2724a;
+  --braise-sombre: #a6360f;
+  --pistache: #c3d98c;
+
+  /* Alias conservés pour les rares usages nommés dans les composants. */
+  --color-fond: var(--vert-fond);
+  --color-fond-profond: var(--vert-profond);
+  --color-creme: var(--creme);
+  --color-creme-clair: var(--creme-clair);
+  --color-braise: var(--braise);
+  --color-braise-claire: var(--braise-claire);
+  --color-pistache: var(--pistache);
+}
+
+/* ── 3. Les surfaces ───────────────────────────────────────────────
+   Poser une de ces classes suffit : tout ce qu'elle contient se
+   recolore correctement, y compris les boutons, les filets, les prix
+   et les zones photo. Les couleurs contextuelles sont déclarées
+   directement dans chaque surface — aucune indirection, donc aucune
+   surprise de cascade. */
+
+:root,
+.surface-fond,
+.surface-profond {
+  --color-texte: #e7e0d5;
+  --color-doux: #9ea894;
+  --color-trait: #2e4832;
+  --color-trait-fort: #5f7a64;
+  --color-accent: #e2724a;
+  --color-photo: #1d3721;
+  --color-inverse: #152b18;
+}
+
+.surface-fond {
+  background-color: var(--vert-fond);
+  color: var(--color-texte);
+}
+
+.surface-profond {
+  --color-inverse: #0e1f11;
+  background-color: var(--vert-profond);
+  color: var(--color-texte);
+}
+
+.surface-creme {
+  /* Les widgets natifs (date, liste déroulante) doivent virer au clair
+     eux aussi, sinon leurs icônes blanches disparaissent sur la crème. */
+  color-scheme: light;
+  --color-texte: #152b18;
+  --color-doux: #4e5f4a;
+  --color-trait: #c6cebe;
+  --color-trait-fort: #8a9a83;
+  --color-accent: #a6360f;
+  --color-photo: #d8d2c5;
+  --color-inverse: #e7e0d5;
+  background-color: var(--creme);
+  color: var(--color-texte);
+}
+
+/* ── 4. Familles, rayons, courbes ─────────────────────────────────── */
+
+:root {
+  --font-display: "Tanker", "Haettenschweiler", "Arial Narrow", system-ui, sans-serif;
+  --font-texte: "Erode", Georgia, "Times New Roman", serif;
+
+  /* Rayons — 0 par défaut, 2 px pour les photos, pill pour les tags. */
+  --radius-photo: 2px;
+  --radius-pill: 999px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-snap: cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+/* ── 5. Échelles ───────────────────────────────────────────────────
+   Typographie fluide, mobile-first, de 360 à 1600 px. */
+
+:root {
+  color-scheme: dark;
+
+  --fs-hero: clamp(3.75rem, 17vw, 12rem);
+  --fs-d1: clamp(2.75rem, 10vw, 6.5rem);
+  --fs-d2: clamp(2rem, 6.2vw, 4rem);
+  --fs-d3: clamp(1.5rem, 3.4vw, 2.25rem);
+  --fs-lead: clamp(1.25rem, 2.2vw, 1.625rem);
+  --fs-body: clamp(1.125rem, 1vw, 1.1875rem);
+  --fs-small: 1rem;
+  --fs-kicker: 0.8125rem;
+  --fs-micro: 0.75rem;
+
+  --lh-hero: 0.95;
+  --lh-d1: 0.98;
+  --lh-d2: 0.98;
+  --lh-d3: 1.14;
+  --lh-lead: 1.4;
+  --lh-body: 1.6;
+
+  --ls-hero: -0.035em;
+  --ls-d1: -0.028em;
+  --ls-d2: -0.02em;
+  --ls-d3: -0.012em;
+  --ls-kicker: 0.16em;
+  --ls-micro: 0.2em;
+
+  /* Rythme vertical, base 4 px. */
+  --e-1: 4px;
+  --e-2: 8px;
+  --e-3: 12px;
+  --e-4: 16px;
+  --e-5: 24px;
+  --e-6: 32px;
+  --e-7: 48px;
+  --e-8: 64px;
+  --e-9: 96px;
+  --e-10: 128px;
+
+  /* Page. */
+  --marge: clamp(20px, 4.5vw, 56px);
+  --gouttiere: clamp(16px, 2vw, 28px);
+  --l-shell: 1440px;
+  --l-texte: 66ch;
+  --l-manifeste: 34ch;
+  --section-y: clamp(40px, 5vw, 84px);
+
+  /* Durées. */
+  --d-micro: 120ms;
+  --d-court: 260ms;
+  --d-moyen: 480ms;
+}
+
+/* ── 6. Page ───────────────────────────────────────────────────────── */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  background-color: var(--vert-fond);
+}
+
+body {
+  background-color: var(--vert-fond);
+  color: var(--color-texte);
+  font-family: var(--font-texte);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-synthesis-weight: none;
+  font-synthesis-style: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* clip et non hidden : hidden casserait position:sticky. */
+  overflow-x: clip;
+}
+
+/* Grain d'impression — fixe, comme l'encre reste sur le papier. §6.1
+   En overlay et non multiply : sur un fond sombre, multiply n'imprime rien. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.09;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+::selection {
+  background: var(--braise);
+  color: var(--creme-clair);
+}
+
+:focus-visible {
+  outline: 2px solid var(--braise-claire);
+  outline-offset: 3px;
+}
+
+/* Lien d'évitement : invisible tant qu'il n'a pas le focus clavier. */
+.saut-contenu {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+}
+
+.saut-contenu:focus {
+  left: var(--marge);
+  top: var(--e-4);
+  background: var(--vert-fond);
+}

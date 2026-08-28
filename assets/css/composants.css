@@ -1,0 +1,412 @@
+/* ══════════════════════════════════════════════════════════════════
+   Composants d'interface — DIRECTION-ARTISTIQUE.md §5 et §10
+   Coins vifs partout, sauf pills. Aucune ombre. Aucun déplacement au survol.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Bouton rectangulaire outline : inversion papier ↔ encre ────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e-3);
+  padding: var(--e-4) var(--e-6);
+  border: 1px solid currentColor;
+  border-radius: 0;
+  font-family: var(--font-texte);
+  font-weight: 500;
+  font-size: var(--fs-kicker);
+  letter-spacing: var(--ls-kicker);
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1;
+  cursor: pointer;
+  background: transparent;
+  color: var(--color-texte);
+  transition:
+    background-color var(--d-micro) var(--ease-snap),
+    color var(--d-micro) var(--ease-snap);
+}
+
+/* Au survol, le bouton s'inverse : il prend la couleur de son texte
+   et rend la couleur de la surface qui le porte. Aucun déplacement. */
+.btn:hover {
+  background: var(--color-texte);
+  color: var(--color-inverse);
+}
+
+.btn--braise {
+  color: var(--color-accent);
+}
+
+.btn--braise:hover {
+  background: var(--braise);
+  color: var(--creme-clair);
+}
+
+.btn--plein {
+  width: 100%;
+  background: var(--braise);
+  border-color: var(--braise);
+  color: var(--creme-clair);
+}
+
+.btn--plein:hover {
+  background: var(--color-texte);
+  border-color: var(--color-texte);
+  color: var(--color-inverse);
+}
+
+.btn--court {
+  padding-block: var(--e-3);
+}
+
+.btn[disabled] {
+  opacity: 0.5;
+  cursor: progress;
+}
+
+/* ── Pill outline : tags et étapes. Seul rayon rond du site. ────────── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  padding: 6px var(--e-3);
+  border: 1px solid var(--color-trait-fort);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-texte);
+  font-weight: 500;
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--color-doux);
+  white-space: nowrap;
+}
+
+.pill--etape {
+  border-color: var(--color-texte);
+  color: var(--color-texte);
+  padding: var(--e-2) var(--e-4);
+  font-size: var(--fs-kicker);
+}
+
+/* ── Lien texte : soulignement qui se dessine depuis la gauche ──────── */
+.lien {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.lien::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--d-court) var(--ease-snap);
+}
+
+.lien:hover::after,
+.lien:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.lien--actif {
+  color: var(--color-texte);
+}
+
+.lien--actif::after {
+  transform: scaleX(1);
+}
+
+/* ── Révélation au défilement : transform + opacity, zéro CLS ───────── */
+.revele {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--d-moyen) var(--ease-out),
+    transform var(--d-moyen) var(--ease-out);
+  transition-delay: var(--delai, 0ms);
+}
+
+.revele[data-vu="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Les délais en cascade, pour animer une série. */
+.delai-0 { --delai: 0ms; }
+.delai-1 { --delai: 60ms; }
+.delai-2 { --delai: 120ms; }
+.delai-3 { --delai: 180ms; }
+
+/* ── Champ de formulaire : filet 1px, jamais de fond ────────────────── */
+.champ {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--color-trait-fort);
+  border-radius: 0;
+  padding: var(--e-3) 0;
+  font-family: var(--font-texte);
+  font-size: var(--fs-body);
+  color: inherit;
+  transition: border-color var(--d-micro) var(--ease-snap);
+}
+
+.champ::placeholder {
+  color: currentColor;
+  opacity: 0.45;
+}
+
+.champ:hover,
+.champ:focus {
+  border-color: currentColor;
+}
+
+.champ:focus {
+  outline: none;
+}
+
+.champ:focus-visible {
+  outline: 2px solid var(--braise-claire);
+  outline-offset: 4px;
+}
+
+textarea.champ {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.champ__etiquette {
+  display: block;
+  opacity: 0.75;
+}
+
+.champ__erreur {
+  color: var(--braise);
+}
+
+/* Champ piège anti-robot : invisible, jamais rempli par un humain. */
+.piege {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ── Accordéon : grid-template-rows 0fr → 1fr ───────────────────────── */
+.accordeon__bouton {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--e-6);
+  padding-block: var(--e-5);
+  text-align: left;
+}
+
+.accordeon__signe {
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-d3);
+  line-height: 1;
+  color: var(--color-accent);
+}
+
+.accordeon__corps {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--d-court) var(--ease-in-out);
+}
+
+.accordeon__corps > div {
+  overflow: hidden;
+}
+
+.accordeon[data-ouvert="true"] .accordeon__corps {
+  grid-template-rows: 1fr;
+}
+
+/* ── Badge « ouvert / fermé » ───────────────────────────────────────── */
+.badge-statut {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  white-space: nowrap;
+  color: var(--color-doux);
+  opacity: 0;
+  transition: opacity var(--d-court) var(--ease-out);
+}
+
+.badge-statut[data-pret="true"] {
+  opacity: 1;
+}
+
+.badge-statut[data-ouvert="true"] {
+  color: var(--pistache);
+}
+
+.badge-statut__point {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.badge-statut--grand .badge-statut__point {
+  width: 12px;
+  height: 12px;
+}
+
+/* ══ prefers-reduced-motion : on retire le mouvement, jamais le contenu ══ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .revele {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Le mot accentué dans un titre ──────────────────────────────────
+   Un seul mot par titre, jamais deux titres accentués qui se suivent.
+   C'est ce qui donne le rythme : l'œil accroche le mot, pas la ligne. */
+.mot-accent {
+  color: var(--color-accent);
+}
+
+/* ── Le tampon ──────────────────────────────────────────────────────
+   Un cachet d'encre posé de travers à cheval sur un bord de section.
+   Une seule occurrence par page. Décoratif : il ne porte aucune
+   information qui ne soit pas déjà écrite ailleurs. */
+.tampon {
+  position: absolute;
+  z-index: 3;
+  width: 108px;
+  height: 108px;
+  /* Le tampon est à cheval sur deux surfaces : sa couleur ne peut donc pas
+     être celle de l'une des deux. La braise pleine tient sur le vert
+     comme sur la crème. */
+  color: var(--braise);
+  transform: rotate(-9deg);
+  pointer-events: none;
+}
+
+.tampon--haut-droite {
+  top: -44px;
+  right: var(--marge);
+}
+
+@media (min-width: 1024px) {
+  .tampon {
+    width: 148px;
+    height: 148px;
+  }
+  .tampon--haut-droite {
+    top: -62px;
+  }
+}
+
+.tampon__texte {
+  font-family: var(--font-texte);
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  fill: currentColor;
+}
+
+/* ── Ligne de presse : un article cité, cliquable en entier ──────────
+   Le nom du média porte la voix (display), le titre reste en romain :
+   c'est une citation, pas une accroche maison. */
+.ligne-presse {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--e-5);
+  padding-block: var(--e-5);
+  color: inherit;
+  text-decoration: none;
+}
+
+.ligne-presse__texte {
+  min-width: 0;
+}
+
+.ligne-presse__texte .t-body {
+  max-width: 52ch;
+  transition: color var(--d-court) var(--ease-out);
+}
+
+.ligne-presse__meta {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--e-4);
+}
+
+/* Le glyphe ↗ n'existe dans aucune des deux fontes : on le dessine. */
+.ligne-presse__fleche {
+  width: 16px;
+  height: 16px;
+  color: var(--color-accent);
+  transition: transform var(--d-court) var(--ease-snap);
+}
+
+.ligne-presse:hover .ligne-presse__fleche,
+.ligne-presse:focus-visible .ligne-presse__fleche {
+  transform: translate(3px, -3px);
+}
+
+.ligne-presse:hover .ligne-presse__texte .t-body,
+.ligne-presse:focus-visible .ligne-presse__texte .t-body {
+  color: var(--color-texte);
+}
+
+@media (max-width: 639px) {
+  .ligne-presse {
+    flex-direction: column;
+    gap: var(--e-3);
+  }
+
+  .ligne-presse__meta {
+    width: 100%;
+  }
+
+  /* Sans date à sa gauche, la flèche doit quand même rester au bord. */
+  .ligne-presse__fleche {
+    margin-left: auto;
+  }
+}
+
+/* ── Flèche « lien sortant » ──────────────────────────────────────────
+   Le caractère ↗ n'existe ni dans Tanker ni dans Erode : laissé en
+   texte, il tombait sur une fonte système et jurait avec le reste.
+   On le dessine, il prend donc la couleur et la taille du lien. */
+.fleche-lien {
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  margin-left: 0.45em;
+  vertical-align: -0.06em;
+  color: currentColor;
+}
