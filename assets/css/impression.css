@@ -1,186 +1,108 @@
-/* ══════════════════════════════════════════════════════════════════
-   La carte, imprimée. Une vraie affiche A4, pas une capture de page.
-   ══════════════════════════════════════════════════════════════════ */
+/* ==========================================================================
+   Impression — la carte doit tenir sur une feuille sans rien perdre
+   ========================================================================== */
 
 @media print {
-  @page {
-    size: A4;
-    margin: 11mm;
-  }
-
-  /* Le site est vert foncé à l'écran. Sur papier, on repasse en noir
-     sur blanc : imprimer un aplat vert pleine page n'a aucun sens.
-     `color-scheme: light` est indispensable — sans lui, le navigateur
-     peint encore les marges de la feuille avec le fond sombre. */
   :root {
-    color-scheme: light !important;
+    color-scheme: light;
   }
 
-  *,
-  *::before,
-  *::after {
-    background-color: transparent !important;
-    background-image: none !important;
-    color: #000 !important;
-    border-color: #9a9a9a !important;
-    mix-blend-mode: normal !important;
-    opacity: 1 !important;
+  @page {
+    margin: 14mm;
   }
 
-  html,
   body {
-    background: #fff !important;
-    color: #000 !important;
+    background: #fff;
+    color: #000;
+    font-size: 10.5pt;
+    line-height: 1.4;
   }
 
-  body::after,
-  body > header,
-  body > footer,
-  .ticker,
-  [data-sans-impression] {
+  body::after {
+    display: none;
+  }
+
+  .bandeau,
+  .nav,
+  .defilant,
+  .pastille,
+  .saut-contenu,
+  .actions,
+  .ours__bas,
+  .figure,
+  .photo-bandeau {
     display: none !important;
   }
 
-  .section-y {
-    padding-block: 5mm !important;
-  }
-
-  .page-carte .section-y {
-    padding-block: 0 !important;
-  }
-
-  /* Sur papier, rien ne colle : l'empilement et les tampons disparaissent. */
-  .pile > * {
-    position: static !important;
-  }
-
-  .tampon {
-    display: none !important;
-  }
-
-  .shell {
-    max-width: none;
+  /* À l'impression, une barre noire pleine largeur mange le toner pour rien. */
+  .barre-section {
+    background: none;
+    color: #000;
+    border-top: 3px solid #000;
+    border-bottom: 1px solid #000;
     padding-inline: 0;
   }
 
-  /* Le rythme vertical de l'écran est trop généreux pour une feuille.
-     On redéfinit les jetons d'espacement une fois : toutes les classes
-     utilitaires suivent, sans avoir à les surcharger une par une.
-     Deux crans : moitié moins d'air partout, et une version vraiment
-     serrée réservée à la carte, qui doit tenir sur une seule feuille. */
-  :root {
-    --esp-1: 2px;
-    --esp-2: 4px;
-    --esp-3: 6px;
-    --esp-4: 8px;
-    --esp-5: 10px;
-    --esp-6: 12px;
-    --esp-7: 14px;
-    --esp-8: 16px;
-    --esp-9: 22px;
-    --esp-10: 26px;
-    --esp-11: 32px;
-    --esp-12: 36px;
-    --esp-13: 44px;
+  .barre-section__note {
+    color: #000;
   }
 
-  .page-carte {
-    --esp-1: 1px;
-    --esp-2: 2px;
-    --esp-3: 3px;
-    --esp-4: 4px;
-    --esp-5: 5px;
-    --esp-6: 6px;
-    --esp-7: 8px;
-    --esp-8: 10px;
-    --esp-9: 12px;
-    --esp-10: 14px;
-    --esp-11: 16px;
-    --esp-12: 18px;
-    --esp-13: 20px;
+  .citation {
+    background: none;
+    color: #000;
   }
 
-  .t-hero,
-  .t-d1 {
-    font-size: 21pt !important;
-    line-height: 1 !important;
-  }
-  .t-d2 {
-    font-size: 12pt !important;
-  }
-  .t-d3 {
-    font-size: 10pt !important;
-  }
-  .t-lead {
-    font-size: 9.5pt !important;
-    line-height: 1.3 !important;
-    max-width: none !important;
-  }
-  .t-small,
-  .t-body {
-    font-size: 8pt !important;
-    line-height: 1.3 !important;
-    max-width: none !important;
-    color: #333 !important;
-  }
-  .prix {
-    font-size: 10pt !important;
-    color: #000 !important;
-  }
-  .micro,
-  .kicker {
-    font-size: 6.5pt !important;
-    line-height: 1.3 !important;
-    color: #4a4a4a !important;
+  .entete {
+    border-bottom: 2px solid #000;
   }
 
-  /* Le cadre de la carte reste net. */
-  .page-carte .cadre {
-    border-color: #000 !important;
+  .masthead {
+    font-size: 28pt;
+    margin-block: 0 0.3rem;
   }
 
-  .pill {
-    border-color: #999 !important;
-    color: #444 !important;
-    padding: 1px 5px !important;
-    font-size: 6.5pt !important;
+  .carte-tete {
+    padding-block: 0.5rem;
+    display: block;
   }
 
-  /* ── La carte, en deux colonnes sur A4 ─────────────────────────────
-     Un menu doit tenir dans la main, pas dans un classeur. Le texte
-     coule en deux colonnes (`columns`) au lieu d'une grille : une
-     grille CSS ne se coupe pas proprement entre deux feuilles et
-     poussait toute la carte sur la page suivante. */
-
-  .page-carte__corps {
-    padding-block: 0 !important;
+  .carte-tete__titre {
+    font-size: 24pt;
   }
 
-  .page-carte .cadre {
-    padding: 5mm !important;
+  .section {
+    padding-block: 0.6rem;
+    break-inside: auto;
   }
 
-  .carte-grille {
-    display: block !important;
-    columns: 3;
-    column-gap: 6mm;
+  .carte-colonnes {
+    column-count: 2;
+    column-gap: 10mm;
   }
 
-  /* Une catégorie ne se coupe jamais en deux, un plat non plus. */
-  .carte-categorie {
-    display: block !important;
+  .bloc-carte {
     break-inside: avoid;
-    margin-bottom: 5mm;
+    margin-bottom: 6mm;
   }
 
-  .ligne-carte {
-    padding-block: 1.6mm !important;
-    break-inside: avoid;
+  .tableau-prix {
+    min-width: 0;
   }
 
-  /* Repères d'écran : sans objet sur papier. */
-  .indice-detail,
-  .carte-categorie__lino {
-    display: none !important;
+  .tableau-prix td {
+    font-size: 12pt;
+  }
+
+  .plat__desc {
+    font-size: 8.5pt;
+  }
+
+  .revele {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  a {
+    text-decoration: none;
   }
 }
