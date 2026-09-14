@@ -241,13 +241,28 @@
 }
 
 .presse__item {
-  display: grid;
-  align-content: start;
-  gap: 0.6rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
   padding: clamp(1.25rem, 2.5vw, 1.75rem) 0;
   border-bottom: var(--filet-fort);
   text-decoration: none;
-  transition: background-color 220ms var(--sortie);
+  color: var(--encre);
+}
+
+/* Au survol, un trait rouge se trace sur le filet de tête, comme au surligneur. */
+.presse__item::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: var(--rouge);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 460ms var(--sortie);
 }
 
 @media (min-width: 48rem) {
@@ -280,16 +295,6 @@
   }
 }
 
-.presse__item:focus-visible {
-  background-color: var(--papier-clair);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .presse__item:hover {
-    background-color: var(--papier-clair);
-  }
-}
-
 .presse__media {
   font-family: var(--f-titre);
   font-weight: 900;
@@ -298,13 +303,24 @@
   font-size: clamp(1.4rem, 2.4vw, 1.9rem);
   line-height: 0.95;
   letter-spacing: -0.015em;
+  transition: color 240ms var(--sortie);
 }
 
 .presse__titre {
-  font-size: 1rem;
+  font-size: 1.0625rem;
+  font-style: italic;
   line-height: 1.45;
   color: var(--encre-douce);
   text-wrap: pretty;
+}
+
+/* Le soulignement suit les lignes du titre, de gauche à droite. */
+.presse__souligne {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 520ms var(--sortie) 60ms, color 240ms var(--sortie);
 }
 
 .presse__pied {
@@ -312,7 +328,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  margin-top: 0.15rem;
+  margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: var(--filet);
   font-family: var(--f-label);
   font-size: 0.6875rem;
   font-weight: 700;
@@ -321,22 +339,73 @@
   color: var(--encre-douce);
 }
 
+.presse__lire {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--encre);
+  transition: color 240ms var(--sortie), gap 320ms var(--sortie);
+}
+
 .presse__fleche {
   width: 15px;
   height: 15px;
   flex: none;
-  transition: transform 220ms var(--sortie), color 220ms var(--sortie);
+  transition: transform 320ms var(--sortie);
 }
 
-.presse__item:focus-visible .presse__fleche {
-  transform: translate(3px, -3px);
+.presse__item:focus-visible {
+  outline: none;
+}
+
+.presse__item:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.presse__item:focus-visible .presse__media,
+.presse__item:focus-visible .presse__lire {
   color: var(--rouge);
 }
 
+.presse__item:focus-visible .presse__souligne {
+  background-size: 100% 1px;
+  color: var(--encre);
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .presse__item:hover .presse__fleche {
-    transform: translate(3px, -3px);
+  .presse__item:hover::before {
+    transform: scaleX(1);
+  }
+
+  .presse__item:hover .presse__media,
+  .presse__item:hover .presse__lire {
     color: var(--rouge);
+  }
+
+  .presse__item:hover .presse__souligne {
+    background-size: 100% 1px;
+    color: var(--encre);
+  }
+
+  .presse__item:hover .presse__lire {
+    gap: 0.6rem;
+  }
+
+  .presse__item:hover .presse__fleche {
+    transform: translate(2px, -2px);
+  }
+}
+
+.presse__item:active .presse__media {
+  transform: translateY(1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .presse__item::before,
+  .presse__souligne,
+  .presse__lire,
+  .presse__fleche {
+    transition-duration: 1ms;
   }
 }
 
@@ -375,10 +444,12 @@
 
 /* --- Courrier des lecteurs ------------------------------------------------ */
 
+/* Mis en page comme les petites annonces : texte serré, justifié, filets. */
 .courrier {
   display: grid;
   gap: 0;
   border-top: 4px solid var(--encre);
+  border-bottom: var(--filet-fort);
 }
 
 @media (min-width: 48rem) {
@@ -394,16 +465,18 @@
 }
 
 .courrier__lettre {
-  display: grid;
-  align-content: start;
-  gap: 0.8rem;
-  padding: clamp(1.25rem, 2.5vw, 1.75rem) 0;
-  border-bottom: var(--filet-fort);
+  padding-block: 1rem 1.1rem;
+  border-bottom: var(--filet);
+  text-wrap: pretty;
+}
+
+.courrier__lettre:last-child {
+  border-bottom: 0;
 }
 
 @media (min-width: 48rem) {
   .courrier__lettre {
-    padding-inline: clamp(1.25rem, 2.2vw, 1.75rem);
+    padding-inline: clamp(1rem, 1.8vw, 1.4rem);
     border-right: var(--filet);
   }
 
@@ -414,15 +487,23 @@
   .courrier__lettre:nth-child(odd) {
     padding-left: 0;
   }
+
+  .courrier__lettre:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
 }
 
 @media (min-width: 75rem) {
+  .courrier__lettre {
+    border-bottom: 0;
+  }
+
   .courrier__lettre:nth-child(2n) {
     border-right: var(--filet);
   }
 
   .courrier__lettre:nth-child(3) {
-    padding-left: clamp(1.25rem, 2.2vw, 1.75rem);
+    padding-left: clamp(1rem, 1.8vw, 1.4rem);
   }
 
   .courrier__lettre:last-child {
@@ -431,19 +512,34 @@
   }
 }
 
+.courrier__texte,
+.courrier__auteur {
+  display: inline;
+}
+
 .courrier__texte {
-  font-size: 1.0625rem;
+  font-size: 0.9375rem;
   line-height: 1.5;
-  text-wrap: pretty;
+}
+
+.courrier__rubrique {
+  font-family: var(--f-label);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--encre);
 }
 
 .courrier__auteur {
+  margin-left: 0.25rem;
   font-family: var(--f-label);
-  font-size: 0.6875rem;
+  font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--encre-douce);
+  white-space: nowrap;
+  color: var(--rouge);
 }
 
 /* --- Annonce traiteur ----------------------------------------------------- */
