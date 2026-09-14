@@ -153,53 +153,60 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  min-height: 3rem;
+  min-height: 3.75rem;
 }
 
 .nav__liens {
   display: flex;
   align-items: center;
-  gap: clamp(1rem, 3vw, 2.25rem);
+  gap: clamp(0.6rem, 2vw, 1rem);
 }
 
+/* Boutons façon étiquette de presse : cadre encre, ombre portée décalée */
 .nav__lien {
   font-family: var(--f-label);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-size: clamp(0.75rem, 0.7rem + 0.3vw, 0.875rem);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  white-space: nowrap;
   text-transform: uppercase;
   text-decoration: none;
-  padding-block: 0.9rem;
-  position: relative;
-  transition: color 200ms var(--sortie);
-}
-
-.nav__lien::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -2px;
-  height: 4px;
-  background-color: var(--rouge);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 240ms var(--sortie);
-}
-
-.nav__lien:focus-visible::after,
-.nav__lien[aria-current="page"]::after {
-  transform: scaleX(1);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .nav__lien:hover::after {
-    transform: scaleX(1);
-  }
+  color: var(--encre);
+  background-color: var(--papier-clair);
+  border: 2px solid var(--encre);
+  box-shadow: 3px 3px 0 var(--encre);
+  padding: clamp(0.5rem, 1.2vw, 0.65rem) clamp(0.7rem, 2vw, 1.1rem);
+  margin-block: 0.6rem calc(0.6rem + 3px);
+  transition:
+    color 180ms var(--sortie),
+    background-color 180ms var(--sortie),
+    box-shadow 180ms var(--sortie),
+    transform 180ms var(--sortie);
 }
 
 .nav__lien[aria-current="page"] {
-  color: var(--rouge);
+  color: var(--papier-clair);
+  background-color: var(--rouge);
+  box-shadow: 3px 3px 0 var(--encre);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav__lien:not([aria-current="page"]):hover {
+    color: var(--papier-clair);
+    background-color: var(--encre);
+    box-shadow: 3px 3px 0 var(--rouge);
+  }
+}
+
+.nav__lien:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--encre);
+}
+
+.nav__lien:focus-visible {
+  outline: 3px solid var(--rouge);
+  outline-offset: 3px;
 }
 
 .nav__tel {
