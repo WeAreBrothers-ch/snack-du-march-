@@ -477,9 +477,27 @@
   gap: clamp(1.75rem, 3.5vw, 3rem);
 }
 
+/* Trois colonnes de journal, séparées par un filet vertical. */
 @media (min-width: 56rem) {
   .pratique {
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .pratique__bloc {
+    padding-inline: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .pratique__bloc:first-child {
+    padding-left: 0;
+  }
+
+  .pratique__bloc:last-child {
+    padding-right: 0;
+  }
+
+  .pratique__bloc + .pratique__bloc {
+    border-left: var(--filet);
   }
 }
 
@@ -494,36 +512,22 @@
   margin-bottom: 1rem;
 }
 
-/* L'adresse est l'information qu'on vient chercher : elle a son encadré. */
-.pratique__carte {
-  background-color: var(--papier-clair);
-  border: var(--filet-fort);
-  box-shadow: 6px 6px 0 var(--encre);
-  padding: clamp(1.1rem, 2.5vw, 1.6rem);
-}
-
 .pratique__adresse {
   font-family: var(--f-titre);
   font-weight: 900;
   font-stretch: 88%;
   text-transform: uppercase;
-  font-size: clamp(1.35rem, 2.1vw, 1.85rem);
-  line-height: 1.05;
+  font-size: clamp(1.5rem, 2.6vw, 2.05rem);
+  line-height: 1.02;
   letter-spacing: -0.02em;
   margin-bottom: 0.9rem;
 }
 
 .pratique__tel {
-  display: inline-flex;
+  display: flex;
   align-items: baseline;
-  gap: 0.65rem;
-  font-family: var(--f-titre);
-  font-size: clamp(1.1rem, 1.9vw, 1.35rem);
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  text-decoration: none;
-  color: var(--encre);
-  transition: color 180ms var(--sortie);
+  gap: 0.75rem;
+  font-size: 1.25rem;
 }
 
 .pratique__tel-cle {
@@ -532,58 +536,52 @@
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  color: var(--encre-douce);
+}
+
+/* Le renvoi de fin d'article : « lire la suite », version comptoir. */
+.pratique__suite {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  padding-bottom: 0.15rem;
+  border-bottom: 2px solid currentColor;
+  font-family: var(--f-label);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
   color: var(--rouge);
+  transition: gap 200ms var(--sortie);
+}
+
+.pratique__suite:focus-visible {
+  gap: 0.75rem;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .pratique__tel:hover {
-    color: var(--rouge);
+  .pratique__suite:hover {
+    gap: 0.75rem;
   }
 }
 
-.pratique__carte .actions {
-  margin-top: 1.25rem;
-}
-
-.pratique__carte .bouton {
-  width: 100%;
-  justify-content: center;
-}
-
 .pratique__acces {
-  margin-top: clamp(1.75rem, 3.5vw, 2.25rem);
-}
-
-/* État en direct : papier quand c'est fermé, encre quand le comptoir tourne. */
-.pratique__etat {
-  display: flex;
-  padding: 0.7rem 0.85rem;
-  border: var(--filet-fort);
-  background-color: var(--papier-clair);
-  font-family: var(--f-label);
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 1.25rem;
-}
-
-.pratique__etat.etat[data-ouvert="oui"] {
-  background-color: var(--encre);
-  color: var(--papier-clair);
+  margin-top: clamp(1.5rem, 3vw, 2rem);
 }
 
 .pratique__plage {
   display: grid;
-  gap: 0.35rem;
-  margin-bottom: 1.25rem;
+  gap: 0.4rem;
 }
 
 .pratique__plage-heures {
   font-family: var(--f-titre);
   font-weight: 900;
   font-stretch: 88%;
-  font-size: clamp(2rem, 3.6vw, 2.75rem);
-  line-height: 1;
+  font-size: clamp(2.25rem, 4vw, 3.25rem);
+  line-height: 0.95;
   letter-spacing: -0.02em;
 }
 
@@ -596,33 +594,34 @@
   color: var(--encre-douce);
 }
 
-.pratique__figure img {
-  box-shadow: 6px 6px 0 var(--encre);
+/* État en direct, écrit comme une ligne de dépêche entre deux filets. */
+.pratique__etat {
+  display: flex;
+  margin-block: 1rem 1.25rem;
+  padding-block: 0.5rem;
+  border-block: var(--filet);
+  font-family: var(--f-label);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.pratique__etat.etat[data-ouvert="oui"] {
+  color: var(--rouge);
 }
 
 .horaires {
   display: grid;
-  gap: 0;
-  border-top: var(--filet-fort);
+  border-top: 4px solid var(--encre);
 }
 
 .horaires__ligne {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.55rem 0.6rem;
+  gap: 0.6rem;
+  padding-block: 0.5rem;
   border-bottom: var(--filet);
   font-size: 0.9375rem;
-}
-
-.horaires__ligne[data-aujourdhui="oui"] {
-  background-color: rgb(176 33 26 / 0.08);
-  box-shadow: inset 4px 0 0 var(--rouge);
-}
-
-.horaires__ligne[data-aujourdhui="oui"] .horaires__jour::after {
-  content: " · aujourd'hui";
 }
 
 .horaires__jour {
@@ -634,8 +633,26 @@
   color: var(--encre-douce);
 }
 
+.horaires__points {
+  flex: 1 1 auto;
+  min-width: 1rem;
+  border-bottom: 1px dotted var(--trait);
+  transform: translateY(-0.3em);
+}
+
 .horaires__ligne[data-aujourdhui="oui"] .horaires__jour,
 .horaires__ligne[data-aujourdhui="oui"] .horaires__heure {
   color: var(--rouge);
   font-weight: 700;
+}
+
+.horaires__ligne[data-aujourdhui="oui"] .horaires__jour::after {
+  content: "aujourd'hui";
+  margin-left: 0.5rem;
+  font-family: var(--f-texte);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.9375rem;
+  letter-spacing: 0;
+  text-transform: none;
 }
