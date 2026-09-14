@@ -332,14 +332,17 @@
         <div class="pratique revele">
           <div class="pratique__bloc">
             <h3>Nous trouver</h3>
-            <p class="pratique__adresse">Rue Pré-du-Marché 3<br />1004 Lausanne</p>
-            <div class="pratique__lignes">
-              <a class="lien" href="tel:+41792431113">079 243 11 13</a>
-            </div>
-            <div class="actions">
-              <a class="bouton bouton--plein"
-                 href="https://www.google.com/maps/dir/?api=1&destination=Rue+Pr%C3%A9-du-March%C3%A9+3%2C+1004+Lausanne"
-                 target="_blank" rel="noopener noreferrer">Ouvrir l'itinéraire</a>
+            <div class="pratique__carte">
+              <p class="pratique__adresse">Rue Pré-du-Marché&nbsp;3<br />1004 Lausanne</p>
+              <a class="pratique__tel" href="tel:+41792431113">
+                <span class="pratique__tel-cle">Appeler</span>
+                <span class="tabulaire">079 243 11 13</span>
+              </a>
+              <div class="actions">
+                <a class="bouton bouton--plein"
+                   href="https://www.google.com/maps/dir/?api=1&destination=Rue+Pr%C3%A9-du-March%C3%A9+3%2C+1004+Lausanne"
+                   target="_blank" rel="noopener noreferrer">Ouvrir l'itinéraire</a>
+              </div>
             </div>
             <div class="faits pratique__acces">
               <div class="faits__ligne">
@@ -359,6 +362,14 @@
 
           <div class="pratique__bloc">
             <h3>Horaires</h3>
+            <p class="pratique__etat etat" data-etat data-ouvert="non">
+              <span class="etat__point" aria-hidden="true"></span>
+              <span data-etat-texte>Tous les jours, 11 h – 22 h</span>
+            </p>
+            <p class="pratique__plage">
+              <span class="pratique__plage-heures tabulaire">11 h – 22 h</span>
+              <span class="pratique__plage-note">Sept jours sur sept</span>
+            </p>
             <div class="horaires">
               <div class="horaires__ligne" data-jour="1"><span class="horaires__jour">Lundi</span><span class="horaires__heure tabulaire">11 h – 22 h</span></div>
               <div class="horaires__ligne" data-jour="2"><span class="horaires__jour">Mardi</span><span class="horaires__heure tabulaire">11 h – 22 h</span></div>
@@ -372,7 +383,7 @@
 
           <div class="pratique__bloc">
             <h3>Le quartier</h3>
-            <figure class="figure">
+            <figure class="figure pratique__figure">
               <img src="assets/photos/devanture-nuit.webp"
                    alt="La devanture éclairée du Snack du Marché à la nuit tombée"
                    width="1000" height="750" loading="lazy" decoding="async" />
@@ -421,7 +432,7 @@
 
       <div class="ours__bas">
         <span>Snack du Marché — depuis 1998</span>
-        <span>Site réalisé à Lausanne</span>
+        <span>Site créé par <a class="ours__signature" href="https://wearebrothers.ch" target="_blank" rel="noopener noreferrer">WeAreBrothers</a></span>
       </div>
     </div>
   </footer>

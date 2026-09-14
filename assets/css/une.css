@@ -494,30 +494,116 @@
   margin-bottom: 1rem;
 }
 
+/* L'adresse est l'information qu'on vient chercher : elle a son encadré. */
+.pratique__carte {
+  background-color: var(--papier-clair);
+  border: var(--filet-fort);
+  box-shadow: 6px 6px 0 var(--encre);
+  padding: clamp(1.1rem, 2.5vw, 1.6rem);
+}
+
 .pratique__adresse {
   font-family: var(--f-titre);
   font-weight: 900;
   font-stretch: 88%;
   text-transform: uppercase;
-  font-size: clamp(1.5rem, 2.8vw, 2.05rem);
+  font-size: clamp(1.35rem, 2.1vw, 1.85rem);
   line-height: 1.05;
   letter-spacing: -0.02em;
-  margin-bottom: 1rem;
+  margin-bottom: 0.9rem;
 }
 
-.pratique__lignes {
-  display: grid;
-  gap: 0.4rem;
-  font-size: 0.9375rem;
+.pratique__tel {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  font-family: var(--f-titre);
+  font-size: clamp(1.1rem, 1.9vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: var(--encre);
+  transition: color 180ms var(--sortie);
+}
+
+.pratique__tel-cle {
+  font-family: var(--f-label);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rouge);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pratique__tel:hover {
+    color: var(--rouge);
+  }
+}
+
+.pratique__carte .actions {
+  margin-top: 1.25rem;
+}
+
+.pratique__carte .bouton {
+  width: 100%;
+  justify-content: center;
 }
 
 .pratique__acces {
-  margin-top: clamp(1.5rem, 3vw, 2rem);
+  margin-top: clamp(1.75rem, 3.5vw, 2.25rem);
+}
+
+/* État en direct : papier quand c'est fermé, encre quand le comptoir tourne. */
+.pratique__etat {
+  display: flex;
+  padding: 0.7rem 0.85rem;
+  border: var(--filet-fort);
+  background-color: var(--papier-clair);
+  font-family: var(--f-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.pratique__etat.etat[data-ouvert="oui"] {
+  background-color: var(--encre);
+  color: var(--papier-clair);
+}
+
+.pratique__plage {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+}
+
+.pratique__plage-heures {
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-stretch: 88%;
+  font-size: clamp(2rem, 3.6vw, 2.75rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.pratique__plage-note {
+  font-family: var(--f-label);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--encre-douce);
+}
+
+.pratique__figure img {
+  box-shadow: 6px 6px 0 var(--encre);
 }
 
 .horaires {
   display: grid;
   gap: 0;
+  border-top: var(--filet-fort);
 }
 
 .horaires__ligne {
@@ -525,9 +611,18 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  padding-block: 0.42rem;
+  padding: 0.55rem 0.6rem;
   border-bottom: var(--filet);
   font-size: 0.9375rem;
+}
+
+.horaires__ligne[data-aujourdhui="oui"] {
+  background-color: rgb(176 33 26 / 0.08);
+  box-shadow: inset 4px 0 0 var(--rouge);
+}
+
+.horaires__ligne[data-aujourdhui="oui"] .horaires__jour::after {
+  content: " · aujourd'hui";
 }
 
 .horaires__jour {
