@@ -158,55 +158,75 @@
 
 .nav__liens {
   display: flex;
-  align-items: center;
-  gap: clamp(0.6rem, 2vw, 1rem);
+  align-self: stretch;
+  align-items: stretch;
 }
 
-/* Boutons façon étiquette de presse : cadre encre, ombre portée décalée */
+/* Rubriques de journal : un filet entre elles, un trait rouge sous la page lue. */
 .nav__lien {
+  --pad: clamp(0.9rem, 2.2vw, 1.5rem);
+  --pad-l: var(--pad);
+  position: relative;
+  display: flex;
+  align-items: center;
   font-family: var(--f-label);
-  font-size: clamp(0.75rem, 0.7rem + 0.3vw, 0.875rem);
+  font-size: clamp(0.8rem, 0.72rem + 0.35vw, 0.9375rem);
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   line-height: 1;
   white-space: nowrap;
   text-transform: uppercase;
   text-decoration: none;
   color: var(--encre);
-  background-color: var(--papier-clair);
-  border: 2px solid var(--encre);
-  box-shadow: 3px 3px 0 var(--encre);
-  padding: clamp(0.5rem, 1.2vw, 0.65rem) clamp(0.7rem, 2vw, 1.1rem);
-  margin-block: 0.6rem calc(0.6rem + 3px);
-  transition:
-    color 180ms var(--sortie),
-    background-color 180ms var(--sortie),
-    box-shadow 180ms var(--sortie),
-    transform 180ms var(--sortie);
+  padding: 0 var(--pad) 0 var(--pad-l);
+  transition: color 180ms var(--sortie);
+}
+
+.nav__lien:first-child {
+  --pad-l: 0px;
+}
+
+/* Filet vertical court entre deux rubriques. */
+.nav__lien + .nav__lien::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 1.4em;
+  border-left: var(--filet);
+  transform: translateY(-50%);
+}
+
+.nav__lien::after {
+  content: "";
+  position: absolute;
+  left: var(--pad-l);
+  right: var(--pad);
+  bottom: -2px;
+  height: 6px;
+  background-color: var(--rouge);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 220ms var(--sortie);
 }
 
 .nav__lien[aria-current="page"] {
-  color: var(--papier-clair);
-  background-color: var(--rouge);
-  box-shadow: 3px 3px 0 var(--encre);
+  color: var(--rouge);
+}
+
+.nav__lien[aria-current="page"]::after,
+.nav__lien:focus-visible::after {
+  transform: scaleY(1);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .nav__lien:not([aria-current="page"]):hover {
-    color: var(--papier-clair);
-    background-color: var(--encre);
-    box-shadow: 3px 3px 0 var(--rouge);
+  .nav__lien:hover::after {
+    transform: scaleY(1);
   }
 }
 
-.nav__lien:active {
-  transform: translate(3px, 3px);
-  box-shadow: 0 0 0 var(--encre);
-}
-
 .nav__lien:focus-visible {
-  outline: 3px solid var(--rouge);
-  outline-offset: 3px;
+  outline: none;
 }
 
 .nav__tel {
@@ -334,72 +354,65 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 0.9rem 1.4rem;
-  border: var(--filet-fort);
+  padding: 0.55rem 0;
+  border: 0;
+  border-bottom: 2px solid currentColor;
   background-color: transparent;
+  color: var(--encre);
+  cursor: pointer;
   transition: background-color 200ms var(--sortie), color 200ms var(--sortie),
-    transform 160ms var(--sortie), box-shadow 200ms var(--sortie);
+    transform 160ms var(--sortie);
 }
 
+/* Le bouton secondaire est un renvoi souligné ; le principal, un aplat d'encre. */
 .bouton:focus-visible {
-  background-color: var(--encre);
-  color: var(--papier);
-  transform: translateY(-2px);
+  color: var(--rouge);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .bouton:hover {
-    background-color: var(--encre);
-    color: var(--papier);
-    transform: translateY(-2px);
+    color: var(--rouge);
   }
 }
 
-/* Le bouton doit répondre à la pression : c'est ce qui le rend vivant. */
 .bouton:active {
-  transform: translateY(0) scale(0.975);
+  transform: translateY(1px);
 }
 
 .bouton--plein {
+  padding: 0.95rem 1.4rem;
+  border-bottom: 0;
   background-color: var(--encre);
-  color: var(--papier);
-  box-shadow: 4px 4px 0 var(--rouge);
+  color: var(--papier-clair);
 }
 
 .bouton--plein:focus-visible {
   background-color: var(--rouge);
-  border-color: var(--rouge);
   color: var(--papier-clair);
-  box-shadow: 4px 4px 0 var(--encre);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .bouton--plein:hover {
     background-color: var(--rouge);
-    border-color: var(--rouge);
     color: var(--papier-clair);
-    box-shadow: 4px 4px 0 var(--encre);
   }
-}
-
-.bouton--plein:active {
-  box-shadow: 2px 2px 0 var(--encre);
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 0.75rem 1.75rem;
   margin-top: 1.5rem;
 }
 
 /* --- Encadré (la « petite annonce ») -------------------------------------- */
 
+/* Encadré de journal : gros filet en tête, filet fin en pied, pas de boîte. */
 .encadre {
-  border: var(--filet-fort);
-  padding: clamp(1.25rem, 3vw, 2rem);
-  background-color: var(--papier-clair);
-  box-shadow: 7px 7px 0 var(--encre);
+  border-top: var(--filet-epais);
+  border-bottom: var(--filet);
+  padding-block: clamp(1rem, 2.5vw, 1.5rem) clamp(1.25rem, 3vw, 2rem);
 }
 
 .encadre__titre {

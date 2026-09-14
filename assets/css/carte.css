@@ -241,23 +241,26 @@
 .plat__mentions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-top: 0.5rem;
+  margin-top: 0.45rem;
 }
 
+/* Mentions en petites capitales, séparées par un point médian, sans étiquette. */
 .mention {
   font-family: var(--f-label);
-  font-size: 0.5625rem;
+  font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 0.22rem 0.45rem;
-  border: 1px solid var(--encre-douce);
   color: var(--encre-douce);
 }
 
+.mention + .mention::before {
+  content: "·";
+  margin-inline: 0.5rem;
+  color: var(--trait);
+}
+
 .mention--piquant {
-  border-color: var(--rouge);
   color: var(--rouge);
 }
 
