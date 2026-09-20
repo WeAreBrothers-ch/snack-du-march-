@@ -1,0 +1,94 @@
+/* ==========================================================================
+   Les prix — le tableau noir, posé au calme après le carrousel
+   ========================================================================== */
+
+.prix {
+  display: grid;
+  gap: 2rem;
+  width: 100%;
+  max-width: 64rem;
+  margin: 0 auto;
+  padding-top: clamp(4rem, 10vw, 8rem);
+}
+
+.prix__tete {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.prix__titre { font-size: clamp(3rem, 9vw, 7rem); }
+
+.prix__note { color: var(--craie-douce); }
+
+.prix__tableau {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tableau {
+  min-width: 34rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tableau th,
+.tableau td {
+  padding: 0.9rem 0.75rem;
+  text-align: right;
+  border-bottom: 1px solid var(--trait);
+}
+
+.tableau thead th {
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-variation-settings: "wdth" 80;
+  font-size: 1rem;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--craie);
+}
+
+.tableau tbody th {
+  font-weight: 500;
+  text-align: left;
+}
+
+.tableau td {
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-variation-settings: "wdth" 85;
+  font-size: 1.25rem;
+}
+
+.tableau tbody tr:hover td { color: var(--bordeaux-clair); }
+
+.prix__extras {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.prix__extras li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--trait);
+}
+
+.prix__extras li span:last-child {
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-variation-settings: "wdth" 85;
+  font-size: 1.125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.prix__allergies {
+  max-width: 34rem;
+  color: var(--craie-douce);
+}
+
+@media (min-width: 768px) {
+  .prix { gap: 2.5rem; }
+  .prix__tete { flex-direction: row; align-items: flex-end; justify-content: space-between; }
+  .prix__extras { grid-template-columns: repeat(2, 1fr); column-gap: 3rem; }
+}

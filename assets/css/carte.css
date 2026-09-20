@@ -1,307 +1,164 @@
 /* ==========================================================================
-   La Carte — deuxième page
+   La carte — trois mots qui s'éjectent, puis le carrousel des plats
    ========================================================================== */
 
-.carte-tete {
-  display: grid;
-  gap: clamp(1.5rem, 3vw, 2.5rem);
-  padding-block: clamp(2rem, 4.5vw, 3.5rem);
-  align-items: end;
-}
-
-@media (min-width: 56rem) {
-  .carte-tete {
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  }
-}
-
-.carte-tete__titre {
-  font-family: var(--f-titre);
-  font-weight: 900;
-  font-stretch: 88%;
-  font-size: clamp(3rem, 9.5vw, 7.5rem);
-  line-height: 0.82;
-  letter-spacing: -0.035em;
-  text-transform: uppercase;
-  margin-top: 0.4rem;
-}
-
-.carte-tete__intro {
-  max-width: 40ch;
-  color: var(--encre-douce);
-  font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
-  line-height: 1.5;
-}
-
-.carte-tete .actions {
-  margin-top: 1.25rem;
-}
-
-.carte-tete__intro {
-  font-weight: 400;
-}
-
-/* --- Le tableau des prix -------------------------------------------------- */
-
-.tableau-defilant {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.tableau-prix {
-  min-width: 32rem;
-  border-top: 4px solid var(--encre);
-}
-
-.tableau-prix th,
-.tableau-prix td {
-  text-align: right;
-  padding: clamp(0.7rem, 1.6vw, 1.05rem) 0.5rem;
-  border-bottom: var(--filet);
-}
-
-.tableau-prix thead th {
-  border-bottom: var(--filet-fort);
-}
-
-.tableau-prix th:first-child,
-.tableau-prix td:first-child {
-  text-align: left;
-  padding-left: 0;
-}
-
-.tableau-prix th:last-child,
-.tableau-prix td:last-child {
-  padding-right: 0;
-}
-
-.tableau-prix thead th {
-  font-family: var(--f-label);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--encre-douce);
-}
-
-.tableau-prix tbody th {
-  font-family: var(--f-label);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.tableau-prix td {
-  font-family: var(--f-titre);
-  font-variant-numeric: tabular-nums;
-  font-size: clamp(1.25rem, 2.4vw, 1.85rem);
-  font-weight: 800;
-  font-stretch: 88%;
-  letter-spacing: -0.02em;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .tableau-prix tbody tr:hover {
-    background-color: var(--papier-clair);
-  }
-}
-
-.tableau-prix__note {
-  margin-top: 0.85rem;
-  font-family: var(--f-label);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--encre-douce);
-}
-
-/* --- Les colonnes de la carte --------------------------------------------- */
-
-.carte-colonnes {
-  column-gap: clamp(2rem, 4vw, 3.5rem);
-  column-rule: var(--filet);
-}
-
-@media (min-width: 48rem) {
-  .carte-colonnes {
-    column-count: 2;
-  }
-}
-
-@media (min-width: 82rem) {
-  .carte-colonnes {
-    column-count: 3;
-  }
-}
-
-.bloc-carte {
-  break-inside: avoid;
-  margin-bottom: clamp(2rem, 3.5vw, 2.75rem);
-}
-
-.bloc-carte__tete {
+.carte {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding-bottom: 0.45rem;
-  border-bottom: 4px solid var(--encre);
-  margin-bottom: 0.9rem;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  height: 300vh;
 }
 
-.bloc-carte__titre {
-  font-family: var(--f-titre);
-  font-weight: 900;
-  font-stretch: 88%;
-  font-size: clamp(1.5rem, 2.6vw, 2rem);
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
+.carte__colle {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--hauteur-ecran);
 }
 
-.bloc-carte__note {
-  font-family: var(--f-label);
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--encre-douce);
-  text-align: right;
-  max-width: 19ch;
-  line-height: 1.35;
+.carte__mots {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: var(--hauteur-ecran);
+  overflow: hidden;
+}
+
+.carte__ligne {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.carte__ligne--inverse { flex-direction: row-reverse; }
+
+.carte__mot { font-size: clamp(3.5rem, 12vw, 9rem); }
+
+.carte__vignette {
+  display: none;
+  height: 5rem;
+  aspect-ratio: 4 / 3;
+  padding: 0.25rem;
+  background: var(--bordeaux);
+}
+
+.carte__vignette img { border-radius: 2px; }
+
+/* Le carrousel ----------------------------------------------------------- */
+
+.carrousel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--hauteur-ecran);
+  padding: 0;
+  overflow: hidden;
+}
+
+.carrousel__texte {
+  width: 100%;
+  max-width: 28rem;
+  padding: 0 1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.carrousel__cadre {
+  position: relative;
+  width: 100%;
+  padding: 0 var(--marge);
+  overflow: hidden;
+}
+
+.carrousel__piste {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
 }
 
 .plat {
-  padding-block: 0.7rem;
-  border-bottom: var(--filet);
-}
-
-.plat:last-child {
-  border-bottom: 0;
-}
-
-.plat__tete {
   display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
+  flex: none;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  height: auto;
+}
+
+.plat__photo {
+  aspect-ratio: 3 / 4;
+  max-height: 46vh;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .plat__nom {
-  font-size: 1.0625rem;
-  font-weight: 600;
-  line-height: 1.25;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  font-variation-settings: "wdth" 75;
 }
 
-.plat__points {
-  flex: 1 1 auto;
-  min-width: 1.5rem;
-  border-bottom: 1px dotted var(--trait);
-  transform: translateY(-0.3em);
+.plat__note {
+  font-size: 0.875rem;
+  color: var(--craie-douce);
 }
 
 .plat__prix {
   font-family: var(--f-titre);
+  font-weight: 900;
+  font-variation-settings: "wdth" 80;
+  font-size: 1.5rem;
   font-variant-numeric: tabular-nums;
-  font-size: 1.0625rem;
-  font-weight: 800;
-  font-stretch: 88%;
-  white-space: nowrap;
+  color: var(--bordeaux-clair);
 }
 
-.plat__prix--muet {
-  font-size: 0.6875rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 400;
-  color: var(--encre-douce);
-}
-
-.plat__turc {
-  display: block;
-  font-family: var(--f-label);
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--rouge);
-  margin-top: 0.3rem;
-}
-
-.plat__desc {
-  margin-top: 0.35rem;
-  font-size: 0.9375rem;
-  line-height: 1.5;
-  color: var(--encre-douce);
-  max-width: 44ch;
-  text-wrap: pretty;
-}
-
-.plat__mentions {
+.carrousel__boutons {
   display: flex;
-  flex-wrap: wrap;
-  margin-top: 0.45rem;
+  gap: 2rem;
+  margin-top: 1.25rem;
 }
 
-/* Mentions en petites capitales, séparées par un point médian, sans étiquette. */
-.mention {
-  font-family: var(--f-label);
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--encre-douce);
+.carrousel__bouton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: var(--bordeaux);
+  color: var(--craie);
+  /* Pas de transition sur transform : GSAP pilote la position de ces boutons,
+     et une transition CSS entrerait en conflit avec lui. */
+  transition: background-color 0.25s var(--sortie);
 }
 
-.mention + .mention::before {
-  content: "·";
-  margin-inline: 0.5rem;
-  color: var(--trait);
+.carrousel__bouton svg {
+  width: 1.375rem;
+  height: 1.375rem;
+  transition: transform 0.25s var(--sortie);
 }
 
-.mention--piquant {
-  color: var(--rouge);
+.carrousel__bouton:hover { background: var(--bordeaux-fonce); }
+.carrousel__bouton:hover svg { transform: scale(1.12); }
+.carrousel__bouton:active svg { transform: scale(0.92); }
+
+@media (min-width: 768px) {
+  .carte__vignette { display: flex; }
+  .plat__photo { max-height: 52vh; }
 }
 
-/* --- Pied de carte -------------------------------------------------------- */
-
-.carte-pied {
-  display: grid;
-  gap: clamp(1.25rem, 2.5vw, 2rem);
-  align-items: start;
-}
-
-@media (min-width: 56rem) {
-  .carte-pied {
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  }
-}
-
-.carte-pied__texte {
-  max-width: 52ch;
-  color: var(--encre-douce);
-}
-
-/* La photographie de pied de page accompagne l'encadré, elle ne l'écrase pas. */
-.carte-pied .figure img {
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-}
-
-/* Sur mobile le tableau se fait glisser : on le dit, plutôt que de l'espérer. */
-.tableau-aide {
-  margin-top: 0.6rem;
-  font-family: var(--f-label);
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--rouge);
-}
-
-@media (min-width: 40rem) {
-  .tableau-aide {
-    display: none;
-  }
+@media (min-width: 992px) {
+  .carrousel__bouton { width: 4rem; height: 4rem; }
 }

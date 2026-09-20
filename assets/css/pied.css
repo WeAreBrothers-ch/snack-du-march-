@@ -1,0 +1,107 @@
+/* ==========================================================================
+   Pied de page — le nom en géant, l'adresse posée dessus comme un ticket
+   ========================================================================== */
+
+.pied {
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 2rem;
+  width: 100%;
+  min-height: var(--hauteur-ecran);
+  padding: var(--marge);
+  background: var(--panneau);
+  color: var(--panneau-texte);
+  overflow: hidden;
+}
+
+.pied__contenu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 100%;
+}
+
+.pied__geant {
+  width: 100%;
+  overflow: hidden;
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-variation-settings: "wdth" 70;
+  font-size: clamp(4rem, 17.5vw, 22rem);
+  line-height: 1;
+  margin-bottom: -0.12em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--panneau-tonsurton);
+}
+
+.pied__ligne { display: block; }
+
+/* Le ticket d'adresse : sous le nom sur téléphone, posé dessus sur grand écran. */
+.pied__carte {
+  display: grid;
+  gap: 0.75rem;
+  width: min(16rem, 70vw);
+  margin-top: 2rem;
+  padding: 1.25rem;
+  background: var(--craie);
+  color: var(--fond);
+  border-radius: 2px;
+  text-align: center;
+  transform: rotate(-4deg);
+}
+
+.pied__adresse,
+.pied__horaires {
+  font-family: var(--f-titre);
+  font-weight: 700;
+  font-variation-settings: "wdth" 85;
+  font-size: 1.125rem;
+  line-height: 1.15;
+}
+
+.pied__tel {
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(21, 18, 14, 0.2);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.pied__bas {
+  display: grid;
+  gap: 1rem;
+  align-items: end;
+  font-size: 0.8125rem;
+  color: var(--panneau-texte-doux);
+}
+
+.pied__bas a { text-decoration: underline; text-underline-offset: 0.2em; }
+.pied__bas a:hover { color: var(--panneau-tonsurton); }
+
+.pied__liens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.pied__haut { justify-self: start; }
+
+@media (min-width: 768px) {
+  .pied__carte { position: absolute; margin-top: 0; }
+
+  .pied__bas {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .pied__liens { justify-content: center; }
+  .pied__haut { justify-self: end; }
+}
+
+@media (min-width: 992px) {
+  .pied__carte { width: 20rem; padding: 2rem; }
+  .pied__adresse, .pied__horaires { font-size: 1.375rem; }
+}

@@ -1,0 +1,72 @@
+/* ==========================================================================
+   Pages annexes — l'erreur 404 et la redirection de l'ancienne carte
+   ========================================================================== */
+
+.erreur,
+.redirection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  min-height: var(--hauteur-ecran);
+  padding: var(--marge);
+  text-align: center;
+}
+
+.erreur__code {
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-variation-settings: "wdth" 70;
+  font-size: clamp(6rem, 25vw, 16rem);
+  line-height: 0.85;
+  color: var(--bordeaux);
+}
+
+.erreur__titre { font-size: clamp(2rem, 6vw, 4.5rem); }
+
+.erreur__texte {
+  max-width: 26rem;
+  color: var(--craie-douce);
+}
+
+.erreur__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.9rem 1.5rem;
+  border-radius: 10rem;
+  background: var(--craie);
+  color: var(--fond);
+  font-weight: 500;
+  transition: background-color 0.25s var(--sortie), color 0.25s var(--sortie), transform 0.25s var(--sortie);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bouton:hover {
+    background: var(--bordeaux);
+    color: var(--craie);
+    transform: translateY(-2px);
+  }
+}
+
+.bouton:active { transform: scale(0.97); }
+
+.bouton--creux {
+  background: transparent;
+  color: var(--craie);
+  box-shadow: inset 0 0 0 2px var(--craie);
+}
+
+.bouton--creux:hover {
+  background: var(--craie);
+  color: var(--fond);
+}
+
+.redirection a { text-decoration: underline; text-underline-offset: 0.2em; }

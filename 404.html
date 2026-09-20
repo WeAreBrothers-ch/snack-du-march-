@@ -8,85 +8,18 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
-  <header class="entete">
-    <div class="contenu">
-      <a class="masthead masthead--compact" href="./index.html" aria-label="Snack du Marché — retour à la Une">
-        <svg class="masthead__dessin" viewBox="0 0 1000 104" role="presentation" focusable="false" aria-hidden="true">
-          <text class="masthead__texte" x="0" y="96" textLength="1000" lengthAdjust="spacing">SNACK DU MARCHÉ</text>
-        </svg>
-      </a>
-    </div>
-    <p class="entete__devise">Kebab à la broche — Cuisine de Gaziantep — Depuis 1998</p>
-  </header>
-
-  <!-- Navigation ---------------------------------------------------------- -->
-  <nav class="nav" aria-label="Navigation principale">
-    <div class="contenu nav__grille">
-      <div class="nav__liens">
-        <a class="nav__lien" href="./index.html">La Une</a>
-        <a class="nav__lien" href="./la-carte.html">La carte</a>
-      </div>
-    </div>
-  </nav>
-
-  <main class="contenu section">
-    <div class="page-erreur">
-      <p class="label label--rouge">Erreur 404 — Avis au lecteur</p>
-      <h1 class="titre-une page-erreur__titre">Cette édition est épuisée</h1>
-      <p class="chapo page-erreur__texte">
-        La page que vous cherchez n'existe pas, ou plus. Le comptoir, lui, est
-        toujours au même endroit.
-      </p>
-      <div class="actions">
-        <a class="bouton bouton--plein" href="./index.html">Revenir à la Une</a>
-        <a class="bouton" href="./la-carte.html">Voir la carte</a>
-      </div>
+  <main class="erreur">
+    <p class="erreur__code">404</p>
+    <h1 class="erreur__titre">Cette page n'est pas à la carte</h1>
+    <p class="erreur__texte">L'adresse n'existe pas, ou plus. La broche, elle, tourne toujours au même endroit.</p>
+    <div class="erreur__actions">
+      <a class="bouton" href="./index.html">Retour à l'accueil</a>
+      <a class="bouton bouton--creux" href="./index.html#carte">Voir la carte</a>
     </div>
   </main>
-
-  <!-- L'ours ---------------------------------------------------------------- -->
-  <footer class="ours">
-    <div class="contenu">
-      <div class="ours__grille">
-        <div class="ours__colonne">
-          <h2>L'ours</h2>
-          <p class="ours__texte">
-            Le Snack du Marché paraît tous les jours de 11 h à 22 h, Rue
-            Pré-du-Marché 3, 1004 Lausanne. Fondé en 1998 par Hüseyin Celik.
-          </p>
-          <a class="ours__tel" href="tel:+41792431113">
-            <span class="ours__tel-cle">Commander</span>
-            <span class="tabulaire">079 243 11 13</span>
-          </a>
-        </div>
-
-        <div class="ours__colonne">
-          <h3>Les deux pages</h3>
-          <div class="ours__liste">
-            <a class="lien" href="./index.html">La Une</a>
-            <a class="lien" href="./la-carte.html">La carte</a>
-          </div>
-        </div>
-
-        <div class="ours__colonne">
-          <h3>Ailleurs</h3>
-          <div class="ours__liste">
-            <a class="lien" href="https://www.instagram.com/snackdumarche/" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a class="lien" href="https://www.facebook.com/snackdumarche/" target="_blank" rel="noopener noreferrer">Facebook</a>
-            <a class="lien" href="https://www.google.com/maps/dir/?api=1&destination=Rue+Pr%C3%A9-du-March%C3%A9+3%2C+1004+Lausanne" target="_blank" rel="noopener noreferrer">Itinéraire</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="ours__bas">
-        <span>Snack du Marché — depuis 1998</span>
-        <span>Site créé par <a class="ours__signature" href="https://wearebrothers.ch" target="_blank" rel="noopener noreferrer">WeAreBrothers</a></span>
-      </div>
-    </div>
-  </footer>
 </body>
 </html>

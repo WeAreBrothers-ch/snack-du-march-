@@ -1,0 +1,98 @@
+/* ==========================================================================
+   Navigation — bouton flottant et panneau de menu
+   ========================================================================== */
+
+.menu-bouton {
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-variation-settings: "wdth" 80;
+  font-size: 1.375rem;
+  line-height: 1;
+  text-transform: uppercase;
+  padding: 0.25rem 0;
+  color: var(--craie);
+  transition: color 0.25s var(--sortie), transform 0.16s var(--sortie);
+}
+
+.menu-bouton:hover { color: var(--bordeaux-clair); }
+.menu-bouton:active { transform: scale(0.96); }
+
+/* Le bouton flottant n'apparaît qu'après le hero (classe posée par le script).
+   Une pastille ardoise : lisible sur le fond comme sur les panneaux bordeaux. */
+.menu-flottant {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 800;
+  padding: 1rem var(--marge) 0 0;
+  transform: translateX(150%);
+  transition: transform 0.3s var(--sortie);
+}
+
+.menu-flottant .menu-bouton {
+  padding: 0.5rem 0.9rem;
+  border-radius: 10rem;
+  background: var(--fond);
+  color: var(--craie);
+  font-size: 1.125rem;
+}
+
+.menu-flottant .menu-bouton:hover { color: var(--bordeaux-clair); }
+
+.menu-flottant.est-visible { transform: none; }
+
+/* Le panneau ------------------------------------------------------------- */
+
+.panneau {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.panneau[hidden] { display: none; }
+
+.panneau__fond {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 22, 21, 0.6);
+}
+
+.panneau__carte {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: min(18rem, 85vw);
+  margin: 0 var(--marge) 0 0;
+  padding: 3rem 1.5rem 1.5rem;
+  background: var(--panneau);
+  color: var(--panneau-texte);
+  border-radius: 0 0 0.5rem 0.5rem;
+  transform-origin: top right;
+}
+
+.panneau__lien {
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-variation-settings: "wdth" 80;
+  font-size: 1.5rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.panneau__lien:hover { color: var(--panneau-tonsurton); }
+
+.panneau__tel {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--trait);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 992px) {
+  .panneau__carte { padding-top: 3.5rem; }
+}

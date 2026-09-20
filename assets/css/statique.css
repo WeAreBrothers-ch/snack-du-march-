@@ -1,0 +1,57 @@
+/* ==========================================================================
+   Régime statique — sans animation, chaque section se lit simplement de
+   haut en bas : plus rien n'est épinglé, superposé ni masqué.
+   ========================================================================== */
+
+html.statique .rideau { display: none; }
+
+html.statique .histoire,
+html.statique .broche,
+html.statique .carte {
+  height: auto;
+}
+
+html.statique .histoire__colle,
+html.statique .broche__colle,
+html.statique .carte__colle {
+  position: static;
+  flex-direction: column;
+  height: auto;
+}
+
+html.statique .histoire__photos,
+html.statique .histoire__pause { display: none; }
+
+html.statique .etape--collee { box-shadow: none; }
+
+html.statique .etape--premiere,
+html.statique .anatomie,
+html.statique .carrousel {
+  position: relative;
+  inset: auto;
+}
+
+html.statique .etape--collee { position: relative; }
+
+html.statique .histoire__intro,
+html.statique .broche__avant,
+html.statique .carte__mots,
+html.statique .carrousel {
+  height: auto;
+  min-height: 0;
+  padding: var(--marge);
+}
+
+html.statique .broche__avant { gap: 2rem; }
+html.statique .anatomie { height: auto; padding: 3rem var(--marge); }
+html.statique .anatomie__grille { gap: 2rem; }
+
+html.statique .carrousel__cadre { overflow-x: auto; }
+html.statique .carrousel__piste { gap: 1rem; }
+html.statique .plat { width: min(18rem, 80vw); }
+html.statique .carrousel__boutons { display: none; }
+
+html.statique .quartier__titre[data-quartier-devant] { position: static; }
+html.statique .quartier__titre--fantome { display: none; }
+
+html.statique .menu-flottant { transform: none; }

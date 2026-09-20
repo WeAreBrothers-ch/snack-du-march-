@@ -1,90 +1,77 @@
 # Direction artistique — Snack du Marché
 
-**Version 2.0 — 05.09.2026.** Remplace intégralement la version 1 (fond vert forêt),
-abandonnée à la demande du client.
+**Version 3.0 — 18.09.2026.** Remplace la version 2 (la Une de journal), à la
+demande du client.
 
 ---
 
 ## En une phrase
 
-**Le site est le journal de la maison.** Pas un site de restaurant qui parle de
-lui : une Une de quotidien qui parle du Snack du Marché — parce que la presse en
-a parlé, et que c'est ce dont la famille est fière.
+**Le site est une mise en scène de la broche.** Une seule page, qui se joue au
+fil du défilement comme un court film : le nom entre, la broche tourne,
+l'histoire s'empile, le sandwich se disséque, la carte s'ouvre.
 
 ## D'où vient la direction
 
-Le client a montré quatre références : *The Snack Break* (Hal's New York),
-*The Ranch Report*, une affiche « Breaking News » de taquería, le *Swiitch Times*.
-Toutes sont des **journaux de marque** : format tabloïd, gros titres en grotesque
-noir, filets épais, bandeaux noirs à texte répété, encadrés, pastilles, photos en
-couleur. Ce n'est pas le quotidien de qualité austère : c'est le tabloïd assumé,
-imprimé, qui claque.
-
-## Les deux pages
-
-| Page | Rôle |
-|---|---|
-| **La Une** (`index.html`) | L'article de tête sur la maison, la revue de presse, le courrier des lecteurs, la petite annonce traiteur, le carnet pratique, l'ours. |
-| **La carte** (`la-carte.html`) | Le tableau des prix traité comme une page de résultats, puis le détail en colonnes. |
-
-Il n'y en aura pas une troisième. Tout ce qui manque se dit au comptoir.
+Le client a montré une référence : *Bánh Mì Vietnam* (banhmivietnam.xyz),
+un site éditorial d'un seul écran qui raconte un sandwich section par section,
+avec des sections épinglées et des animations au défilement. On garde
+l'esprit et le rythme ; le bánh mì devient la broche de la maison.
 
 ## Palette
 
-Deux encres, un accent. Jamais plus.
+L'ardoise noire de l'enseigne à la craie, la craie, et un bordeaux profond.
+Trois couleurs. Jamais plus.
 
 | Jeton | Valeur | Rôle |
 |---|---|---|
-| `--papier` | `#f2eee4` | Le fond, partout |
-| `--papier-clair` | `#faf8f3` | Fond des encadrés |
-| `--encre` | `#16130f` | Texte, filets, bandeaux pleins |
-| `--encre-douce` | `#4f4a43` | Texte secondaire, légendes |
-| `--trait` | `#b8b0a0` | Filets fins internes |
-| `--rouge` | `#b0211a` | **L'accent unique** : lettrine, pastille, mentions « piquant », jour courant, losanges du bandeau défilant |
+| `--fond` | `#121615` | L'ardoise : le fond, partout |
+| `--craie` | `#f1efe6` | Le texte, le ticket d'adresse, les papiers d'avis |
+| `--bordeaux` | `#7b1f2d` | Disque du hero, panneaux pleins (étapes, anatomie, pied de page), boutons, vignettes, texte fantôme |
+| `--bordeaux-clair` | `#b13a4d` | La même couleur, éclaircie pour rester lisible en texte sur le noir : prix, survols, barre de progression |
 
-Le rouge est un condiment. Il ne fait jamais de fond, sauf la pastille « depuis 1998 ».
+Sur les panneaux bordeaux, le texte est craie ; les grands chiffres (années,
+nom en pied de page) et l'étoile sont **ton sur ton**, en ardoise. C'est ce qui
+fait le côté classe : le contraste vient de la matière, pas de la couleur.
 
 ## Typographie
 
 | Rôle | Police | Réglage |
 |---|---|---|
-| Titres, chiffres, libellés | **Archivo** | `font-weight: 800–900`, `font-stretch: 88 %`, capitales, interlettrage serré |
-| Corps de texte | **Erode** (locale) | 400, justifié en colonnes, césure active |
+| Titres, chiffres, libellés | **Archivo** | `font-weight: 900`, `font-stretch` 70 à 85 %, capitales, interlettrage serré |
+| Corps de texte | **DM Sans** | 400, interligne 1.5 |
 
-Aucun italique, nulle part. Aucun titre bicolore.
+Aucun italique. Aucun titre bicolore.
 
-Le bloc-titre est un **SVG à `textLength` forcé** : il occupe toujours exactement
-la largeur de la page, sans JavaScript et sans jamais déborder.
+## Les gestes du site
 
-## Les gestes du journal
+1. **Le rideau d'ouverture** : trois mots (Broche, Épices, Maison), puis le disque caramel se referme sur le hero.
+2. **Le hero** : le nom de part et d'autre de la broche, dans un disque. Les mots glissent depuis les côtés, la photo arrive en tournant.
+3. **Les étapes de l'histoire** : trois panneaux noirs qui s'empilent (1998, 2018, 2026), l'année en caramel géant.
+4. **L'anatomie** : le panneau noir s'ouvre en biseau, l'étoile rouge et le sandwich surgissent, les ingrédients s'égrènent.
+5. **La carte** : trois mots (Tout est / fait / maison) s'éjectent en tournant pendant que le carrousel s'ouvre au centre.
+6. **Le grand texte du quartier** : la copie noire se dévoile de haut en bas sur sa copie caramel.
+7. **Le pied de page** : le nom en géant, le ticket d'adresse posé dessus.
 
-1. **Le bloc-titre pleine largeur** — c'est lui qui porte tout le design.
-2. **Les filets** — 1 px pour l'intérieur, 2 px pour l'ossature, 4 px sous les têtes de bloc, 6 px pour les grandes coupures.
-3. **Les barres de section noires** — titre en capitales à gauche, mention de service à droite.
-4. **Le bandeau noir défilant** sous la navigation, losanges rouges en séparateur.
-5. **La lettrine rouge** au premier paragraphe de l'article de tête. Une seule sur le site.
-6. **La pastille « depuis 1998 »**, posée en tampon sur la photographie pleine largeur.
-7. **Les encadrés à ombre portée pleine** (7 px, sans flou) — la petite annonce, le bon à savoir.
-8. **Les points de conduite** entre le nom du plat et son prix, comme dans les petites annonces.
-9. **Le grain de papier**, une couche fixe en `multiply` à 30 %.
+Un seul élément décoratif par section. Pas de numérotation.
 
 ## Photographies
 
-En couleur, contraste légèrement poussé, saturation légèrement retenue, cadrées
-d'un filet noir de 2 px. Au survol, la saturation remonte. Jamais de noir et
-blanc : la nourriture doit donner faim.
+Recadrées en rond (hero, anatomie, coins) ou en rectangle à coins doux
+(étapes, carrousel, quartier). En couleur, jamais de noir et blanc. Les
+étapes ont un cadre crème épais, comme un tirage.
 
-## Ton de voix
+## Mouvement
 
-Court, factuel, sans superlatif. On ne vend pas, on raconte. Les prix sont
-affichés en clair. Ce qu'on ne sait pas, on ne l'invente pas : on renvoie au
-comptoir.
+- Le défilement est lissé (Lenis). Les sections clés sont épinglées le temps de leur animation.
+- Les textes apparaissent **ligne par ligne**, en montant depuis une fente.
+- Les images s'ouvrent depuis leur centre (`clip-path`).
+- Tout est **réduit sur téléphone** et **désactivé** si le visiteur demande moins d'animations.
 
 ## Interdits
 
 - Le vert-rouge-blanc « kebab shop », les halos orange sur fond noir.
 - Le motif ottoman, les arabesques, la calligraphie décorative.
-- Le gastro froid : blanc pur, serif fine espacée, « expérience culinaire ».
-- Le template restaurant : carrousel, étoiles dorées, Google Maps pleine largeur.
-- Les dégradés, les coins très arrondis, les ombres floues, les icônes génériques.
-- Une troisième page.
+- Le gastro froid : blanc pur, serif fine, « expérience culinaire ».
+- Les dégradés, les ombres floues, les icônes génériques.
+- Une deuxième page.

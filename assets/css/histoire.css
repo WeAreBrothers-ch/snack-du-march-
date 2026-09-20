@@ -1,0 +1,193 @@
+/* ==========================================================================
+   L'histoire — intro épinglée, puis trois étapes qui s'empilent
+   ========================================================================== */
+
+/* Le bloc fait six écrans de haut : l'intro et la première étape restent
+   épinglées pendant que les deux suivantes glissent par-dessus, puis tout
+   reste en place un écran avant de partir. */
+.histoire {
+  position: relative;
+  width: 100%;
+  height: 600vh;
+}
+
+/* Deux écrans de pause : le temps d'ouvrir et de lire la première étape
+   avant que la deuxième n'arrive par le bas. */
+.histoire__pause {
+  width: 100%;
+  height: 200vh;
+}
+
+.histoire__colle {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.histoire__intro {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.histoire__texte {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 45rem;
+  text-align: center;
+}
+
+.histoire__titre { font-size: clamp(3rem, 9vw, 7.5rem); }
+
+.histoire__sous {
+  width: 100%;
+  max-width: 20rem;
+  color: var(--craie-douce);
+}
+
+/* Les six photos posées derrière le titre (bureau seulement). */
+.histoire__photos {
+  position: absolute;
+  z-index: 0;
+  display: none;
+  width: 100%;
+  height: var(--hauteur-ecran);
+  padding: var(--marge);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: repeat(3, auto);
+  gap: var(--colonne);
+}
+
+.histoire__cadre {
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.histoire__cadre:nth-child(1) { grid-column: 1; grid-row: 2; width: 14rem; aspect-ratio: 2 / 3; }
+.histoire__cadre:nth-child(2) { grid-column: 4; align-self: center; justify-self: end; width: 10rem; aspect-ratio: 1; }
+.histoire__cadre:nth-child(3) { grid-column: 7 / 9; align-self: start; width: 14rem; aspect-ratio: 4 / 3; }
+.histoire__cadre:nth-child(4) { grid-column: 12; grid-row: 2; align-self: center; justify-self: end; width: 14rem; aspect-ratio: 2 / 3; }
+.histoire__cadre:nth-child(5) { grid-column: 9; grid-row: 3; align-self: start; justify-self: end; width: 10rem; aspect-ratio: 1; }
+.histoire__cadre:nth-child(6) { grid-column: 5 / 7; grid-row: 3; align-self: end; justify-self: end; width: 14rem; aspect-ratio: 4 / 3; }
+
+/* Les étapes ------------------------------------------------------------- */
+
+.etape {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+  height: 100vh;
+  background: var(--panneau);
+  color: var(--panneau-texte);
+}
+
+/* Un voile sombre, piloté par le script, recouvre la carte du dessous quand la
+   suivante glisse par-dessus. Un voile plutôt qu'une transparence : rien ne
+   doit apparaître au travers. */
+.etape::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--fond);
+  opacity: var(--voile, 0);
+  pointer-events: none;
+}
+
+.etape--premiere {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.etape--collee {
+  position: sticky;
+  top: 0;
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.etape__contenu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.etape__tete {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 25rem;
+}
+
+.etape__texte { color: var(--panneau-texte-doux); }
+
+.etape__annee {
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-variation-settings: "wdth" 70;
+  font-size: clamp(4rem, 14vw, 12rem);
+  line-height: 0.85;
+  color: var(--panneau-tonsurton);
+}
+
+/* Sur téléphone, la photo remplit la hauteur qui reste (format portrait).
+   Une photo prise en paysage garde son format 4/3 pour être vue en entier. */
+.etape__cadre {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+  border: 0.5rem solid var(--fond);
+}
+
+.etape__cadre--paysage {
+  flex: none;
+  max-height: 42vh;
+  aspect-ratio: 4 / 3;
+}
+
+.etape__cadre--paysage img { object-position: center 30%; }
+
+@media (min-width: 768px) {
+  .histoire__photos { display: grid; }
+}
+
+@media (min-width: 992px) {
+  .etape {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+  }
+
+  .etape--inverse { flex-direction: row-reverse; }
+
+  .etape__contenu { width: 50%; height: 100%; }
+
+  .etape__cadre,
+  .etape__cadre--paysage {
+    flex: none;
+    width: 50%;
+    height: 100%;
+    max-height: none;
+    aspect-ratio: 3 / 4;
+    border-width: 0.8rem;
+  }
+
+  .etape__cadre--paysage img { object-position: center; }
+}

@@ -1,12 +1,14 @@
-/* ==========================================================================
-   Snack du Marché — feuille d'orchestration.
-   Une seule feuille est liée depuis le HTML ; elle importe les autres,
-   dans l'ordre où elles doivent s'appliquer.
-   ========================================================================== */
-
+/* Point d'entrée unique. L'ordre compte : la base avant les sections. */
 @import url("reset.css");
 @import url("base.css");
-@import url("journal.css");
-@import url("une.css");
+@import url("nav.css");
+@import url("rideau.css");
+@import url("hero.css");
+@import url("histoire.css");
+@import url("broche.css");
 @import url("carte.css");
-@import url("impression.css");
+@import url("prix.css");
+@import url("quartier.css");
+@import url("pied.css");
+@import url("statique.css");
+@import url("pages.css");
