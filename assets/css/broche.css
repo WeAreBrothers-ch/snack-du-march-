@@ -58,43 +58,31 @@
   color: var(--panneau-texte-doux);
 }
 
-/* La planche, sur téléphone : la photo reste en haut de l'écran, sur une
-   bande bordeaux qui masque la légende quand elle passe dessous ; chaque
-   ingrédient s'allume à son tour en défilant (planche.js). */
+/* La planche, sur téléphone : la photo en grand, puis la légende en deux
+   colonnes, numérotée comme les repères. Les deux tiennent ensemble dans
+   l'écran : on lit la planche d'un coup d'œil, sans avoir à la faire défiler. */
 .planche {
   position: relative;
-  margin: 0;
-}
-
-.planche__scene {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  padding: calc(var(--marge) + 3.25rem) 0 1rem;
-  background: var(--panneau);
+  max-width: 34rem;
+  margin: clamp(1.5rem, 6vw, 2.5rem) auto 0;
 }
 
 .planche__photo {
   position: relative;
-  width: min(100%, 44svh);
-  margin: 0 auto;
   aspect-ratio: 1;
   border-radius: var(--rayon);
 }
 
 .planche__photo img { border-radius: inherit; }
 
-/* Un repère : une pastille craie, numérotée comme la légende. */
-.planche__point {
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  z-index: 2;
+/* Une pastille craie, numérotée : le repère sur la photo, et le même numéro
+   devant l'ingrédient, dans la légende. */
+.planche__point,
+.planche__ingredient::before {
   display: grid;
   place-items: center;
   width: 1.625rem;
   height: 1.625rem;
-  margin: -0.8125rem 0 0 -0.8125rem;
   border-radius: 50%;
   background: var(--craie);
   color: var(--fond);
@@ -103,75 +91,52 @@
   font-size: 0.875rem;
   line-height: 1;
   font-variant-numeric: tabular-nums;
-  box-shadow: 0 0 0 2px var(--bordeaux);
-  transition: scale 0.35s var(--sortie), opacity 0.35s var(--sortie);
 }
 
-/* La légende : une étape par ingrédient, numérotée comme les repères. */
+.planche__point {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  z-index: 2;
+  margin: -0.8125rem 0 0 -0.8125rem;
+  box-shadow: 0 0 0 2px var(--bordeaux);
+}
+
+/* La légende : deux colonnes de quatre, qui se lisent de haut en bas, entre
+   deux filets. */
 .planche__liste {
   display: grid;
-  padding-top: 0.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(4, auto);
+  grid-auto-flow: column;
+  column-gap: var(--gouttiere);
+  margin-top: clamp(1rem, 4vw, 1.5rem);
   counter-reset: repere;
 }
 
-.planche__etape {
-  display: grid;
-  grid-template-columns: 2.25rem minmax(0, 1fr);
-  column-gap: 0.875rem;
-  align-content: start;
-  min-height: calc(var(--ecran-visible) * 0.22);
-  padding-block: 0.75rem;
+.planche__ingredient {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding-block: 0.625rem;
+  border-top: 1px solid var(--panneau-trait);
   counter-increment: repere;
-  transition: opacity 0.4s var(--sortie);
 }
 
-.planche__etape::before {
+.planche__ingredient:nth-child(4n) { border-bottom: 1px solid var(--panneau-trait); }
+
+.planche__ingredient::before {
   content: counter(repere);
-  grid-row: span 2;
-  display: grid;
-  place-items: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 50%;
-  background: var(--craie);
-  color: var(--fond);
-  font-family: var(--f-titre);
-  font-weight: 800;
-  font-size: 1rem;
-  line-height: 1;
+  flex: none;
 }
 
 .planche__nom {
-  align-self: center;
   font-family: var(--f-titre);
-  font-weight: 900;
-  font-variation-settings: "wdth" 78;
-  font-size: clamp(1.625rem, 7vw, 2.25rem);
-  line-height: 1;
+  font-weight: 800;
+  font-variation-settings: "wdth" 70;
+  font-size: clamp(1.0625rem, 0.55rem + 2.4vw, 1.375rem);
+  line-height: 1.05;
   text-transform: uppercase;
-}
-
-.planche__detail {
-  grid-column: 2;
-  margin-top: 0.4rem;
-  font-size: var(--t-corps);
-  line-height: 1.45;
-  color: var(--panneau-texte-doux);
-}
-
-/* La dernière étape doit pouvoir s'allumer avant que la photo ne reparte. */
-.planche__etape:last-child { min-height: calc(var(--ecran-visible) * 0.34); }
-
-/* Le récit, quand le script tourne : l'ingrédient en cours s'allume, les
-   autres s'effacent, sur la photo comme dans la légende. */
-.planche--racontee .planche__etape { opacity: 0.32; }
-.planche--racontee .planche__etape.est-active { opacity: 1; }
-.planche--racontee .planche__point { opacity: 0.55; scale: 0.8; }
-
-.planche--racontee .planche__point.est-actif {
-  opacity: 1;
-  scale: 1.35;
-  box-shadow: 0 0 0 2px var(--bordeaux), 0 0 0 4px var(--craie);
 }
 
 /* Les traits qui relient la légende aux repères (grand écran seulement). */
@@ -194,11 +159,6 @@
   stroke-width: 1.5;
   stroke-linecap: round;
   stroke-dasharray: 1;
-}
-
-/* Tablette : la légende garde une largeur de lecture, sous la photo. */
-@media (min-width: 600px) {
-  .planche__liste { max-width: 34rem; margin: 0 auto; }
 }
 
 /* Grand écran ------------------------------------------------------------ */
@@ -260,17 +220,14 @@
     column-gap: clamp(3rem, 6vw, 8rem);
     width: 100%;
     max-width: var(--largeur-max);
+    margin: 0;
   }
 
-  .planche__scene {
-    position: static;
+  .planche__photo {
     grid-column: 2;
     grid-row: 1;
-    padding: 0;
-    background: none;
+    width: var(--cote);
   }
-
-  .planche__photo { width: var(--cote); }
 
   /* La légende se superpose à la grille de la planche : mêmes colonnes,
      quatre rangées à la hauteur de la photo. */
@@ -280,26 +237,23 @@
     grid-template-columns: minmax(0, 1fr) var(--cote) minmax(0, 1fr);
     grid-template-rows: repeat(4, minmax(0, 1fr));
     column-gap: inherit;
-    max-width: none;
     height: var(--cote);
     margin: 0;
-    padding: 0;
   }
 
-  .planche__etape,
-  .planche__etape:last-child {
+  .planche__ingredient,
+  .planche__ingredient:nth-child(4n) {
     display: block;
     grid-row: var(--rang);
     align-self: center;
-    min-height: 0;
     padding: 0;
+    border: 0;
   }
 
-  .planche__etape::before,
-  .planche__detail { display: none; }
+  .planche__ingredient::before { display: none; }
 
-  .planche__etape[data-cote="gauche"] { grid-column: 1; justify-self: end; text-align: right; }
-  .planche__etape[data-cote="droite"] { grid-column: 3; justify-self: start; }
+  .planche__ingredient[data-cote="gauche"] { grid-column: 1; justify-self: end; text-align: right; }
+  .planche__ingredient[data-cote="droite"] { grid-column: 3; justify-self: start; }
 
   .planche__nom {
     font-family: var(--f-texte);
@@ -315,15 +269,6 @@
     height: 0.875rem;
     margin: -0.4375rem 0 0 -0.4375rem;
     font-size: 0;
-    box-shadow: 0 0 0 3px var(--bordeaux);
-  }
-
-  /* Pas de récit sur grand écran : tout est lisible d'un coup d'œil. */
-  .planche--racontee .planche__etape,
-  .planche--racontee .planche__point,
-  .planche--racontee .planche__point.est-actif {
-    opacity: 1;
-    scale: 1;
     box-shadow: 0 0 0 3px var(--bordeaux);
   }
 

@@ -1,14 +1,10 @@
 /**
- * La planche d'anatomie.
- *
- * Sur téléphone, la photo reste en haut de l'écran et la légende défile
- * dessous : l'ingrédient qui passe au milieu de l'écran s'allume, dans la
- * légende comme sur la photo.
+ * Les traits de la planche d'anatomie.
  *
  * Sur grand écran, un trait relie chaque ingrédient de la légende à son
  * repère sur la photo, comme dans un livre de sciences naturelles. Les traits
  * sont tracés en SVG par-dessus la planche et recalculés dès que la mise en
- * page change.
+ * page change. Sur téléphone, les numéros suffisent : pas de traits.
  *
  * Ce module ne dépend d'aucune librairie d'animation : il sert aussi en
  * régime statique.
@@ -32,10 +28,7 @@ export function initPlanche() {
   if (!(planche instanceof HTMLElement)) return null;
 
   const points = /** @type {HTMLElement[]} */ (Array.from(planche.querySelectorAll(".planche__point")));
-  const etapes = /** @type {HTMLElement[]} */ (Array.from(planche.querySelectorAll(".planche__etape")));
   const libelles = /** @type {HTMLElement[]} */ (Array.from(planche.querySelectorAll(".planche__nom")));
-
-  raconter(planche, etapes, points);
 
   const svg = document.createElementNS(NS, "svg");
   svg.setAttribute("class", "planche__traits");
@@ -82,47 +75,4 @@ export function initPlanche() {
   document.fonts?.ready.then(tracer);
 
   return { traits };
-}
-
-/**
- * Sur téléphone : l'ingrédient qui s'allume est le premier entièrement
- * visible sous la photo ; quand il passe sous elle, le suivant prend le
- * relais. Les styles ne s'appliquent que sur téléphone ; sur grand écran,
- * tout reste allumé.
- * @param {HTMLElement} planche
- * @param {HTMLElement[]} etapes
- * @param {HTMLElement[]} points
- */
-function raconter(planche, etapes, points) {
-  const scene = planche.querySelector(".planche__scene");
-  if (!(scene instanceof HTMLElement) || etapes.length === 0) return;
-
-  const telephone = window.matchMedia("(max-width: 991px)");
-  let active = -1;
-
-  /** @param {number} index */
-  const activer = (index) => {
-    if (index === active) return;
-    active = index;
-    etapes.forEach((etape, i) => etape.classList.toggle("est-active", i === index));
-    points.forEach((point, i) => point.classList.toggle("est-actif", i === index));
-  };
-
-  let image = 0;
-  const mesurer = () => {
-    image = 0;
-    if (!telephone.matches) return;
-    const bas = scene.getBoundingClientRect().bottom - 8;
-    const index = etapes.findIndex((etape) => etape.getBoundingClientRect().top >= bas);
-    activer(index === -1 ? etapes.length - 1 : index);
-  };
-  const demander = () => {
-    if (!image) image = requestAnimationFrame(mesurer);
-  };
-
-  planche.classList.add("planche--racontee");
-  activer(0);
-  mesurer();
-  window.addEventListener("scroll", demander, { passive: true });
-  window.addEventListener("resize", demander);
 }

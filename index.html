@@ -46,8 +46,6 @@
 <body>
   <a class="saut-contenu" href="#histoire">Aller au contenu</a>
 
-  <div class="progression" aria-hidden="true"></div>
-
   <!-- Menu flottant ------------------------------------------------------- -->
   <div class="menu-flottant">
     <button class="menu-bouton" type="button" data-menu-ouvrir aria-expanded="false" aria-controls="panneau-menu">Menu</button>
@@ -193,38 +191,35 @@
 
       <!-- La planche : chaque repère est placé en pourcentage de la photo
            (--x depuis la gauche, --y depuis le haut). Les ingrédients sont
-           listés de haut en bas. Sur téléphone, la photo reste en haut de
-           l'écran et chaque ingrédient s'y allume à son tour ; sur grand
-           écran, data-cote et --rang les rangent de part et d'autre de la
-           photo, reliés par des traits. -->
+           listés de haut en bas. Sur téléphone, la légende suit la photo, en
+           deux colonnes ; sur grand écran, data-cote et --rang la rangent de
+           part et d'autre de la photo, reliée par des traits. -->
       <section class="anatomie" id="anatomie" aria-labelledby="titre-anatomie">
         <h2 class="anatomie__titre" id="titre-anatomie">Anatomie d'un veau-agneau</h2>
         <figure class="planche">
-          <div class="planche__scene">
-            <div class="planche__photo">
-              <img src="assets/photos/sandwich-anatomie.webp" alt="Le sandwich veau-agneau, ouvert sur ses crudités" width="574" height="574" loading="lazy" decoding="async" />
-              <span class="planche__point" style="--x: 52.3%; --y: 16.6%" aria-hidden="true">1</span>
-              <span class="planche__point" style="--x: 57.5%; --y: 36.9%" aria-hidden="true">2</span>
-              <span class="planche__point" style="--x: 64.8%; --y: 51%" aria-hidden="true">3</span>
-              <span class="planche__point" style="--x: 26.1%; --y: 55.7%" aria-hidden="true">4</span>
-              <span class="planche__point" style="--x: 46.7%; --y: 60.6%" aria-hidden="true">5</span>
-              <span class="planche__point" style="--x: 50.5%; --y: 73.5%" aria-hidden="true">6</span>
-              <span class="planche__point" style="--x: 40.6%; --y: 80.5%" aria-hidden="true">7</span>
-              <span class="planche__point" style="--x: 53.1%; --y: 85.4%" aria-hidden="true">8</span>
-            </div>
+          <div class="planche__photo">
+            <img src="assets/photos/sandwich-anatomie.webp" alt="Le sandwich veau-agneau, ouvert sur ses crudités" width="574" height="574" loading="lazy" decoding="async" />
+            <span class="planche__point" style="--x: 52.3%; --y: 16.6%" aria-hidden="true">1</span>
+            <span class="planche__point" style="--x: 57.5%; --y: 36.9%" aria-hidden="true">2</span>
+            <span class="planche__point" style="--x: 64.8%; --y: 51%" aria-hidden="true">3</span>
+            <span class="planche__point" style="--x: 26.1%; --y: 55.7%" aria-hidden="true">4</span>
+            <span class="planche__point" style="--x: 46.7%; --y: 60.6%" aria-hidden="true">5</span>
+            <span class="planche__point" style="--x: 50.5%; --y: 73.5%" aria-hidden="true">6</span>
+            <span class="planche__point" style="--x: 40.6%; --y: 80.5%" aria-hidden="true">7</span>
+            <span class="planche__point" style="--x: 53.1%; --y: 85.4%" aria-hidden="true">8</span>
           </div>
           <ol class="planche__liste">
-            <li class="planche__etape" data-cote="gauche" style="--rang: 1"><span class="planche__nom">Pain croustillant</span><span class="planche__detail">Croustillant dehors, moelleux dedans.</span></li>
-            <li class="planche__etape" data-cote="droite" style="--rang: 1"><span class="planche__nom">Tomate</span><span class="planche__detail">Fraîche, en tranches.</span></li>
-            <li class="planche__etape" data-cote="droite" style="--rang: 2"><span class="planche__nom">Persil</span><span class="planche__detail">Frais, pour relever le tout.</span></li>
-            <li class="planche__etape" data-cote="gauche" style="--rang: 2"><span class="planche__nom">Concombre</span><span class="planche__detail">Croquant, en bâtonnets.</span></li>
-            <li class="planche__etape" data-cote="gauche" style="--rang: 3"><span class="planche__nom">Salade</span><span class="planche__detail">Émincée finement.</span></li>
-            <li class="planche__etape" data-cote="droite" style="--rang: 3"><span class="planche__nom">Sauce blanche</span><span class="planche__detail">Faite maison, comme toutes les sauces du comptoir.</span></li>
-            <li class="planche__etape" data-cote="gauche" style="--rang: 4"><span class="planche__nom">Oignon rouge</span><span class="planche__detail">Émincé finement.</span></li>
-            <li class="planche__etape" data-cote="droite" style="--rang: 4"><span class="planche__nom">Veau &amp; agneau</span><span class="planche__detail">Entiers, montés à la main sur la broche, relevés d'épices rapportées de Gaziantep.</span></li>
+            <li class="planche__ingredient" data-cote="gauche" style="--rang: 1"><span class="planche__nom">Pain croustillant</span></li>
+            <li class="planche__ingredient" data-cote="droite" style="--rang: 1"><span class="planche__nom">Tomate</span></li>
+            <li class="planche__ingredient" data-cote="droite" style="--rang: 2"><span class="planche__nom">Persil</span></li>
+            <li class="planche__ingredient" data-cote="gauche" style="--rang: 2"><span class="planche__nom">Concombre</span></li>
+            <li class="planche__ingredient" data-cote="gauche" style="--rang: 3"><span class="planche__nom">Salade</span></li>
+            <li class="planche__ingredient" data-cote="droite" style="--rang: 3"><span class="planche__nom">Sauce blanche</span></li>
+            <li class="planche__ingredient" data-cote="gauche" style="--rang: 4"><span class="planche__nom">Oignon rouge</span></li>
+            <li class="planche__ingredient" data-cote="droite" style="--rang: 4"><span class="planche__nom">Veau &amp; agneau</span></li>
           </ol>
         </figure>
-        <p class="anatomie__note">Et si vous l'aimez relevé&nbsp;: la sauce piquante, faite maison elle aussi.</p>
+        <p class="anatomie__note">Et ce qui ne se voit pas&nbsp;: les épices de Gaziantep dans la viande, le sumac, la sauce piquante maison.</p>
       </section>
     </div>
 

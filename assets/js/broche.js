@@ -4,9 +4,11 @@
  * panneau de l'anatomie monte par-dessus.
  *
  * L'anatomie : le titre monte et la photo se découvre. Sur grand écran, la
- * planche se dessine ensuite : la légende, les traits qui vont de chaque
- * ingrédient à son repère, les repères eux-mêmes. Sur téléphone, c'est le
- * défilement qui raconte la planche, ingrédient par ingrédient (planche.js).
+ * planche se dessine ensuite d'un seul geste : la légende, les traits qui
+ * vont de chaque ingrédient à son repère, les repères eux-mêmes. Sur
+ * téléphone, chaque partie se joue en entrant dans l'écran, en une seconde :
+ * les repères se posent un à un sur la photo, la légende monte ligne par
+ * ligne.
  */
 
 import { element, elements } from "./lib.js";
@@ -65,34 +67,23 @@ export function initBroche(outils, bureau, planche) {
 
   const titre = decouperEnLignes(SplitText, element(".anatomie__titre"));
   const photo = element(".planche__photo");
+  const points = elements(".planche__point");
+  const ingredients = elements(".planche__ingredient");
   const note = element(".anatomie__note");
 
-  const dessin = gsap.timeline({
-    defaults: { ease: "power3.out" },
-    scrollTrigger: {
-      trigger: ".anatomie",
-      start: bureau ? "top 35%" : "top 70%",
-      toggleActions: "play none none reverse",
-    },
-  });
-
-  dessin
-    .fromTo(titre.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.9, stagger: 0.08 })
-    .fromTo(
-      photo,
-      { clipPath: "inset(100% 0% 0% 0%)" },
-      { clipPath: "inset(0% 0% 0% 0%)", duration: 1, ease: "power3.inOut" },
-      "<0.1",
-    );
+  const decouvrirPhoto = { ...decouvrir, duration: 1 };
 
   if (bureau) {
     const traits = planche ? planche.traits : [];
-    dessin.fromTo(
-      elements(".planche__etape"),
-      { autoAlpha: 0, y: 12 },
-      { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.05 },
-      "<0.55",
-    );
+    const dessin = gsap.timeline({
+      defaults: { ease: "power3.out" },
+      scrollTrigger: { trigger: ".anatomie", start: "top 35%", toggleActions: "play none none reverse" },
+    });
+
+    dessin
+      .fromTo(titre.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.9, stagger: 0.08 })
+      .fromTo(photo, { clipPath: "inset(100% 0% 0% 0%)" }, decouvrirPhoto, "<0.1")
+      .fromTo(ingredients, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.05 }, "<0.55");
     if (traits.length > 0) {
       dessin.fromTo(
         traits,
@@ -103,23 +94,60 @@ export function initBroche(outils, bureau, planche) {
     }
     dessin
       .fromTo(
-        elements(".planche__point"),
+        points,
         { scale: 0, autoAlpha: 0 },
         { scale: 1, autoAlpha: 1, duration: 0.35, stagger: 0.05, ease: "power2.out" },
         "<0.3",
       )
       .fromTo(note, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.6 }, "<0.2");
-  } else {
-    gsap.fromTo(
-      note,
-      { autoAlpha: 0, y: 16 },
-      {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: { trigger: note, start: "top 90%", toggleActions: "play none none reverse" },
-      },
-    );
+    return;
   }
+
+  // Sur téléphone, la planche est plus haute que l'écran : chaque partie se
+  // joue quand elle y entre.
+  /**
+   * @param {string | Element} declencheur
+   * @param {string} debut
+   */
+  const enEntrant = (declencheur, debut) => ({
+    trigger: declencheur,
+    start: debut,
+    toggleActions: "play none none reverse",
+  });
+
+  gsap.fromTo(
+    titre.lines,
+    { yPercent: 120 },
+    { yPercent: 0, duration: 0.9, stagger: 0.08, ease: "power3.out", scrollTrigger: enEntrant(".anatomie", "top 75%") },
+  );
+
+  // La photo se découvre, puis les repères s'y posent dans l'ordre de la légende.
+  gsap
+    .timeline({ scrollTrigger: enEntrant(photo, "top 80%") })
+    .fromTo(photo, { clipPath: "inset(100% 0% 0% 0%)" }, decouvrirPhoto)
+    .fromTo(
+      points,
+      { scale: 0.5, autoAlpha: 0 },
+      { scale: 1, autoAlpha: 1, duration: 0.4, stagger: 0.06, ease: "power2.out" },
+      "-=0.3",
+    );
+
+  gsap.fromTo(
+    ingredients,
+    { autoAlpha: 0, y: 14 },
+    {
+      autoAlpha: 1,
+      y: 0,
+      duration: 0.6,
+      stagger: 0.05,
+      ease: "power3.out",
+      scrollTrigger: enEntrant(".planche__liste", "top 90%"),
+    },
+  );
+
+  gsap.fromTo(
+    note,
+    { autoAlpha: 0, y: 16 },
+    { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out", scrollTrigger: enEntrant(note, "top 90%") },
+  );
 }

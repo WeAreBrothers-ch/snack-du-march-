@@ -1,10 +1,10 @@
 /**
- * Le défilement lissé (Lenis), la barre de progression et les liens d'ancre.
+ * Le défilement lissé (Lenis) et les liens d'ancre.
  * Lenis remplace le défilement natif par un mouvement amorti ; ScrollTrigger
  * est prévenu à chaque image pour rester synchronisé.
  */
 
-import { element, elements } from "./lib.js";
+import { elements } from "./lib.js";
 
 /**
  * @param {import("./lib.js").Outils} outils
@@ -34,7 +34,6 @@ export function initDefilement(outils) {
   });
   gsap.ticker.lagSmoothing(0);
 
-  initProgression(outils);
   initAncres(lenis);
 
   return lenis;
@@ -57,18 +56,6 @@ function trouverCible(ancre) {
   if (!ancre || ancre === "#") return null;
   const cible = document.getElementById(decodeURIComponent(ancre.slice(1)));
   return cible instanceof HTMLElement ? cible : null;
-}
-
-/** @param {import("./lib.js").Outils} outils */
-function initProgression(outils) {
-  const barre = element(".progression");
-  outils.ScrollTrigger.create({
-    start: 0,
-    end: "max",
-    onUpdate: (declencheur) => {
-      outils.gsap.set(barre, { width: `${declencheur.progress * 100}%` });
-    },
-  });
 }
 
 /**

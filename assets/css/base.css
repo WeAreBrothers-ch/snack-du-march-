@@ -180,18 +180,6 @@ section {
 
 .saut-contenu:focus { transform: none; }
 
-/* Barre de progression, en haut, pilotée par le défilement. */
-.progression {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9000;
-  width: 0;
-  height: 3px;
-  background: var(--bordeaux-clair);
-  pointer-events: none;
-}
-
 /* Pastille ouvert / fermé : un point plein quand la maison est ouverte,
    un cercle vide quand elle est fermée. */
 .etat {

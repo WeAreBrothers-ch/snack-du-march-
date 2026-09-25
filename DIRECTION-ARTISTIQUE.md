@@ -30,7 +30,7 @@ Trois couleurs. Jamais plus.
 | `--fond` | `#121615` | L'ardoise : le fond, partout |
 | `--craie` | `#f1efe6` | Le texte, le ticket d'adresse, les papiers d'avis, les repères de la planche |
 | `--bordeaux` | `#7b1f2d` | Cadre de la photo et enseigne du haut de page, panneaux pleins (étapes, anatomie, pied de page, menu), boutons, plats sans photo, texte fantôme |
-| `--bordeaux-clair` | `#b13a4d` | La même couleur, éclaircie pour rester lisible en texte sur le noir : prix, survols, barre de progression |
+| `--bordeaux-clair` | `#b13a4d` | La même couleur, éclaircie pour rester lisible en texte sur le noir : prix, survols |
 
 Sur les panneaux bordeaux, le texte est craie ; les grands chiffres (années,
 nom en pied de page, nom des plats sans photo) sont **ton sur ton**, en
@@ -71,7 +71,7 @@ il reste centré, les panneaux bordeaux continuent d'aller d'un bord à l'autre.
 1. **Le hero** : le nom de part et d'autre de la photo, dans son cadre bordeaux. Pas de rideau : la page est là tout de suite, la photo se découvre de bas en haut, comme un store qu'on lève à l'ouverture, et le nom monte. Une seconde et demie. En bas, ce qui sert : ouvert ou fermé, l'adresse, la carte.
    **L'enseigne** : au premier défilement, le hero reste épinglé ; la photo se referme vers son centre, son cadre s'élargit en un bandeau bordeaux d'un bord à l'autre de l'écran, et les deux mots glissent dessus pour former « Snack du Marché » sur une seule ligne, comme l'enseigne au-dessus de la vitrine.
 2. **L'histoire** : le titre, puis un album de photos de la maison (en quinconce sur téléphone, posées autour du titre sur grand écran). Ensuite trois cartes bordeaux qui s'empilent (1998, 2018, 2026), l'année en ardoise géante ; chacune reste le temps d'être lue avant que la suivante glisse par-dessus.
-3. **L'anatomie** : la vraie photo du veau-agneau, huit repères posés sur les ingrédients. Sur téléphone, la photo reste en haut de l'écran et la légende défile dessous : chaque ingrédient s'allume à son tour, avec une ligne pour le décrire. Sur grand écran, une planche comme dans un livre de sciences naturelles : la légende de part et d'autre, reliée par des traits qui se dessinent un à un.
+3. **L'anatomie** : la vraie photo du veau-agneau, huit repères posés sur les ingrédients. Sur téléphone, la photo en grand et, dessous, la légende en deux colonnes, numérotée comme les repères : les deux tiennent ensemble dans l'écran, la planche se lit d'un coup d'œil. Les repères se posent un à un sur la photo, la légende monte ligne par ligne : un geste court, pas un écran de plus à faire défiler. Sur grand écran, une planche comme dans un livre de sciences naturelles : la légende de part et d'autre, reliée à chaque repère par un trait qui se dessine.
 4. **La carte** : « Tout est fait maison » en grand, puis le carrousel des plats, qu'on feuillette au doigt.
 5. **Le grand texte du quartier** : la copie craie se dévoile de haut en bas sur sa copie bordeaux.
 6. **Le pied de page** : le nom en géant, le ticket d'adresse posé sur le bas des lettres.
@@ -88,6 +88,8 @@ Le site se pense sur un téléphone, puis s'élargit.
   **hauteur toujours visible** (`--ecran-visible`, barres du navigateur
   déployées) ; les fonds, eux, couvrent la plus grande (`--ecran`).
 - Chaque section a ses images sur téléphone.
+- Une animation ne rallonge pas la page : sur téléphone, rien ne se raconte
+  sur plusieurs écrans de défilement.
 - Le texte courant ne descend pas sous 17 px ; on vérifie sur 375 × 548
   (petit iPhone, barres déployées) et 390 × 664 avant le grand écran.
 
@@ -101,7 +103,7 @@ en grand, sur un aplat bordeaux, jamais par la photo d'un autre plat.
 
 ## Mouvement
 
-- Le défilement est lissé (Lenis) à la souris, natif au doigt. Seul le haut de page est épinglé par le script ; les cartes de l'histoire et la photo de l'anatomie restent en place grâce au CSS (`position: sticky`), sans détourner le défilement.
+- Le défilement est lissé (Lenis) à la souris, natif au doigt. Seul le haut de page est épinglé par le script ; les cartes de l'histoire, et sur grand écran l'accroche de la broche, restent en place grâce au CSS (`position: sticky`), sans détourner le défilement.
 - Les textes apparaissent **ligne par ligne**, en montant depuis une fente.
 - Les images se découvrent **de bas en haut** (`clip-path`).
 - Les panneaux **montent** par-dessus le précédent, qui recule et s'assombrit.
@@ -116,4 +118,5 @@ en grand, sur un aplat bordeaux, jamais par la photo d'un autre plat.
 - Les dégradés, les ombres floues, les icônes génériques.
 - Les tics des sites générés : rideau d'ouverture, mots qui tournent, éléments qui flottent ou rebondissent, étoiles et badges derrière une photo, phrases d'accroche creuses.
 - Le petit texte « pour faire joli » : un texte existe parce qu'il sert, et il est lisible.
+- La barre de progression du défilement.
 - Une deuxième page.

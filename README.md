@@ -4,8 +4,8 @@ Site du Snack du Marché, kebab à la broche, Rue Pré-du-Marché 3, 1004 Lausan
 
 Le site est **une seule page qui se déroule**, pensée d'abord pour le
 téléphone : le nom qui se rassemble sur son enseigne bordeaux, l'album et les
-étapes de l'histoire qui s'empilent, l'anatomie du veau-agneau racontée
-ingrédient par ingrédient, la carte à feuilleter au doigt.
+étapes de l'histoire qui s'empilent, la planche d'anatomie du veau-agneau,
+la carte à feuilleter au doigt.
 
 | Fichier | Ce que c'est |
 |---|---|
@@ -110,9 +110,9 @@ page n'est plus épinglé ; le menu, la pastille horaire, l'empilement des
 cartes de l'histoire (CSS) et la planche d'anatomie fonctionnent toujours.
 
 La planche d'anatomie (`assets/js/planche.js`) ne dépend d'aucune librairie :
-sur téléphone, elle allume l'ingrédient qui passe sous la photo ; sur grand
-écran, elle trace les traits de la légende et les recalcule dès que la mise en
-page change.
+sur grand écran, elle trace les traits qui relient la légende aux repères et
+les recalcule dès que la mise en page change ; sur téléphone, la légende
+numérotée se passe de traits.
 
 ### Les polices
 
