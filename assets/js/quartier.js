@@ -1,7 +1,8 @@
 /**
  * Le quartier et les prix : le grand texte craie se dévoile de haut en bas
  * par-dessus sa copie bordeaux, au rythme du défilement. Les photos et les
- * papiers d'avis se posent quand on arrive dessus.
+ * papiers d'avis se posent quand on arrive dessus, puis défilent chacun à
+ * sa vitesse : les papiers, posés devant, vont plus vite que les photos.
  */
 
 import { element, elements } from "./lib.js";
@@ -39,6 +40,31 @@ export function initQuartier(outils, bureau) {
         duration: 1,
         ease: "power3.out",
         scrollTrigger: { trigger: bloc, start: "top 88%", toggleActions: "play none none reverse" },
+      },
+    );
+  });
+
+  // La profondeur, liée au défilement. Les papiers glissent en pourcentage de
+  // leur hauteur (yPercent), ce qui s'ajoute au décalage de leur apparition
+  // (y) sans le contrarier ; les photos glissent dans leur cadre.
+  elements(".quartier__rangee").forEach((rangee) => {
+    gsap.fromTo(
+      rangee.querySelectorAll(".papier"),
+      { yPercent: 35 },
+      {
+        yPercent: -35,
+        ease: "none",
+        scrollTrigger: { trigger: rangee, start: "top bottom", end: "bottom top", scrub: true },
+      },
+    );
+    gsap.fromTo(
+      rangee.querySelectorAll(".quartier__photo img"),
+      { yPercent: -8, scale: 1.18 },
+      {
+        yPercent: 8,
+        scale: 1.18,
+        ease: "none",
+        scrollTrigger: { trigger: rangee, start: "top bottom", end: "bottom top", scrub: true },
       },
     );
   });

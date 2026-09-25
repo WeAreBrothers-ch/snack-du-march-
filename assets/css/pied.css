@@ -15,6 +15,11 @@
   overflow: hidden;
 }
 
+/* En mode animé, le panneau monte avec un bord en biais (pied.js). */
+html.anime .pied {
+  clip-path: polygon(0 0, 100% var(--biais, 0px), 100% 100%, 0 100%);
+}
+
 .pied__contenu {
   display: flex;
   flex-direction: column;

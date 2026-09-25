@@ -1,7 +1,8 @@
 /**
  * La carte : les trois lignes du titre montent et leurs vignettes s'ouvrent ;
- * puis le texte, les plats et les flèches du carrousel arrivent à leur tour.
- * Le carrousel se feuillette au doigt (Swiper).
+ * tant que le titre est à l'écran, ses lignes glissent en sens contraires au
+ * rythme du défilement. Puis le texte, les plats et les flèches du carrousel
+ * arrivent à leur tour. Le carrousel se feuillette au doigt (Swiper).
  */
 
 import { element, elements } from "./lib.js";
@@ -32,6 +33,25 @@ export function initCarte(outils) {
       { clipPath: "inset(0% 0% 0% 0%)", duration: 0.9, stagger: 0.1, ease: "power3.inOut" },
       "<0.2",
     );
+
+  elements(".carte__ligne").forEach((ligne, index) => {
+    const sens = index % 2 === 0 ? 1 : -1;
+    gsap.fromTo(
+      ligne,
+      { x: () => sens * window.innerWidth * 0.1 },
+      {
+        x: () => -sens * window.innerWidth * 0.1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".carte__titre",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+      },
+    );
+  });
 
   gsap
     .timeline({

@@ -29,13 +29,19 @@
 
   <script>
     document.documentElement.classList.add("js");
-    // Filet de sécurité : si les animations n'ont pas démarré au bout de
-    // quatre secondes (CDN injoignable, fichier ouvert en local), le site
-    // s'affiche en version statique, tout visible.
+    // Filets de sécurité. Si les animations tardent (réseau lent), le haut de
+    // page s'affiche sans son entrée au bout de deux secondes et demie : elles
+    // prennent le relais dès qu'elles sont prêtes. Si elles n'ont toujours pas
+    // démarré au bout de douze secondes (CDN injoignable, fichier ouvert en
+    // local), le site passe en version statique, tout visible.
+    setTimeout(function () {
+      var racine = document.documentElement;
+      if (!racine.classList.contains("anime")) racine.classList.add("patience");
+    }, 2500);
     setTimeout(function () {
       var racine = document.documentElement;
       if (!racine.classList.contains("anime")) racine.classList.add("statique");
-    }, 4000);
+    }, 12000);
   </script>
   <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
@@ -114,9 +120,13 @@
          L'intro et son album de photos, puis trois cartes qui s'empilent au
          défilement (position: sticky, sans script). -->
     <section class="histoire" id="histoire" aria-labelledby="titre-histoire">
+      <!-- L'intro : le titre au-dessus d'une vitrine (la devanture), qui
+           s'ouvre en grand au défilement, comme si l'on entrait. -->
       <div class="histoire__intro">
+        <div class="histoire__fenetre" aria-hidden="true"><img src="assets/photos/devanture-nuit.webp" alt="" loading="lazy" decoding="async" /></div>
         <div class="histoire__texte">
           <h2 class="histoire__titre" id="titre-histoire">L'histoire de la maison</h2>
+          <div class="histoire__vitrine" aria-hidden="true"></div>
           <p class="histoire__sous">D'un comptoir de quartier à la presse romande</p>
         </div>
         <div class="histoire__photos" aria-hidden="true">
@@ -130,6 +140,8 @@
       </div>
 
       <div class="histoire__etapes">
+        <div class="histoire__pause histoire__pause--intro" aria-hidden="true"></div>
+
         <article class="etape" id="etape-1" aria-labelledby="titre-etape-1">
           <div class="etape__contenu">
             <p class="etape__annee">1998</p>
@@ -185,7 +197,7 @@
         <h2 class="broche__accroche" id="titre-broche">Une broche montée à la main, tranche après tranche</h2>
         <p class="broche__texte">Du veau et de l'agneau entiers, jamais de viande reconstituée. Les épices viennent de Gaziantep, la recette vient du père.</p>
         <div class="broche__apercu">
-          <img src="assets/photos/broche-decoupe.webp" alt="La broche de veau et d'agneau, tranchée au couteau" width="1125" height="642" loading="lazy" decoding="async" />
+          <img src="assets/photos/broche-decoupe.webp" alt="La broche de veau et d'agneau, tranchée au couteau" width="1125" height="632" loading="lazy" decoding="async" />
         </div>
       </section>
 

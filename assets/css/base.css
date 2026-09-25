@@ -201,12 +201,12 @@ section {
 /* --- Avant que le script ne prenne la main -------------------------------- */
 
 /* Le haut de page attend, caché, que son entrée soit prête à jouer. Si le
-   script n'arrive pas, le filet de sécurité (index.html) passe le site en
-   statique et tout apparaît. */
+   script tarde, le filet de sécurité (index.html) l'affiche sans son entrée
+   (classe « patience ») ; s'il n'arrive pas, le site passe en statique. */
 @media (prefers-reduced-motion: no-preference) {
-  html.js:not(.statique):not(.anime) .hero__haut,
-  html.js:not(.statique):not(.anime) .hero__titre,
-  html.js:not(.statique):not(.anime) .hero__bas {
+  html.js:not(.statique):not(.anime):not(.patience) .hero__haut,
+  html.js:not(.statique):not(.anime):not(.patience) .hero__titre,
+  html.js:not(.statique):not(.anime):not(.patience) .hero__bas {
     opacity: 0;
   }
 }

@@ -25,12 +25,24 @@
 }
 
 .broche__apercu {
+  position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   border-radius: var(--rayon);
 }
 
 .broche__apercu img { object-position: 22% 40%; }
+
+/* Les bandes de la photo (mode animé) : chacune est la photo entière,
+   masquée à sa bande, qui glisse en place au défilement (broche.js). La
+   photo d'origine reste dessous pour le mode statique. */
+.broche__tranches,
+.broche__tranche {
+  position: absolute;
+  inset: 0;
+}
+
+.broche__apercu--tranchee > img { visibility: hidden; }
 
 /* L'anatomie ------------------------------------------------------------- */
 
@@ -40,6 +52,12 @@
   padding: clamp(3rem, 12vw, 5rem) var(--marge) clamp(3.5rem, 14vw, 6rem);
   background: var(--panneau);
   color: var(--panneau-texte);
+}
+
+/* En mode animé, le panneau monte avec un bord en biais, qui se redresse en
+   arrivant (broche.js règle --biais). */
+html.anime .anatomie {
+  clip-path: polygon(0 0, 100% var(--biais, 0px), 100% 100%, 0 100%);
 }
 
 .anatomie__titre {
@@ -138,6 +156,68 @@
   line-height: 1.05;
   text-transform: uppercase;
 }
+
+/* La lecture, sur téléphone (mode animé) : une ligne craie traverse la photo
+   au défilement ; au bout, sous la ligne, le nom du dernier ingrédient
+   croisé. Avant d'être croisés, les repères attendent et la légende reste en
+   retrait (broche.js). */
+.planche__lecture {
+  position: absolute;
+  left: -0.375rem;
+  right: -0.375rem;
+  top: 0;
+  z-index: 3;
+  height: 2px;
+  margin-top: -1px;
+  background: var(--craie);
+  opacity: 0;
+  transition: opacity 0.3s var(--sortie);
+  pointer-events: none;
+}
+
+.planche__lecture.est-active { opacity: 1; }
+
+.planche__lecture-nom {
+  position: absolute;
+  top: 0.5rem;
+  right: 0;
+  padding: 0.35rem 0.65rem 0.3rem;
+  border-radius: 999px;
+  background: var(--craie);
+  color: var(--fond);
+  font-family: var(--f-titre);
+  font-weight: 800;
+  font-variation-settings: "wdth" 72;
+  font-size: 0.875rem;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.planche__lecture-nom:empty { display: none; }
+
+.planche--lue .planche__point {
+  opacity: 0;
+  scale: 0.5;
+  transition: opacity 0.25s var(--sortie), scale 0.45s var(--sortie), box-shadow 0.3s var(--sortie);
+}
+
+.planche--lue .planche__point.est-vu {
+  opacity: 1;
+  scale: 1;
+}
+
+.planche--lue .planche__point.est-courant {
+  scale: 1.25;
+  box-shadow: 0 0 0 2px var(--bordeaux), 0 0 0 4px var(--craie);
+}
+
+.planche--lue .planche__ingredient {
+  opacity: 0.35;
+  transition: opacity 0.35s var(--sortie);
+}
+
+.planche--lue .planche__ingredient.est-vu { opacity: 1; }
 
 /* Les traits qui relient la légende aux repères (grand écran seulement). */
 .planche__traits {
@@ -273,4 +353,5 @@
   }
 
   .planche__traits { display: block; }
+  .planche__lecture { display: none; }
 }

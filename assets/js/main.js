@@ -7,6 +7,10 @@
  * - statique : une librairie manque, le système demande moins de mouvement
  *   ou le filet de sécurité d'index.html s'est déclenché → tout est visible
  *   d'emblée, le menu, la pastille horaire et la planche fonctionnent.
+ *
+ * Sur un réseau lent, le haut de page s'affiche sans attendre (classe
+ * « patience », posée par index.html) ; les animations prennent le relais
+ * dès qu'elles sont prêtes, sans rejouer l'entrée.
  */
 
 import { chargerLibrairies } from "./lib.js";
@@ -24,6 +28,8 @@ import { restaurerDecoupes } from "./texte.js";
 
 const BUREAU = "(min-width: 992px)";
 const MOBILE = "(max-width: 991px)";
+/** Au-delà, on n'attend plus les polices pour démarrer (réseau lent). */
+const ATTENTE_POLICES = 2500;
 const racine = document.documentElement;
 
 /** Bascule le site en régime statique. */
@@ -40,7 +46,9 @@ function demarrerAnime(outils) {
   const { gsap, ScrollTrigger } = outils;
   const lenis = initDefilement(outils);
   const planche = initPlanche();
-  let entreeJouee = false;
+  // Si le haut de page s'est déjà affiché (réseau lent), son entrée ne se
+  // joue pas : on ne cache pas ce qui est déjà lu.
+  let entreeJouee = racine.classList.contains("patience");
 
   initMenu(outils, lenis);
   initTitreOnglet();
@@ -61,13 +69,14 @@ function demarrerAnime(outils) {
 
     initEnseigne(outils);
     initHistoire(outils, bureau);
-    initBroche(outils, bureau, planche);
+    const nettoyerBroche = initBroche(outils, bureau, planche);
     const nettoyerCarte = initCarte(outils);
     initPrix(outils);
     initQuartier(outils, bureau);
     initPied(outils);
 
     return () => {
+      nettoyerBroche();
       nettoyerCarte();
       restaurerDecoupes();
     };
@@ -80,6 +89,9 @@ function demarrerAnime(outils) {
     ScrollTrigger.refresh();
     rejoindreAncre(lenis);
   });
+
+  // Des polices arrivées en retard changent les hauteurs : on remesure.
+  document.fonts.ready.then(() => ScrollTrigger.refresh());
 }
 
 function demarrer() {
@@ -100,7 +112,12 @@ function demarrer() {
     return;
   }
 
-  document.fonts.ready
+  const polices = Promise.race([
+    document.fonts.ready,
+    new Promise((resolve) => setTimeout(resolve, ATTENTE_POLICES)),
+  ]);
+
+  polices
     .then(() =>
       requestAnimationFrame(() => {
         // Le filet de sécurité a pu passer le site en statique pendant l'attente.
