@@ -3,32 +3,15 @@
  * de la légende à son repère sur la photo, comme dans un livre de sciences
  * naturelles. Les traits sont tracés en SVG par-dessus la planche et
  * recalculés dès que la mise en page change. Ce module ne dépend d'aucune
- * librairie : il sert aussi en régime statique.
+ * librairie d'animation : il sert aussi en régime statique.
  */
+
+import { positionDans } from "./lib.js";
 
 const NS = "http://www.w3.org/2000/svg";
 const BUREAU = "(min-width: 992px)";
 /** Espace entre la fin du mot et le début du trait, en pixels. */
 const ECART = 14;
-
-/**
- * Position d'un élément dans un de ses ancêtres positionnés, sans tenir
- * compte des transformations en cours (les animations ne faussent rien).
- * @param {HTMLElement} el
- * @param {HTMLElement} ancetre
- */
-function positionDans(el, ancetre) {
-  let x = 0;
-  let y = 0;
-  /** @type {Element | null} */
-  let noeud = el;
-  while (noeud instanceof HTMLElement && noeud !== ancetre) {
-    x += noeud.offsetLeft;
-    y += noeud.offsetTop;
-    noeud = noeud.offsetParent;
-  }
-  return { x, y };
-}
 
 /**
  * @typedef {Object} Planche

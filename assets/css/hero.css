@@ -1,14 +1,45 @@
 /* ==========================================================================
-   Hero — le nom de la maison de part et d'autre de la photo
+   Hero — le nom de la maison de part et d'autre de la photo, qui se
+   rassemble sur une ligne, sur le bandeau bordeaux de l'enseigne
    ========================================================================== */
 
+/* En mode animé, le bloc d'accueil fait deux écrans de haut : le hero reste
+   épinglé pendant tout un écran de défilement, le temps que le nom se
+   rassemble. Sans animation, il retrouve la hauteur du hero. */
+html.anime .accueil { height: calc(var(--ecran) * 2); }
+
+html.anime .hero {
+  position: sticky;
+  top: 0;
+}
+
 .hero {
+  position: relative;
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: clamp(1rem, 3svh, 2rem);
   min-height: var(--ecran-visible);
   padding: calc(var(--marge) * 0.6) max(var(--marge), (100% - var(--largeur-max)) / 2) var(--marge);
   overflow: hidden;
+}
+
+/* L'enseigne : un aplat bordeaux que le script découpe (clip-path). Au
+   départ, il épouse exactement le cadre de la photo ; au défilement, il
+   s'élargit en un bandeau d'un bord à l'autre de l'écran. */
+.hero__enseigne {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--bordeaux);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.hero__haut,
+.hero__titre,
+.hero__bas {
+  position: relative;
+  z-index: 1;
 }
 
 /* Haut : l'étiquette et le menu (téléphone), la navigation (grand écran) --- */
@@ -44,10 +75,20 @@
   white-space: nowrap;
 }
 
+/* La photo, dans un cadre bordeaux épais : la couleur de la maison dès le
+   premier écran. */
+.hero__cadre {
+  --cadre: clamp(0.55rem, 0.35rem + 0.7vw, 1rem);
+  display: block;
+  padding: var(--cadre);
+  background: var(--bordeaux);
+  border-radius: calc(var(--rayon) + var(--cadre) * 0.5);
+}
+
 /* La photo prend la hauteur que le nom et les infos laissent libre. */
 .hero__image {
   display: block;
-  height: clamp(12rem, calc(var(--ecran-visible) - 24rem), 32rem);
+  height: clamp(12rem, calc(var(--ecran-visible) - 25.5rem), 32rem);
   aspect-ratio: 3 / 4;
   overflow: hidden;
   border-radius: var(--rayon);
@@ -121,8 +162,9 @@
   .hero__mot--gauche { justify-self: end; align-self: start; margin-top: -0.06em; }
   .hero__mot--droite { justify-self: start; align-self: end; margin-bottom: -0.1em; }
 
+  /* Le cadre compris, la photo laisse aux deux mots la place de tenir. */
   .hero__image {
-    height: min(36vw, calc(var(--ecran-visible) - 13rem), 40rem);
+    height: min(32vw, calc(var(--ecran-visible) - 15rem), 38rem);
     aspect-ratio: 2 / 3;
   }
 

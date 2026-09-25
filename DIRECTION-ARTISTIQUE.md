@@ -10,8 +10,8 @@ l'étoile.
 ## En une phrase
 
 **Le site est une mise en scène de la broche.** Une seule page, qui se joue au
-fil du défilement comme un court film : le nom monte, l'histoire s'empile, le
-sandwich se dissèque sur sa planche, la carte s'ouvre.
+fil du défilement comme un court film : le nom se rassemble sur son enseigne,
+l'histoire s'empile, le sandwich se dissèque sur sa planche, la carte s'ouvre.
 
 ## D'où vient la direction
 
@@ -29,7 +29,7 @@ Trois couleurs. Jamais plus.
 |---|---|---|
 | `--fond` | `#121615` | L'ardoise : le fond, partout |
 | `--craie` | `#f1efe6` | Le texte, le ticket d'adresse, les papiers d'avis, les repères de la planche |
-| `--bordeaux` | `#7b1f2d` | Panneaux pleins (étapes, anatomie, pied de page, menu), boutons, plats sans photo, texte fantôme |
+| `--bordeaux` | `#7b1f2d` | Cadre de la photo et enseigne du haut de page, panneaux pleins (étapes, anatomie, pied de page, menu), boutons, plats sans photo, texte fantôme |
 | `--bordeaux-clair` | `#b13a4d` | La même couleur, éclaircie pour rester lisible en texte sur le noir : prix, survols, barre de progression |
 
 Sur les panneaux bordeaux, le texte est craie ; les grands chiffres (années,
@@ -68,7 +68,8 @@ il reste centré, les panneaux bordeaux continuent d'aller d'un bord à l'autre.
 
 ## Les gestes du site
 
-1. **Le hero** : le nom de part et d'autre de la photo. Pas de rideau : la page est là tout de suite, la photo se découvre de bas en haut, comme un store qu'on lève à l'ouverture, et le nom monte. Une seconde et demie. En bas, ce qui sert : ouvert ou fermé, l'adresse, la carte.
+1. **Le hero** : le nom de part et d'autre de la photo, dans son cadre bordeaux. Pas de rideau : la page est là tout de suite, la photo se découvre de bas en haut, comme un store qu'on lève à l'ouverture, et le nom monte. Une seconde et demie. En bas, ce qui sert : ouvert ou fermé, l'adresse, la carte.
+   **L'enseigne** : au premier défilement, le hero reste épinglé ; la photo se referme vers son centre, son cadre s'élargit en un bandeau bordeaux d'un bord à l'autre de l'écran, et les deux mots glissent dessus pour former « Snack du Marché » sur une seule ligne, comme l'enseigne au-dessus de la vitrine.
 2. **Les étapes de l'histoire** : trois panneaux bordeaux qui montent et s'empilent (1998, 2018, 2026), l'année en ardoise géante.
 3. **L'anatomie** : une planche comme dans un livre de sciences naturelles. La vraie photo du veau-agneau, huit repères posés sur les ingrédients, et la légende reliée par des traits (numérotée sur téléphone). Les traits se dessinent un à un.
 4. **La carte** : trois mots (Tout est / fait / maison) qui s'écartent comme deux battants pendant que le carrousel s'ouvre entre eux.

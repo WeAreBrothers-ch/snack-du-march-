@@ -75,3 +75,22 @@ export function elements(selecteur, racine = document) {
 export function depuisLeHaut(pourcent) {
   return () => `top+=${Math.round((window.innerHeight * pourcent) / 100)} top`;
 }
+
+/**
+ * Position d'un élément dans un de ses ancêtres positionnés, sans tenir
+ * compte des transformations en cours : une animation ne fausse pas la mesure.
+ * @param {HTMLElement} el
+ * @param {HTMLElement} ancetre
+ */
+export function positionDans(el, ancetre) {
+  let x = 0;
+  let y = 0;
+  /** @type {Element | null} */
+  let noeud = el;
+  while (noeud instanceof HTMLElement && noeud !== ancetre) {
+    x += noeud.offsetLeft;
+    y += noeud.offsetTop;
+    noeud = noeud.offsetParent;
+  }
+  return { x, y };
+}

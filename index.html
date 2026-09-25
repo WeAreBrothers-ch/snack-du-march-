@@ -71,37 +71,46 @@
   </nav>
 
   <main>
-    <!-- Hero ---------------------------------------------------------------- -->
-    <section class="hero" id="accueil">
-      <div class="hero__haut">
-        <a class="hero__lien libelle" href="#histoire">L'histoire</a>
-        <a class="hero__lien libelle" href="#broche">La broche</a>
-        <p class="hero__etiquette libelle">Kebab &amp; mezze — Lausanne</p>
-        <a class="hero__lien libelle" href="#carte">La carte</a>
-        <a class="hero__lien libelle" href="#quartier">Le quartier</a>
-        <button class="menu-bouton hero__menu" type="button" data-menu-ouvrir aria-expanded="false" aria-controls="panneau-menu">Menu</button>
-      </div>
+    <!-- Hero ----------------------------------------------------------------
+         En mode animé, le bloc d'accueil fait deux écrans de haut : le hero
+         reste épinglé pendant que le nom se rassemble sur une ligne, sur le
+         bandeau bordeaux de l'enseigne. -->
+    <div class="accueil" id="accueil">
+      <section class="hero">
+        <div class="hero__enseigne" aria-hidden="true"></div>
 
-      <h1 class="hero__titre">
-        <span class="hero__mot hero__mot--gauche">Snack du</span>
-        <span class="hero__image" aria-hidden="true">
-          <img class="hero__photo" src="assets/photos/durum-main.webp" alt="" width="765" height="1020" fetchpriority="high" decoding="async" />
-        </span>
-        <span class="hero__mot hero__mot--droite">Marché</span>
-      </h1>
+        <div class="hero__haut">
+          <a class="hero__lien libelle" href="#histoire">L'histoire</a>
+          <a class="hero__lien libelle" href="#broche">La broche</a>
+          <p class="hero__etiquette libelle">Kebab &amp; mezze — Lausanne</p>
+          <a class="hero__lien libelle" href="#carte">La carte</a>
+          <a class="hero__lien libelle" href="#quartier">Le quartier</a>
+          <button class="menu-bouton hero__menu" type="button" data-menu-ouvrir aria-expanded="false" aria-controls="panneau-menu">Menu</button>
+        </div>
 
-      <div class="hero__bas">
-        <p class="hero__info libelle etat" data-etat data-ouvert="non">
-          <span class="etat__point" aria-hidden="true"></span>
-          <span data-etat-texte>Tous les jours, 11&nbsp;h – 22&nbsp;h</span>
-        </p>
-        <a class="hero__info libelle hero__adresse" href="https://www.google.com/maps/dir/?api=1&amp;destination=Rue+Pr%C3%A9-du-March%C3%A9+3%2C+1004+Lausanne" target="_blank" rel="noopener noreferrer">Rue Pré-du-Marché 3</a>
-        <a class="hero__info libelle hero__descendre" href="#carte">
-          <span>Voir la carte</span>
-          <svg viewBox="0 0 16 16" aria-hidden="true" fill="none"><path d="M8 2v11M3.5 8.5 8 13l4.5-4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </div>
-    </section>
+        <h1 class="hero__titre">
+          <span class="hero__mot hero__mot--gauche">Snack du</span>
+          <span class="hero__cadre" aria-hidden="true">
+            <span class="hero__image">
+              <img class="hero__photo" src="assets/photos/durum-main.webp" alt="" width="765" height="1020" fetchpriority="high" decoding="async" />
+            </span>
+          </span>
+          <span class="hero__mot hero__mot--droite">Marché</span>
+        </h1>
+
+        <div class="hero__bas">
+          <p class="hero__info libelle etat" data-etat data-ouvert="non">
+            <span class="etat__point" aria-hidden="true"></span>
+            <span data-etat-texte>Tous les jours, 11&nbsp;h – 22&nbsp;h</span>
+          </p>
+          <a class="hero__info libelle hero__adresse" href="https://www.google.com/maps/dir/?api=1&amp;destination=Rue+Pr%C3%A9-du-March%C3%A9+3%2C+1004+Lausanne" target="_blank" rel="noopener noreferrer">Rue Pré-du-Marché 3</a>
+          <a class="hero__info libelle hero__descendre" href="#carte">
+            <span>Voir la carte</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true" fill="none"><path d="M8 2v11M3.5 8.5 8 13l4.5-4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </section>
+    </div>
 
     <div class="espace"></div>
 

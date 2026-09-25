@@ -86,8 +86,10 @@ export function initMenu(outils, lenis) {
     return;
   }
 
+  // Le hero reste épinglé tout le bloc d'accueil : le bouton flottant
+  // attend que ce bloc s'en aille.
   outils.ScrollTrigger.create({
-    trigger: ".hero",
+    trigger: ".accueil",
     start: "bottom 80%",
     endTrigger: ".pied",
     end: "top 20%",
