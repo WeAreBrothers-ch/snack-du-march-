@@ -17,6 +17,9 @@ export function decouperEnLignes(SplitText, cible) {
     type: "lines",
     mask: "lines",
     linesClass: "ligne",
+    // Par défaut, SplitText remplace les espaces insécables par des espaces
+    // ordinaires : « box : » pourrait alors se couper avant les deux-points.
+    reduceWhiteSpace: false,
   });
   decoupesActives.push(decoupe);
   return decoupe;

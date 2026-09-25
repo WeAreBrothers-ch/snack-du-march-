@@ -3,8 +3,6 @@
    haut en bas : plus rien n'est épinglé, superposé ni masqué.
    ========================================================================== */
 
-html.statique .rideau { display: none; }
-
 html.statique .histoire,
 html.statique .broche,
 html.statique .carte {
@@ -15,43 +13,70 @@ html.statique .histoire__colle,
 html.statique .broche__colle,
 html.statique .carte__colle {
   position: static;
-  flex-direction: column;
+  display: block;
   height: auto;
+  overflow: visible;
 }
 
 html.statique .histoire__photos,
-html.statique .histoire__pause { display: none; }
+html.statique .histoire__pause,
+html.statique .histoire__entracte { display: none; }
 
-html.statique .etape--collee { box-shadow: none; }
+html.statique .histoire__intro,
+html.statique .carte__mots {
+  height: auto;
+  padding-block: clamp(3rem, 10vw, 8rem);
+}
 
 html.statique .etape--premiere,
+html.statique .etape--collee,
 html.statique .anatomie,
 html.statique .carrousel {
   position: relative;
   inset: auto;
 }
 
-html.statique .etape--collee { position: relative; }
-
-html.statique .histoire__intro,
+/* Les panneaux gardent au moins la hauteur d'un écran, mais s'allongent si
+   leur contenu le demande ; les photos reprennent leur format. */
+html.statique .etape,
 html.statique .broche__avant,
-html.statique .carte__mots,
-html.statique .carrousel {
+html.statique .anatomie {
   height: auto;
-  min-height: 0;
-  padding: var(--marge);
+  min-height: var(--ecran-visible);
 }
 
-html.statique .broche__avant { gap: 2rem; }
-html.statique .anatomie { height: auto; padding: 3rem var(--marge); }
-html.statique .anatomie__grille { gap: 2rem; }
+html.statique .etape__cadre,
+html.statique .broche__apercu {
+  flex: none;
+  max-height: none;
+  aspect-ratio: 4 / 5;
+}
 
+html.statique .etape__cadre--paysage { aspect-ratio: 3 / 2; }
+html.statique .broche__apercu { aspect-ratio: 16 / 9; margin-top: 0; }
+
+@media (min-width: 992px) {
+  html.statique .etape__cadre {
+    width: min(100%, 36rem);
+    height: auto;
+    aspect-ratio: 3 / 4;
+  }
+
+  html.statique .etape__cadre--paysage { width: 100%; aspect-ratio: 3 / 2; }
+  html.statique .broche__apercu { height: 100%; aspect-ratio: auto; }
+}
+
+html.statique .anatomie { padding-block: clamp(4rem, 10vw, 8rem); }
+
+html.statique .carrousel { padding-block: 0 clamp(3rem, 8vw, 6rem); }
 html.statique .carrousel__cadre { overflow-x: auto; }
 html.statique .carrousel__piste { gap: 1rem; }
-html.statique .plat { width: min(18rem, 80vw); }
+html.statique .plat { width: min(20rem, 78vw); }
 html.statique .carrousel__boutons { display: none; }
 
-html.statique .quartier__titre[data-quartier-devant] { position: static; }
-html.statique .quartier__titre--fantome { display: none; }
+html.statique .quartier__titre[data-quartier-devant] {
+  position: static;
+  transform: none;
+}
 
-html.statique .menu-flottant { transform: none; }
+html.statique .quartier__titre--fantome { display: none; }

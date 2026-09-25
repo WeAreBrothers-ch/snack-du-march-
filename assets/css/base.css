@@ -7,7 +7,7 @@
      Trois couleurs, jamais plus. */
   --fond:           #121615;
   --craie:          #f1efe6;
-  --craie-douce:    rgba(241, 239, 230, 0.68);
+  --craie-douce:    rgba(241, 239, 230, 0.72);
   --bordeaux:       #7b1f2d;
   --bordeaux-fonce: #5c1521;
   --bordeaux-clair: #b13a4d; /* la version lisible du bordeaux, pour le texte sur fond noir */
@@ -17,16 +17,35 @@
      et les grands chiffres ton sur ton, en ardoise. */
   --panneau:            var(--bordeaux);
   --panneau-texte:      var(--craie);
-  --panneau-texte-doux: rgba(241, 239, 230, 0.76);
+  --panneau-texte-doux: rgba(241, 239, 230, 0.82);
   --panneau-tonsurton:  var(--fond);
+  --panneau-trait:      rgba(241, 239, 230, 0.3);
 
-  --f-titre: "Archivo", "Helvetica Neue", Helvetica, sans-serif;
-  --f-texte: "DM Sans", "Helvetica Neue", Helvetica, sans-serif;
+  --f-titre: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --f-texte: "DM Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-  --marge: clamp(1rem, 3vw, 1.5rem);
-  --colonne: clamp(1rem, 3vw, 1.5rem);
-  --hauteur-ecran: 100vh;
-  --hauteur-ecran: 100dvh;
+  /* Échelle typographique fluide. Tout grandit avec l'écran, le texte courant
+     aussi : c'est ce qui garde la proportion entre les titres, les photos et
+     les paragraphes, du téléphone au grand écran. */
+  --t-petit: clamp(0.875rem, 0.83rem + 0.2vw, 1rem);        /* 14 → 16 px */
+  --t-corps: clamp(1.0625rem, 0.98rem + 0.25vw, 1.25rem);   /* 17 → 20 px */
+  --t-lead:  clamp(1.1875rem, 0.95rem + 1vw, 2rem);         /* 19 → 32 px */
+  --t-label: clamp(1rem, 0.9rem + 0.3vw, 1.25rem);          /* 16 → 20 px */
+  --t-h3:    clamp(2.25rem, 1.5rem + 3.2vw, 5rem);          /* 36 → 80 px */
+  --t-h2:    clamp(2.75rem, 1.4rem + 6.4vw, 9.5rem);        /* 47 → 152 px */
+
+  --marge: clamp(1.25rem, 0.5rem + 3vw, 4rem);
+  --gouttiere: clamp(1rem, 0.4rem + 2.4vw, 3.5rem);
+  --largeur-max: 112rem;
+  --rayon: clamp(0.5rem, 0.35rem + 0.5vw, 0.875rem);
+
+  /* La hauteur de la fenêtre. « Visible » : la plus petite, barres du
+     navigateur déployées — c'est elle qui garantit que le contenu tient. */
+  --ecran: 100vh;
+  --ecran-visible: 100vh;
+  --ecran-visible: 100svh;
+  /* Place réservée en haut des panneaux pour le bouton « Menu » flottant. */
+  --sous-menu: calc(var(--marge) + 3rem);
 
   --sortie: cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -40,16 +59,12 @@ body {
   background-color: var(--fond);
   color: var(--craie);
   font-family: var(--f-texte);
-  font-size: 0.9375rem;
+  font-size: var(--t-corps);
   font-weight: 400;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-}
-
-@media (min-width: 1440px) {
-  body { font-size: 1rem; }
 }
 
 /* --- Lenis : le défilement lissé prend la main sur le natif --------------- */
@@ -67,22 +82,34 @@ html.lenis body { height: auto; }
 
 /* --- Titres : Archivo condensée, très grasse, en capitales ---------------- */
 
-.titre,
 h1, h2, h3 {
   font-family: var(--f-titre);
   font-weight: 900;
   font-variation-settings: "wdth" 75;
-  line-height: 0.95;
+  line-height: 0.92;
   letter-spacing: -0.01em;
   text-transform: uppercase;
   text-wrap: balance;
 }
 
+h2 { font-size: var(--t-h2); }
+
 h3 {
-  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-  text-transform: none;
-  line-height: 1.1;
+  font-size: var(--t-h3);
   font-variation-settings: "wdth" 80;
+  line-height: 1;
+  text-transform: none;
+}
+
+/* Les petits libellés : même famille que les titres, en capitales. */
+.libelle {
+  font-family: var(--f-titre);
+  font-weight: 800;
+  font-variation-settings: "wdth" 80;
+  font-size: var(--t-label);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
 }
 
 p { text-wrap: pretty; }
@@ -157,33 +184,42 @@ section {
   pointer-events: none;
 }
 
-/* Pastille ouvert / fermé. */
+/* Pastille ouvert / fermé : un point plein quand la maison est ouverte,
+   un cercle vide quand elle est fermée. */
 .etat {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8125rem;
-  color: inherit;
-  opacity: 0.8;
+  gap: 0.6em;
 }
 
 .etat__point {
-  width: 0.5rem;
-  height: 0.5rem;
+  flex: none;
+  width: 0.6em;
+  height: 0.6em;
   border-radius: 50%;
-  background: currentColor;
+  box-shadow: inset 0 0 0 2px currentColor;
 }
 
-.etat[data-ouvert="oui"] .etat__point {
-  background: var(--craie);
-  box-shadow: 0 0 0 3px rgba(241, 239, 230, 0.25);
+.etat[data-ouvert="oui"] .etat__point { background: currentColor; }
+
+/* --- Avant que le script ne prenne la main -------------------------------- */
+
+/* Le haut de page attend, caché, que son entrée soit prête à jouer. Si le
+   script n'arrive pas, le filet de sécurité (index.html) passe le site en
+   statique et tout apparaît. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js:not(.statique):not(.anime) .hero__haut,
+  html.js:not(.statique):not(.anime) .hero__titre,
+  html.js:not(.statique):not(.anime) .hero__bas {
+    opacity: 0;
+  }
 }
 
-.etat[data-ouvert="non"] .etat__point { background: var(--panneau-tonsurton); }
-
-/* Le rideau et les états initiaux n'existent que si le script tourne. */
-html:not(.js) .rideau { display: none; }
-
-@media (prefers-reduced-motion: reduce) {
-  .rideau { display: none; }
+/* Les lignes découpées par le script montent depuis une fente (le masque).
+   Les accents des capitales (É, À, È) dépassent de l'interligne serré des
+   titres : la fente est donc plus haute que la ligne. clip-path plutôt
+   qu'overflow, parce qu'il déborde sans rien déplacer dans la page. */
+.ligne-mask {
+  overflow: visible !important;
+  clip-path: inset(-0.45em -0.25em -0.15em -0.25em);
 }

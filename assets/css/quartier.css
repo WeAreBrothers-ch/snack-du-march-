@@ -27,36 +27,37 @@
   width: 55%;
   aspect-ratio: 3 / 2;
   overflow: hidden;
-  border-radius: 0.75rem;
+  border-radius: var(--rayon);
 }
 
+/* Les avis, comme des papiers posés de travers. */
 .papier {
-  width: 40%;
-  max-width: 20rem;
-  padding: 1rem;
+  width: 42%;
+  max-width: 24rem;
+  padding: clamp(0.9rem, 0.6rem + 1.2vw, 1.75rem);
   background: var(--craie);
   color: var(--fond);
   border-radius: 2px;
-  transform: rotate(-3deg);
+  rotate: -3deg;
 }
 
 .papier--bas {
-  max-width: 14rem;
-  transform: rotate(4deg);
+  max-width: 19rem;
+  rotate: 4deg;
 }
 
 .papier blockquote {
   font-family: var(--f-titre);
   font-weight: 700;
   font-variation-settings: "wdth" 85;
-  font-size: clamp(0.9375rem, 1.6vw, 1.375rem);
-  line-height: 1.2;
+  font-size: clamp(1.0625rem, 0.8rem + 1.1vw, 1.875rem);
+  line-height: 1.15;
 }
 
 .papier figcaption {
-  margin-top: 0.6rem;
-  font-size: 0.75rem;
-  color: rgba(18, 22, 21, 0.6);
+  margin-top: 0.75em;
+  font-size: var(--t-petit);
+  color: rgba(18, 22, 21, 0.66);
 }
 
 .quartier__typo {
@@ -96,7 +97,6 @@
 
 @media (min-width: 992px) {
   .quartier { gap: 0; }
-  .quartier__rangee { padding: 0 5rem; }
+  .quartier__rangee { max-width: var(--largeur-max); padding: 0 clamp(2rem, 5vw, 6rem); }
   .quartier__photo { width: 40%; }
-  .papier { padding: 1.5rem; }
 }

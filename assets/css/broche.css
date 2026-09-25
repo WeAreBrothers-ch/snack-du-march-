@@ -1,200 +1,257 @@
 /* ==========================================================================
-   La broche — accroche, puis l'anatomie du sandwich qui s'ouvre au scroll
+   La broche — l'accroche, puis la planche anatomique du veau-agneau
    ========================================================================== */
 
 .broche {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
   width: 100%;
-  height: 400vh;
+  height: calc(var(--ecran) * 3);
 }
 
 .broche__colle {
   position: sticky;
   top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
-  height: var(--hauteur-ecran);
-}
-
-.broche__avant {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  gap: var(--colonne);
-  width: 100%;
-  height: var(--hauteur-ecran);
-}
-
-/* Un peu d'air en haut : le bouton « Menu » flottant ne doit jamais mordre
-   sur la première ligne. */
-.broche__accroche {
-  width: 100%;
-  max-width: 76rem;
-  padding-top: 3.5rem;
-  font-size: clamp(2rem, 6vw, 5.5rem);
-}
-
-/* L'aperçu a une hauteur fixe (une part de l'écran) : sa largeur en découle,
-   sans jamais dépasser la page. */
-.broche__apercu {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  max-width: 100%;
-  height: min(42vh, 28rem);
-  aspect-ratio: 16 / 10;
+  height: var(--ecran);
   overflow: hidden;
-  border-radius: 1rem;
-  justify-self: end;
-  align-self: end;
 }
 
-.broche__apercu img { object-position: center 45%; }
+/* L'accroche ------------------------------------------------------------- */
 
-/* L'anatomie ------------------------------------------------------------- */
+/* Sur téléphone : l'accroche et son texte en haut, la photo en bas. */
+.broche__avant {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.6svh, 1.75rem);
+  height: 100%;
+  padding-top: var(--sous-menu);
+  padding-inline: max(var(--marge), (100% - var(--largeur-max)) / 2);
+}
+
+.broche__accroche {
+  max-width: 16ch;
+  font-size: clamp(2.5rem, 1rem + 5vw, 7.5rem);
+}
+
+.broche__texte {
+  max-width: 30ch;
+  font-size: var(--t-lead);
+  line-height: 1.35;
+  color: var(--craie-douce);
+}
+
+.broche__apercu {
+  flex: 1;
+  min-height: 0;
+  max-height: 40svh;
+  margin-top: auto;
+  overflow: hidden;
+  border-radius: var(--rayon);
+}
+
+.broche__apercu img { object-position: 22% 40%; }
+
+/* L'anatomie : un panneau bordeaux qui monte par-dessus l'accroche -------- */
 
 .anatomie {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: var(--hauteur-ecran);
+  gap: clamp(1rem, 2.5svh, 2rem);
+  height: 100%;
+  padding-top: var(--sous-menu);
   background: var(--panneau);
   color: var(--panneau-texte);
 }
 
-/* Sur téléphone, tout est resserré au centre de l'écran ; sur grand écran,
-   les titres occupent le haut et le bas. */
-.anatomie__grille {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(2rem, 6vh, 3.5rem);
-  width: 100%;
-  height: 100%;
-}
-
-.anatomie__rangee {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: var(--colonne);
-  width: 100%;
-}
-
-/* Sur téléphone, les deux titres sont centrés et tiennent sur une ligne. */
 .anatomie__titre {
-  justify-self: center;
-  font-size: clamp(2.25rem, 10.5vw, 7rem);
+  max-width: 14ch;
+  font-size: clamp(2.5rem, 12vw, 4rem);
   text-align: center;
-  white-space: nowrap;
 }
 
-.anatomie__coin {
-  display: none;
-  width: clamp(5rem, 8vw, 9rem);
-  aspect-ratio: 1;
-  overflow: hidden;
-  border-radius: 50%;
+.anatomie__note {
+  max-width: 34rem;
+  font-size: var(--t-corps);
+  color: var(--panneau-texte-doux);
+  text-align: center;
 }
 
-.anatomie__coin--droite { justify-self: end; }
+/* La planche : la photo, ses repères, la légende ------------------------- */
 
-/* Sur téléphone : le sandwich au-dessus, les deux listes côte à côte dessous.
-   Sur grand écran : les listes encadrent le sandwich. */
-.anatomie__milieu {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas:
-    "centre centre"
-    "gauche droite";
-  align-items: center;
-  gap: 2rem 1.5rem;
-  width: 100%;
-}
-
-/* Sur téléphone, les deux listes se rejoignent au centre, séparées par un filet. */
-.anatomie__liste {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-self: end;
-  grid-area: gauche;
-  padding-right: 1.5rem;
-  border-right: 1px solid rgba(241, 239, 230, 0.25);
-  font-size: clamp(1rem, 1.6vw, 1.5rem);
-  font-weight: 500;
-  line-height: 1.6;
-  text-align: right;
-  white-space: nowrap;
-}
-
-.anatomie__liste--droite {
-  align-items: flex-start;
-  justify-self: start;
-  grid-area: droite;
-  padding-right: 0;
-  border-right: 0;
-  text-align: left;
-}
-
-.anatomie__centre {
+.planche {
+  --cote: min(100%, 40svh);
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  justify-self: center;
-  grid-area: centre;
-  width: clamp(11rem, 52vw, 30rem);
-  aspect-ratio: 1;
+  display: grid;
+  justify-items: center;
+  gap: clamp(1rem, 2.5svh, 1.5rem);
+  width: 100%;
+  max-width: 34rem;
 }
 
-/* L'étoile déborde largement du sandwich : ses pointes doivent se voir.
-   C'est un simple bloc (pas le SVG lui-même) que le script fait grandir,
-   pour qu'il grandisse bien depuis son centre. */
-.anatomie__etoile svg {
-  display: block;
+.planche__photo {
+  position: relative;
+  width: var(--cote);
+  aspect-ratio: 1;
+  border-radius: var(--rayon);
+}
+
+.planche__photo img { border-radius: inherit; }
+
+/* Un repère : une pastille craie, numérotée sur téléphone. */
+.planche__point {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: -0.75rem 0 0 -0.75rem;
+  border-radius: 50%;
+  background: var(--craie);
+  color: var(--fond);
+  font-family: var(--f-titre);
+  font-weight: 800;
+  font-size: 0.8125rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 0 2px var(--bordeaux);
+  z-index: 2;
+}
+
+/* La légende : deux colonnes de quatre, numérotées comme les repères. */
+.planche__liste {
+  display: grid;
+  grid-template-rows: repeat(4, auto);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 0.2rem var(--gouttiere);
+  width: 100%;
+  counter-reset: repere;
+}
+
+.planche__liste li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: var(--t-corps);
+  font-weight: 500;
+  line-height: 1.45;
+  counter-increment: repere;
+}
+
+.planche__liste li::before {
+  content: counter(repere);
+  flex: none;
+  width: 1.1em;
+  font-family: var(--f-titre);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--panneau-texte-doux);
+}
+
+/* Les traits qui relient la légende aux repères (grand écran seulement). */
+.planche__traits {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   width: 100%;
   height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  display: none;
 }
 
-.anatomie__etoile {
-  position: absolute;
-  inset: -20%;
-  width: 140%;
-  height: 140%;
-  color: var(--panneau-tonsurton);
+/* Chaque trait mesure « 1 » (pathLength) : le script le dessine en faisant
+   passer stroke-dashoffset de 1 à 0. */
+.planche__traits path {
+  fill: none;
+  stroke: var(--craie);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
 }
 
-.anatomie__sandwich {
-  position: relative;
-  z-index: 1;
-  width: 72%;
-  height: 72%;
-  overflow: hidden;
-  border-radius: 50%;
+/* Écrans de téléphone courts : la photo cède un peu de place. */
+@media (max-width: 991px) and (max-height: 700px) {
+  .planche { --cote: min(100%, 34svh); }
+  .anatomie__note { font-size: var(--t-petit); }
 }
 
-.anatomie__sandwich img { object-position: center 48%; }
-
-@media (min-width: 768px) {
-  .anatomie__coin { display: block; }
-  .anatomie__grille { justify-content: space-between; gap: 0; }
-
-  .anatomie__milieu {
-    grid-template-columns: 1fr auto 1fr;
-    grid-template-areas: "gauche centre droite";
-    gap: 4rem;
+/* Grand écran : la légende de part et d'autre de la photo, reliée par des
+   traits, comme une planche d'anatomie. */
+@media (min-width: 992px) {
+  /* L'accroche en haut à gauche, le texte en bas, la broche sur toute la
+     hauteur à droite. */
+  .broche__avant {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "titre photo"
+      "texte photo";
+    column-gap: calc(var(--gouttiere) * 2);
   }
 
-  .anatomie__titre { white-space: normal; }
-  .anatomie__liste { padding-right: 0; border-right: 0; line-height: 1.5; }
-  .anatomie__centre { width: clamp(16rem, 32vw, 30rem); }
+  .broche__accroche { grid-area: titre; }
+  .broche__texte { grid-area: texte; align-self: end; }
+
+  .broche__apercu {
+    grid-area: photo;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+  }
+
+  .anatomie__titre {
+    max-width: none;
+    font-size: min(6vw, 7.5rem);
+  }
+
+  .planche {
+    --cote: min(58svh, 36vw, 44rem);
+    grid-template-columns: minmax(0, 1fr) var(--cote) minmax(0, 1fr);
+    column-gap: clamp(3rem, 6vw, 8rem);
+    max-width: var(--largeur-max);
+  }
+
+  .planche__photo { grid-column: 2; grid-row: 1; }
+
+  /* La légende se superpose à la grille de la planche : mêmes colonnes,
+     quatre rangées à la hauteur de la photo. */
+  .planche__liste {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    grid-template-columns: minmax(0, 1fr) var(--cote) minmax(0, 1fr);
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    grid-auto-flow: row;
+    column-gap: inherit;
+    height: var(--cote);
+  }
+
+  .planche__liste li {
+    grid-row: var(--rang);
+    align-self: center;
+    font-size: clamp(1.25rem, 0.8rem + 1vw, 2rem);
+    line-height: 1.1;
+  }
+
+  .planche__liste li::before { display: none; }
+
+  .planche__liste li[data-cote="gauche"] { grid-column: 1; justify-self: end; text-align: right; }
+  .planche__liste li[data-cote="droite"] { grid-column: 3; justify-self: start; }
+
+  .planche__point {
+    width: 0.875rem;
+    height: 0.875rem;
+    margin: -0.4375rem 0 0 -0.4375rem;
+    font-size: 0;
+    box-shadow: 0 0 0 3px var(--bordeaux);
+  }
+
+  .planche__traits { display: block; }
 }

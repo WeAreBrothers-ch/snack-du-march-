@@ -1,15 +1,17 @@
 # Direction artistique — Snack du Marché
 
-**Version 3.0 — 18.09.2026.** Remplace la version 2 (la Une de journal), à la
-demande du client.
+**Version 3.1 — 25.09.2026.** Corrige la version 3.0 après le retour du
+client : une ouverture sans effet de démonstration, des proportions tenues
+du téléphone au grand écran, une vraie planche d'anatomie à la place de
+l'étoile.
 
 ---
 
 ## En une phrase
 
 **Le site est une mise en scène de la broche.** Une seule page, qui se joue au
-fil du défilement comme un court film : le nom entre, la broche tourne,
-l'histoire s'empile, le sandwich se disséque, la carte s'ouvre.
+fil du défilement comme un court film : le nom monte, l'histoire s'empile, le
+sandwich se dissèque sur sa planche, la carte s'ouvre.
 
 ## D'où vient la direction
 
@@ -26,47 +28,71 @@ Trois couleurs. Jamais plus.
 | Jeton | Valeur | Rôle |
 |---|---|---|
 | `--fond` | `#121615` | L'ardoise : le fond, partout |
-| `--craie` | `#f1efe6` | Le texte, le ticket d'adresse, les papiers d'avis |
-| `--bordeaux` | `#7b1f2d` | Disque du hero, panneaux pleins (étapes, anatomie, pied de page), boutons, vignettes, texte fantôme |
+| `--craie` | `#f1efe6` | Le texte, le ticket d'adresse, les papiers d'avis, les repères de la planche |
+| `--bordeaux` | `#7b1f2d` | Panneaux pleins (étapes, anatomie, pied de page, menu), boutons, plats sans photo, texte fantôme |
 | `--bordeaux-clair` | `#b13a4d` | La même couleur, éclaircie pour rester lisible en texte sur le noir : prix, survols, barre de progression |
 
 Sur les panneaux bordeaux, le texte est craie ; les grands chiffres (années,
-nom en pied de page) et l'étoile sont **ton sur ton**, en ardoise. C'est ce qui
-fait le côté classe : le contraste vient de la matière, pas de la couleur.
+nom en pied de page, nom des plats sans photo) sont **ton sur ton**, en
+ardoise. C'est ce qui fait le côté classe : le contraste vient de la matière,
+pas de la couleur.
 
 ## Typographie
 
 | Rôle | Police | Réglage |
 |---|---|---|
-| Titres, chiffres, libellés | **Archivo** | `font-weight: 900`, `font-stretch` 70 à 85 %, capitales, interlettrage serré |
-| Corps de texte | **DM Sans** | 400, interligne 1.5 |
+| Titres, chiffres, libellés | **Archivo** | graisse 800 à 900, largeur 68 à 85, capitales, interlettrage serré |
+| Corps de texte | **DM Sans** | 400 et 500, interligne 1.35 à 1.5 |
 
-Aucun italique. Aucun titre bicolore.
+Aucun italique. Aucun titre bicolore. Espaces insécables de la typographie
+française (avant « : ; ? ! », dans les guillemets, entre l'heure et « h »).
+
+### L'échelle
+
+Toutes les tailles viennent de six jetons (`base.css`). Ils grandissent avec
+l'écran **tous ensemble**, le texte courant compris : c'est ce qui tient les
+proportions entre titres, photos et paragraphes. Le texte courant ne descend
+jamais sous 17 px.
+
+| Jeton | Téléphone → grand écran | Usage |
+|---|---|---|
+| `--t-petit` | 14 → 16 px | Mentions, légendes des avis |
+| `--t-corps` | 17 → 20 px | Texte courant, légende de la planche |
+| `--t-label` | 16 → 20 px | Libellés en capitales : navigation, adresse, ouvert/fermé |
+| `--t-lead` | 19 → 32 px | Textes des étapes, de la broche, du carrousel |
+| `--t-h3` | 36 → 80 px | Titres des étapes |
+| `--t-h2` | 47 → 152 px | Titres de section |
+
+Au-delà de 1 792 px de large (`--largeur-max`), le contenu cesse de s'étaler :
+il reste centré, les panneaux bordeaux continuent d'aller d'un bord à l'autre.
 
 ## Les gestes du site
 
-1. **Le rideau d'ouverture** : trois mots (Broche, Épices, Maison), puis le disque caramel se referme sur le hero.
-2. **Le hero** : le nom de part et d'autre de la broche, dans un disque. Les mots glissent depuis les côtés, la photo arrive en tournant.
-3. **Les étapes de l'histoire** : trois panneaux noirs qui s'empilent (1998, 2018, 2026), l'année en caramel géant.
-4. **L'anatomie** : le panneau noir s'ouvre en biseau, l'étoile rouge et le sandwich surgissent, les ingrédients s'égrènent.
-5. **La carte** : trois mots (Tout est / fait / maison) s'éjectent en tournant pendant que le carrousel s'ouvre au centre.
-6. **Le grand texte du quartier** : la copie noire se dévoile de haut en bas sur sa copie caramel.
-7. **Le pied de page** : le nom en géant, le ticket d'adresse posé dessus.
+1. **Le hero** : le nom de part et d'autre de la photo. Pas de rideau : la page est là tout de suite, la photo se découvre de bas en haut, comme un store qu'on lève à l'ouverture, et le nom monte. Une seconde et demie. En bas, ce qui sert : ouvert ou fermé, l'adresse, la carte.
+2. **Les étapes de l'histoire** : trois panneaux bordeaux qui montent et s'empilent (1998, 2018, 2026), l'année en ardoise géante.
+3. **L'anatomie** : une planche comme dans un livre de sciences naturelles. La vraie photo du veau-agneau, huit repères posés sur les ingrédients, et la légende reliée par des traits (numérotée sur téléphone). Les traits se dessinent un à un.
+4. **La carte** : trois mots (Tout est / fait / maison) qui s'écartent comme deux battants pendant que le carrousel s'ouvre entre eux.
+5. **Le grand texte du quartier** : la copie craie se dévoile de haut en bas sur sa copie bordeaux.
+6. **Le pied de page** : le nom en géant, le ticket d'adresse posé sur le bas des lettres.
 
-Un seul élément décoratif par section. Pas de numérotation.
+Un seul élément décoratif par section.
 
 ## Photographies
 
-Recadrées en rond (hero, anatomie, coins) ou en rectangle à coins doux
-(étapes, carrousel, quartier). En couleur, jamais de noir et blanc. Les
-étapes ont un cadre crème épais, comme un tirage.
+Toujours en rectangle à coins doux (`--rayon`), jamais en rond. En couleur,
+jamais de noir et blanc. Les étapes ont un cadre ardoise, comme un tirage.
+
+Une photo montre ce qu'elle dit : un plat sans photo est présenté par son nom,
+en grand, sur un aplat bordeaux, jamais par la photo d'un autre plat.
 
 ## Mouvement
 
-- Le défilement est lissé (Lenis). Les sections clés sont épinglées le temps de leur animation.
+- Le défilement est lissé (Lenis). Les sections clés sont épinglées le temps de leur animation, avec une pause pour lire.
 - Les textes apparaissent **ligne par ligne**, en montant depuis une fente.
-- Les images s'ouvrent depuis leur centre (`clip-path`).
-- Tout est **réduit sur téléphone** et **désactivé** si le visiteur demande moins d'animations.
+- Les images se découvrent **de bas en haut** (`clip-path`).
+- Les panneaux **montent** par-dessus le précédent, qui recule et s'assombrit.
+- Rien ne tourne, ne rebondit, ne flotte ni ne surgit de zéro.
+- Tout est **désactivé** si le visiteur demande moins d'animations.
 
 ## Interdits
 
@@ -74,4 +100,6 @@ Recadrées en rond (hero, anatomie, coins) ou en rectangle à coins doux
 - Le motif ottoman, les arabesques, la calligraphie décorative.
 - Le gastro froid : blanc pur, serif fine, « expérience culinaire ».
 - Les dégradés, les ombres floues, les icônes génériques.
+- Les tics des sites générés : rideau d'ouverture, mots qui tournent, éléments qui flottent ou rebondissent, étoiles et badges derrière une photo, phrases d'accroche creuses.
+- Le petit texte « pour faire joli » : un texte existe parce qu'il sert, et il est lisible.
 - Une deuxième page.

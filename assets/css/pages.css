@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  min-height: var(--hauteur-ecran);
+  min-height: var(--ecran-visible);
   padding: var(--marge);
   text-align: center;
 }
@@ -20,13 +20,15 @@
   font-variation-settings: "wdth" 70;
   font-size: clamp(6rem, 25vw, 16rem);
   line-height: 0.85;
-  color: var(--bordeaux);
+  color: var(--bordeaux-clair);
 }
 
-.erreur__titre { font-size: clamp(2rem, 6vw, 4.5rem); }
+.erreur__titre { font-size: clamp(2.25rem, 1.4rem + 4vw, 5rem); }
 
 .erreur__texte {
-  max-width: 26rem;
+  max-width: 30ch;
+  font-size: var(--t-lead);
+  line-height: 1.35;
   color: var(--craie-douce);
 }
 
@@ -40,7 +42,7 @@
 .bouton {
   display: inline-flex;
   align-items: center;
-  padding: 0.9rem 1.5rem;
+  padding: 0.85em 1.5em;
   border-radius: 10rem;
   background: var(--craie);
   color: var(--fond);

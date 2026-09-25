@@ -3,12 +3,13 @@
 Site du Snack du Marché, kebab à la broche, Rue Pré-du-Marché 3, 1004 Lausanne.
 
 Le site est **une seule page qui se déroule** : chaque section se met en scène
-au fil du défilement (le nom qui entre, la broche qui tourne, les étapes de
-l'histoire qui s'empilent, la carte qui s'ouvre au centre).
+au fil du défilement (le nom qui monte, les étapes de l'histoire qui
+s'empilent, la planche d'anatomie qui se dessine, la carte qui s'ouvre au
+centre).
 
 | Fichier | Ce que c'est |
 |---|---|
-| `index.html` | **La page.** Hero, histoire, la broche, la carte, les prix, le quartier, pied de page. |
+| `index.html` | **La page.** Hero, histoire, la broche et son anatomie, la carte, les prix, le quartier, pied de page. |
 | `la-carte.html` | Redirige vers la section « carte » de la page. Gardée pour les anciens liens. |
 | `404.html` | La page qui s'affiche si une adresse n'existe pas. |
 
@@ -22,9 +23,9 @@ Il n'y a **rien à installer**, aucune étape de construction.
 
 > **Pourquoi pas un simple double-clic ?**
 > Les scripts du site sont des *modules* : les navigateurs refusent de les
-> charger depuis le disque (`file://`). Ouvert en double-clic, le site s'affiche
-> en version « statique » (tout est visible, sans animation). En ligne ou avec
-> Live Server, l'expérience complète se joue.
+> charger depuis le disque (`file://`). Ouvert en double-clic, le site passe
+> au bout de quatre secondes en version « statique » (tout est visible, sans
+> animation). En ligne ou avec Live Server, l'expérience complète se joue.
 
 ## Mettre en ligne
 
@@ -39,7 +40,7 @@ Netlify, Infomaniak, un simple FTP.
 index.html          toute la page : textes, prix, plats
 assets/css/         les styles, un fichier par section
 assets/js/          les comportements, un fichier par section
-assets/photos/      les onze photographies de la maison
+assets/photos/      les photographies de la maison
 favicon.svg         l'icône de l'onglet
 robots.txt          ce que les moteurs de recherche ont le droit de lire
 sitemap.xml         la liste des pages, pour Google
@@ -53,15 +54,25 @@ carrousel (les cartes `article.plat`), et on le change aux deux endroits.
 
 ### Les horaires
 
-Ils sont écrits dans `index.html` (menu, pied de page) et dans
+Ils sont écrits dans `index.html` (haut de page, menu, pied de page) et dans
 `assets/js/horaires.js` (les deux constantes tout en haut) qui pilotent la
-pastille « ouvert / fermé » du menu. Si les horaires changent, modifier les deux.
+pastille « ouvert / fermé » du haut de page et du menu, toujours à l'heure de
+Lausanne. Si les horaires changent, modifier les deux.
 
 ### Les photos
 
-Onze photos, toutes dans `assets/photos/`. Elles sont recadrées en rond ou en
-rectangle arrondi par le CSS ; pour en remplacer une, il suffit de garder le
-même nom de fichier.
+Toutes dans `assets/photos/`. Elles sont recadrées en rectangle à coins doux
+par le CSS ; pour en remplacer une, il suffit de garder le même nom de fichier.
+
+`sandwich-anatomie.webp` est un recadrage carré de `sandwich-veau-agneau.webp`
+pour la planche d'anatomie : les repères (`--x`, `--y` dans `index.html`) sont
+placés en pourcentage de **cette** image. Si on la remplace, il faut replacer
+les repères.
+
+Dans le carrousel, les plats dont la maison n'a pas encore de photo (döner box,
+köfte, falafel, baklava) sont montrés par leur nom, en grand, sur un aplat
+bordeaux. Le jour où une vraie photo existe, on remplace le bloc
+`plat__photo--texte` par un `plat__photo` avec l'image, comme pour les autres.
 
 ---
 
@@ -70,9 +81,15 @@ même nom de fichier.
 ### Les styles
 
 Une seule feuille est liée depuis le HTML : `assets/css/styles.css`. Elle liste
-les fichiers à charger, dans l'ordre : `reset`, `base` (couleurs, polices),
-`nav`, `rideau`, `hero`, `histoire`, `broche`, `carte`, `prix`, `quartier`,
-`pied`, `statique` (le mode sans animation) et `pages` (404, redirection).
+les fichiers à charger, dans l'ordre : `reset`, `base` (couleurs, polices,
+échelle typographique), `nav`, `hero`, `histoire`, `broche`, `carte`, `prix`,
+`quartier`, `pied`, `statique` (le mode sans animation) et `pages` (404,
+redirection).
+
+Toutes les tailles de texte viennent de quelques jetons définis dans
+`base.css` (`--t-corps`, `--t-lead`, `--t-h2`…) : ils grandissent avec
+l'écran, le texte courant compris, pour garder les proportions du téléphone
+au grand écran.
 
 ### Les animations
 
@@ -86,9 +103,13 @@ section. Les animations s'appuient sur des librairies chargées depuis un CDN :
 | Lenis | Le défilement lissé |
 | Swiper | Le carrousel des plats |
 
-Si l'une d'elles ne charge pas, ou si le visiteur a demandé « moins
-d'animations » dans son système, **le site bascule en mode statique** : tout
-est visible, rien n'est épinglé, le menu et la pastille horaire fonctionnent.
+Si l'une d'elles ne charge pas, si le visiteur a demandé « moins
+d'animations » dans son système, ou si rien n'a démarré au bout de quatre
+secondes, **le site bascule en mode statique** : tout est visible, rien n'est
+épinglé, le menu, la pastille horaire et la planche d'anatomie fonctionnent.
+
+Les traits de la planche d'anatomie (`assets/js/planche.js`) ne dépendent
+d'aucune librairie : ils sont recalculés dès que la mise en page change.
 
 ### Les polices
 

@@ -1,6 +1,6 @@
 /**
  * Le pied de page : le nom monte en géant depuis le bas, ligne après ligne,
- * et le ticket d'adresse surgit au centre.
+ * et le ticket d'adresse vient se poser dessus.
  */
 
 import { element, elements } from "./lib.js";
@@ -9,16 +9,16 @@ import { element, elements } from "./lib.js";
 export function initPied(outils) {
   const { gsap } = outils;
 
-  gsap.timeline({
-    defaults: { ease: "power3.out" },
-    scrollTrigger: {
-      trigger: ".pied",
-      start: "top 20%",
-      end: "bottom 80%",
-      toggleActions: "play complete none none",
-    },
-  })
-    .from(element("[data-pied-carte]"), { scale: 0, duration: 0.8, ease: "back.out(1.4)" })
-    .from(elements(".pied__ligne"), { yPercent: 150, stagger: 0.1, duration: 1 }, "<")
-    .from(elements(".pied__bas > *"), { y: 20, opacity: 0, stagger: 0.08, duration: 0.6 }, "<0.4");
+  gsap
+    .timeline({
+      defaults: { ease: "power3.out" },
+      scrollTrigger: {
+        trigger: ".pied",
+        start: "top 60%",
+        toggleActions: "play none none reverse",
+      },
+    })
+    .fromTo(elements(".pied__ligne"), { yPercent: 120 }, { yPercent: 0, stagger: 0.1, duration: 1 })
+    .fromTo(element("[data-pied-carte]"), { autoAlpha: 0, y: 60 }, { autoAlpha: 1, y: 0, duration: 0.9 }, "<0.35")
+    .fromTo(elements(".pied__bas > *"), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, stagger: 0.08, duration: 0.6 }, "<0.3");
 }

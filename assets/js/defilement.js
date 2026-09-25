@@ -8,15 +8,18 @@ import { element, elements } from "./lib.js";
 
 /**
  * @param {import("./lib.js").Outils} outils
- * @returns {any} l'instance Lenis, arrêtée (le rideau la relance)
+ * @returns {any} l'instance Lenis
  */
 export function initDefilement(outils) {
   const { gsap, ScrollTrigger, Lenis } = outils;
 
+  // Au rechargement, la page repart du haut… sauf si l'adresse vise une
+  // section (un lien « #carte », par exemple) : on s'y rendra une fois tout
+  // mis en place.
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
   }
-  window.scrollTo(0, 0);
+  if (!window.location.hash) window.scrollTo(0, 0);
 
   const lenis = new Lenis({
     duration: 1,
@@ -30,7 +33,6 @@ export function initDefilement(outils) {
     lenis.raf(temps * 1000);
   });
   gsap.ticker.lagSmoothing(0);
-  lenis.stop();
 
   initProgression(outils);
   initAncres(lenis);
@@ -39,19 +41,22 @@ export function initDefilement(outils) {
 }
 
 /**
- * Remet la page tout en haut, en forçant Lenis à suivre.
+ * Si l'adresse vise une section, s'y rendre sans animation.
  * @param {any} lenis
- * @param {import("./lib.js").Outils} outils
  */
-export function remonterEnHaut(lenis, outils) {
-  if (window.location.hash) {
-    history.replaceState(null, "", window.location.pathname + window.location.search);
-  }
-  window.scrollTo(0, 0);
-  lenis.resize();
-  lenis.scrollTo(0, { immediate: true, force: true });
-  lenis.raf(performance.now());
-  outils.ScrollTrigger.update();
+export function rejoindreAncre(lenis) {
+  const cible = trouverCible(window.location.hash);
+  if (cible) lenis.scrollTo(cible, { immediate: true, force: true });
+}
+
+/**
+ * @param {string} ancre
+ * @returns {HTMLElement | null}
+ */
+function trouverCible(ancre) {
+  if (!ancre || ancre === "#") return null;
+  const cible = document.getElementById(decodeURIComponent(ancre.slice(1)));
+  return cible instanceof HTMLElement ? cible : null;
 }
 
 /** @param {import("./lib.js").Outils} outils */
@@ -67,18 +72,20 @@ function initProgression(outils) {
 }
 
 /**
- * Les liens internes passent par Lenis pour glisser jusqu'à la section.
+ * Les liens internes passent par Lenis pour glisser jusqu'à la section — même
+ * depuis le menu ouvert, où le défilement est suspendu (d'où « force »).
  * @param {any} lenis
  */
 function initAncres(lenis) {
   elements('a[href^="#"]').forEach((lien) => {
     lien.addEventListener("click", (evenement) => {
-      const cible = lien.getAttribute("href");
-      if (!cible || cible === "#") return;
-      const section = document.querySelector(cible);
-      if (!(section instanceof HTMLElement)) return;
+      const cible = trouverCible(lien.getAttribute("href") || "");
+      if (!cible) return;
       evenement.preventDefault();
-      lenis.scrollTo(section, { offset: 0, duration: 1.4 });
+      lenis.scrollTo(cible, { offset: 0, duration: 1.4, force: true });
+      // Le focus suit le lien, comme avec une ancre native (clavier, lecteurs d'écran).
+      if (!cible.hasAttribute("tabindex")) cible.setAttribute("tabindex", "-1");
+      cible.focus({ preventScroll: true });
     });
   });
 }
