@@ -41,8 +41,8 @@ export function initHoraires() {
     if (texte) {
       // Espace insécable entre l'heure et « h » : jamais de « 22 » en fin de ligne.
       texte.textContent = ouvert
-        ? `Ouvert jusqu'à ${FERMETURE_HEURE}\u00a0h`
-        : `Fermé, ouvre à ${OUVERTURE_HEURE}\u00a0h`;
+        ? `Ouvert — jusqu'à ${FERMETURE_HEURE}\u00a0h`
+        : `Fermé — ouvre à ${OUVERTURE_HEURE}\u00a0h`;
     }
   });
 }

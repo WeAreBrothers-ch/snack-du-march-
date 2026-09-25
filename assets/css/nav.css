@@ -2,13 +2,20 @@
    Navigation — bouton flottant et panneau de menu
    ========================================================================== */
 
+/* Le menu garde ses mesures d'origine, indépendamment de l'échelle du reste
+   du site : la marge, la taille du texte courant et la pastille horaire
+   d'alors. */
+.menu-flottant,
+.panneau {
+  --marge: clamp(1rem, 3vw, 1.5rem);
+}
+
 .menu-bouton {
   font-family: var(--f-titre);
   font-weight: 900;
   font-variation-settings: "wdth" 80;
-  font-size: clamp(1.125rem, 1rem + 0.4vw, 1.375rem);
+  font-size: 1.375rem;
   line-height: 1;
-  letter-spacing: 0.01em;
   text-transform: uppercase;
   padding: 0.25rem 0;
   color: var(--craie);
@@ -25,17 +32,17 @@
   top: 0;
   right: 0;
   z-index: 800;
-  padding: calc(var(--marge) * 0.6) var(--marge) 0 0;
+  padding: 1rem var(--marge) 0 0;
   transform: translateX(150%);
   transition: transform 0.3s var(--sortie);
 }
 
 .menu-flottant .menu-bouton {
-  padding: 0.6em 1em;
+  padding: 0.5rem 0.9rem;
   border-radius: 10rem;
   background: var(--fond);
   color: var(--craie);
-  font-size: var(--t-label);
+  font-size: 1.125rem;
 }
 
 .menu-flottant .menu-bouton:hover { color: var(--bordeaux-clair); }
@@ -58,61 +65,53 @@
 .panneau__fond {
   position: absolute;
   inset: 0;
-  background: rgba(18, 22, 21, 0.72);
+  background: rgba(18, 22, 21, 0.6);
 }
 
-/* Une fiche bordeaux posée en haut à droite, légèrement de travers,
-   comme le ticket d'adresse du pied de page. */
 .panneau__carte {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  width: min(29rem, calc(100vw - var(--marge)));
+  gap: 0.5rem;
+  width: min(18rem, 85vw);
   margin: 0 var(--marge) 0 0;
-  padding: calc(var(--marge) + 2.75rem) clamp(1.5rem, 1rem + 2vw, 2.75rem) clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  padding: 3rem 1.5rem 1.5rem;
   background: var(--panneau);
   color: var(--panneau-texte);
-  border-radius: 0 0 var(--rayon) var(--rayon);
+  border-radius: 0 0 0.5rem 0.5rem;
   transform-origin: top right;
 }
-
-.panneau__fermer {
-  position: absolute;
-  top: calc(var(--marge) * 0.6 + 0.6em);
-  right: clamp(1.5rem, 1rem + 2vw, 2.75rem);
-  font-family: var(--f-titre);
-  font-weight: 900;
-  font-variation-settings: "wdth" 80;
-  font-size: var(--t-label);
-  line-height: 1;
-  text-transform: uppercase;
-  color: var(--panneau-texte);
-}
-
-.panneau__fermer:hover { color: var(--panneau-tonsurton); }
 
 .panneau__lien {
   font-family: var(--f-titre);
   font-weight: 900;
-  font-variation-settings: "wdth" 78;
-  font-size: clamp(2rem, 1.5rem + 1.6vw, 3rem);
-  line-height: 1.02;
+  font-variation-settings: "wdth" 80;
+  font-size: 1.5rem;
+  line-height: 1.1;
   text-transform: uppercase;
 }
 
 .panneau__lien:hover { color: var(--panneau-tonsurton); }
 
 .panneau__tel {
-  margin-top: 1.25rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--panneau-trait);
-  font-size: var(--t-lead);
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--trait);
+  font-size: 0.9375rem;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
 
-.panneau__carte .etat {
-  font-size: var(--t-corps);
-  color: var(--panneau-texte-doux);
+.panneau .etat {
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  opacity: 0.8;
+}
+
+@media (min-width: 992px) {
+  .panneau__carte { padding-top: 3.5rem; }
+}
+
+@media (min-width: 1440px) {
+  .panneau__tel { font-size: 1rem; }
 }

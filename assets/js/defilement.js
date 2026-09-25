@@ -72,8 +72,10 @@ function initProgression(outils) {
 }
 
 /**
- * Les liens internes passent par Lenis pour glisser jusqu'à la section — même
- * depuis le menu ouvert, où le défilement est suspendu (d'où « force »).
+ * Les liens internes passent par Lenis pour glisser jusqu'à la section.
+ * Depuis le menu ouvert, le défilement est suspendu, et le menu le relance en
+ * se refermant, ce qui couperait un défilement déjà parti : on attend donc
+ * qu'il soit refermé pour glisser.
  * @param {any} lenis
  */
 function initAncres(lenis) {
@@ -82,7 +84,16 @@ function initAncres(lenis) {
       const cible = trouverCible(lien.getAttribute("href") || "");
       if (!cible) return;
       evenement.preventDefault();
-      lenis.scrollTo(cible, { offset: 0, duration: 1.4, force: true });
+
+      const debut = performance.now();
+      const glisser = () => {
+        if (lenis.isStopped && performance.now() - debut < 1000) {
+          requestAnimationFrame(glisser);
+          return;
+        }
+        lenis.scrollTo(cible, { offset: 0, duration: 1.4, force: true });
+      };
+      glisser();
       // Le focus suit le lien, comme avec une ancre native (clavier, lecteurs d'écran).
       if (!cible.hasAttribute("tabindex")) cible.setAttribute("tabindex", "-1");
       cible.focus({ preventScroll: true });

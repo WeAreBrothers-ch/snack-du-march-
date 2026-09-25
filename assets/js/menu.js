@@ -1,6 +1,6 @@
 /**
- * Le menu : un bouton flottant qui apparaît une fois le hero passé, et une
- * fiche qui glisse depuis la droite. Fonctionne aussi sans animation.
+ * Le menu : un bouton flottant qui apparaît une fois le hero passé, et un
+ * panneau qui glisse depuis la droite. Fonctionne aussi sans animation.
  */
 
 import { element, elements } from "./lib.js";
@@ -18,55 +18,50 @@ export function initMenu(outils, lenis) {
   const fermeurs = elements("[data-menu-fermer]", panneau);
   const liens = elements("[data-menu-lien]", panneau);
 
-  /** Le bouton qui a ouvert le menu : il retrouve le focus à la fermeture. */
-  /** @type {HTMLElement | null} */
-  let ouvreur = null;
-
   /** @param {boolean} ouvert */
   function marquer(ouvert) {
     ouvreurs.forEach((bouton) => bouton.setAttribute("aria-expanded", String(ouvert)));
   }
 
-  /** @param {Event} evenement */
-  function ouvrir(evenement) {
-    ouvreur = evenement.currentTarget instanceof HTMLElement ? evenement.currentTarget : null;
+  function ouvrir() {
     panneau.hidden = false;
     marquer(true);
     lenis?.stop();
-    element(".panneau__lien", panneau).focus();
 
     if (!outils) return;
     outils.gsap.fromTo(fond, { opacity: 0 }, { opacity: 1, duration: 0.4 });
     outils.gsap.fromTo(
       carte,
-      { xPercent: 105, rotate: 0 },
-      { xPercent: 0, rotate: -2, duration: 0.55, ease: "power3.out" },
+      { rotate: 0, xPercent: 110, yPercent: -12 },
+      { rotate: -8, xPercent: 6, yPercent: -12, duration: 0.55, ease: "power3.out" },
     );
+    element(".panneau__lien", panneau).focus();
   }
 
-  /** @param {{ rendreLeFocus?: boolean }} [options] */
-  function fermer({ rendreLeFocus = true } = {}) {
+  function fermer() {
     marquer(false);
-
-    const terminer = () => {
+    if (!outils) {
       panneau.hidden = true;
       lenis?.start();
-      if (rendreLeFocus) ouvreur?.focus();
-    };
-
-    if (!outils) {
-      terminer();
       return;
     }
     // La sortie est plus rapide que l'entrée : le système répond, il ne s'attarde pas.
     outils.gsap.to(fond, { opacity: 0, duration: 0.25 });
-    outils.gsap.to(carte, { xPercent: 105, rotate: 0, duration: 0.3, ease: "power2.in", onComplete: terminer });
+    outils.gsap.to(carte, {
+      rotate: 0,
+      xPercent: 110,
+      duration: 0.3,
+      ease: "power2.in",
+      onComplete: () => {
+        panneau.hidden = true;
+        lenis?.start();
+      },
+    });
   }
 
   ouvreurs.forEach((bouton) => bouton.addEventListener("click", ouvrir));
-  fermeurs.forEach((bouton) => bouton.addEventListener("click", () => fermer()));
-  // Un lien emmène ailleurs dans la page : le focus suit le lien, pas le bouton.
-  liens.forEach((lien) => lien.addEventListener("click", () => fermer({ rendreLeFocus: false })));
+  fermeurs.forEach((bouton) => bouton.addEventListener("click", fermer));
+  liens.forEach((lien) => lien.addEventListener("click", fermer));
 
   document.addEventListener("keydown", (evenement) => {
     if (evenement.key === "Escape" && !panneau.hidden) fermer();
