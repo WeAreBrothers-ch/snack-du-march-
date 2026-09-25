@@ -1,25 +1,10 @@
 /* ==========================================================================
-   La carte — trois mots qui s'écartent, puis le carrousel des plats
+   La carte — le titre en grand, puis le carrousel des plats, dans le fil
+   de la page
    ========================================================================== */
 
 .carte {
-  width: 100%;
-  height: calc(var(--ecran) * 3);
-}
-
-.carte__colle {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  height: var(--ecran);
-  overflow: hidden;
-}
-
-.carte__mots {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+  padding: clamp(1rem, 4vw, 2rem) 0 0;
 }
 
 .carte__titre {
@@ -27,6 +12,7 @@
   flex-direction: column;
   align-items: center;
   gap: 0.08em;
+  padding: 0 var(--marge);
   font-size: clamp(3.5rem, 18vw, 11rem);
   line-height: 0.9;
 }
@@ -54,13 +40,10 @@
 /* Le carrousel ----------------------------------------------------------- */
 
 .carrousel {
-  position: absolute;
-  inset: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: clamp(1rem, 3svh, 2rem);
-  padding: var(--sous-menu) 0 var(--marge);
+  gap: clamp(1.25rem, 5vw, 2rem);
+  margin-top: clamp(2.5rem, 10vw, 4.5rem);
   overflow: hidden;
 }
 
@@ -203,7 +186,6 @@
     grid-template-areas:
       "texte  boutons"
       "cadre  cadre";
-    align-content: center;
     gap: clamp(1.5rem, 3svh, 2.5rem) var(--gouttiere);
     padding-inline: max(var(--marge), (100% - var(--largeur-max)) / 2);
   }

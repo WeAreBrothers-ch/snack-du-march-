@@ -1,74 +1,77 @@
 /**
- * La broche : l'accroche monte ligne par ligne et la photo se découvre ; puis,
- * au défilement, le panneau bordeaux de l'anatomie monte par-dessus. Une fois
- * en place, la planche se dessine : la photo, la légende, les traits qui
- * vont de chaque ingrédient à son repère, les repères eux-mêmes.
+ * La broche : l'accroche monte ligne par ligne et la photo se découvre.
+ * Sur grand écran, l'accroche reste en place (CSS) et recule pendant que le
+ * panneau de l'anatomie monte par-dessus.
  *
- * Le bloc `.broche` fait trois hauteurs d'écran ; positions en pourcentage
- * de la hauteur d'écran, depuis le haut du bloc :
- *   30 – 110  le panneau de l'anatomie monte
- *   90        la planche se dessine
- *   110 – 200 tout reste en place, puis le bloc s'en va
+ * L'anatomie : le titre monte et la photo se découvre. Sur grand écran, la
+ * planche se dessine ensuite : la légende, les traits qui vont de chaque
+ * ingrédient à son repère, les repères eux-mêmes. Sur téléphone, c'est le
+ * défilement qui raconte la planche, ingrédient par ingrédient (planche.js).
  */
 
-import { depuisLeHaut, element, elements } from "./lib.js";
+import { element, elements } from "./lib.js";
 import { decouperEnLignes } from "./texte.js";
 
 /**
  * @param {import("./lib.js").Outils} outils
+ * @param {boolean} bureau
  * @param {import("./planche.js").Planche | null} planche
  */
-export function initBroche(outils, planche) {
+export function initBroche(outils, bureau, planche) {
   const { gsap, SplitText } = outils;
 
-  const avant = element(".broche__avant");
   const accroche = decouperEnLignes(SplitText, element(".broche__accroche"));
   const texte = decouperEnLignes(SplitText, element(".broche__texte"));
   const apercu = element(".broche__apercu");
 
-  gsap
+  // Les déclencheurs visent le bloc, jamais la section : sur grand écran,
+  // elle reste collée en haut de l'écran et fausserait les mesures.
+  const accrocheEntre = gsap
     .timeline({
       defaults: { ease: "power3.out" },
-      scrollTrigger: {
-        trigger: ".broche",
-        start: "top 60%",
-        toggleActions: "play none none reverse",
-      },
+      scrollTrigger: { trigger: ".broche-bloc", start: "top 70%", toggleActions: "play none none reverse" },
     })
     .fromTo(accroche.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.9, stagger: 0.08 })
-    .fromTo(texte.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.05 }, "<0.25")
-    .fromTo(
+    .fromTo(texte.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.05 }, "<0.25");
+
+  const decouvrir = {
+    clipPath: "inset(0% 0% 0% 0%)",
+    duration: 1.1,
+    ease: "power3.inOut",
+  };
+
+  if (bureau) {
+    // La photo est à côté du titre : elle se découvre avec lui.
+    accrocheEntre.fromTo(apercu, { clipPath: "inset(100% 0% 0% 0%)" }, decouvrir, "<");
+
+    // L'accroche recule pendant que le panneau de l'anatomie monte.
+    gsap.to(".broche", {
+      scale: 0.94,
+      autoAlpha: 0.4,
+      ease: "none",
+      scrollTrigger: { trigger: ".anatomie", start: "top bottom", end: "top top", scrub: 1 },
+    });
+  } else {
+    // Sur téléphone, elle est dessous : elle se découvre en entrant dans l'écran.
+    gsap.fromTo(
       apercu,
       { clipPath: "inset(100% 0% 0% 0%)" },
-      { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "power3.inOut" },
-      "<",
-    );
-
-  // Le panneau de l'anatomie monte ; l'accroche recule dessous.
-  gsap
-    .timeline({
-      scrollTrigger: {
-        trigger: ".broche",
-        start: depuisLeHaut(30),
-        end: depuisLeHaut(110),
-        scrub: 1,
+      {
+        ...decouvrir,
+        scrollTrigger: { trigger: apercu, start: "top 85%", toggleActions: "play none none reverse" },
       },
-    })
-    .fromTo(".anatomie", { yPercent: 100 }, { yPercent: 0, ease: "none" })
-    .to(avant, { scale: 0.94, autoAlpha: 0.4, ease: "none" }, "<");
+    );
+  }
 
   const titre = decouperEnLignes(SplitText, element(".anatomie__titre"));
   const photo = element(".planche__photo");
-  const points = elements(".planche__point");
-  const libelles = elements(".planche__liste li");
   const note = element(".anatomie__note");
-  const traits = planche ? planche.traits : [];
 
   const dessin = gsap.timeline({
     defaults: { ease: "power3.out" },
     scrollTrigger: {
-      trigger: ".broche",
-      start: depuisLeHaut(90),
+      trigger: ".anatomie",
+      start: bureau ? "top 35%" : "top 70%",
       toggleActions: "play none none reverse",
     },
   });
@@ -80,19 +83,43 @@ export function initBroche(outils, planche) {
       { clipPath: "inset(100% 0% 0% 0%)" },
       { clipPath: "inset(0% 0% 0% 0%)", duration: 1, ease: "power3.inOut" },
       "<0.1",
-    )
-    .fromTo(libelles, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.05 }, "<0.55");
+    );
 
-  if (traits.length > 0) {
+  if (bureau) {
+    const traits = planche ? planche.traits : [];
     dessin.fromTo(
-      traits,
-      { strokeDashoffset: 1 },
-      { strokeDashoffset: 0, duration: 0.6, stagger: 0.05, ease: "power2.inOut" },
-      "<0.1",
+      elements(".planche__etape"),
+      { autoAlpha: 0, y: 12 },
+      { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.05 },
+      "<0.55",
+    );
+    if (traits.length > 0) {
+      dessin.fromTo(
+        traits,
+        { strokeDashoffset: 1 },
+        { strokeDashoffset: 0, duration: 0.6, stagger: 0.05, ease: "power2.inOut" },
+        "<0.1",
+      );
+    }
+    dessin
+      .fromTo(
+        elements(".planche__point"),
+        { scale: 0, autoAlpha: 0 },
+        { scale: 1, autoAlpha: 1, duration: 0.35, stagger: 0.05, ease: "power2.out" },
+        "<0.3",
+      )
+      .fromTo(note, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.6 }, "<0.2");
+  } else {
+    gsap.fromTo(
+      note,
+      { autoAlpha: 0, y: 16 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: { trigger: note, start: "top 90%", toggleActions: "play none none reverse" },
+      },
     );
   }
-
-  dessin
-    .fromTo(points, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.35, stagger: 0.05, ease: "power2.out" }, "<0.3")
-    .fromTo(note, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.6 }, "<0.2");
 }

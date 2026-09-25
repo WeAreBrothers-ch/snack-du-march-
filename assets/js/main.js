@@ -61,7 +61,7 @@ function demarrerAnime(outils) {
 
     initEnseigne(outils);
     initHistoire(outils, bureau);
-    initBroche(outils, planche);
+    initBroche(outils, bureau, planche);
     const nettoyerCarte = initCarte(outils);
     initPrix(outils);
     initQuartier(outils, bureau);

@@ -1,6 +1,7 @@
 /**
- * La carte : les trois lignes du titre montent, puis s'écartent comme deux
- * battants pendant que le carrousel des plats s'ouvre entre elles.
+ * La carte : les trois lignes du titre montent et leurs vignettes s'ouvrent ;
+ * puis le texte, les plats et les flèches du carrousel arrivent à leur tour.
+ * Le carrousel se feuillette au doigt (Swiper).
  */
 
 import { element, elements } from "./lib.js";
@@ -13,24 +14,16 @@ import { decouperEnLignes } from "./texte.js";
 export function initCarte(outils) {
   const { gsap, SplitText } = outils;
 
-  const lignes = elements(".carte__ligne");
   const mots = decouperEnLignes(SplitText, elements(".carte__mot"));
   const vignettes = elements(".carte__vignette");
-  const carrousel = element(".carrousel");
-  const cadre = element(".carrousel__cadre");
   const texte = decouperEnLignes(SplitText, element(".carrousel__texte"));
+  const cadre = element(".carrousel__cadre");
   const boutons = elements(".carrousel__bouton");
-
-  gsap.set(carrousel, { autoAlpha: 0 });
 
   gsap
     .timeline({
       defaults: { ease: "power3.out" },
-      scrollTrigger: {
-        trigger: ".carte",
-        start: "top 60%",
-        toggleActions: "play none none reverse",
-      },
+      scrollTrigger: { trigger: ".carte__titre", start: "top 75%", toggleActions: "play none none reverse" },
     })
     .fromTo(mots.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.9, stagger: 0.1 })
     .fromTo(
@@ -40,32 +33,14 @@ export function initCarte(outils) {
       "<0.2",
     );
 
-  // Les lignes s'écartent, le carrousel s'ouvre depuis le centre.
-  gsap
-    .timeline({
-      scrollTrigger: { trigger: ".carte", start: "top top", end: "35% top", scrub: 1 },
-    })
-    .to([lignes[0], lignes[2]], { xPercent: 70, autoAlpha: 0, ease: "none" })
-    .to(lignes[1], { xPercent: -70, autoAlpha: 0, ease: "none" }, "<")
-    .to(carrousel, { autoAlpha: 1, duration: 0.1, ease: "none" }, "-=0.25")
-    .fromTo(
-      cadre,
-      { clipPath: "inset(0% 50% 0% 50%)" },
-      { clipPath: "inset(0% 0% 0% 0%)", ease: "none" },
-      "<",
-    );
-
   gsap
     .timeline({
       defaults: { ease: "power3.out" },
-      scrollTrigger: {
-        trigger: ".carte",
-        start: "22% top",
-        toggleActions: "play none none reverse",
-      },
+      scrollTrigger: { trigger: ".carrousel", start: "top 80%", toggleActions: "play none none reverse" },
     })
     .fromTo(texte.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.05 })
-    .fromTo(boutons, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.08 }, "<0.2");
+    .fromTo(cadre, { autoAlpha: 0, x: 48 }, { autoAlpha: 1, x: 0, duration: 1 }, "<0.15")
+    .fromTo(boutons, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.08 }, "<0.3");
 
   const glisseur = initGlisseur(outils, cadre, boutons[0], boutons[1]);
   return () => glisseur.destroy(true, true);

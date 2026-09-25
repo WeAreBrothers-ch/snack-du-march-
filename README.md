@@ -2,10 +2,10 @@
 
 Site du Snack du Marché, kebab à la broche, Rue Pré-du-Marché 3, 1004 Lausanne.
 
-Le site est **une seule page qui se déroule** : chaque section se met en scène
-au fil du défilement (le nom qui se rassemble sur son enseigne bordeaux, les
-étapes de l'histoire qui s'empilent, la planche d'anatomie qui se dessine, la
-carte qui s'ouvre au centre).
+Le site est **une seule page qui se déroule**, pensée d'abord pour le
+téléphone : le nom qui se rassemble sur son enseigne bordeaux, l'album et les
+étapes de l'histoire qui s'empilent, l'anatomie du veau-agneau racontée
+ingrédient par ingrédient, la carte à feuilleter au doigt.
 
 | Fichier | Ce que c'est |
 |---|---|
@@ -105,11 +105,14 @@ section. Les animations s'appuient sur des librairies chargées depuis un CDN :
 
 Si l'une d'elles ne charge pas, si le visiteur a demandé « moins
 d'animations » dans son système, ou si rien n'a démarré au bout de quatre
-secondes, **le site bascule en mode statique** : tout est visible, rien n'est
-épinglé, le menu, la pastille horaire et la planche d'anatomie fonctionnent.
+secondes, **le site bascule en mode statique** : tout est visible, le haut de
+page n'est plus épinglé ; le menu, la pastille horaire, l'empilement des
+cartes de l'histoire (CSS) et la planche d'anatomie fonctionnent toujours.
 
-Les traits de la planche d'anatomie (`assets/js/planche.js`) ne dépendent
-d'aucune librairie : ils sont recalculés dès que la mise en page change.
+La planche d'anatomie (`assets/js/planche.js`) ne dépend d'aucune librairie :
+sur téléphone, elle allume l'ingrédient qui passe sous la photo ; sur grand
+écran, elle trace les traits de la légende et les recalcule dès que la mise en
+page change.
 
 ### Les polices
 

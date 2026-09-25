@@ -1,19 +1,15 @@
 /**
- * L'histoire : le titre et les photos apparaissent, puis les trois étapes
- * montent l'une après l'autre, comme des cartes qu'on empile ; celle du
- * dessous recule et s'assombrit pendant qu'on la recouvre.
+ * L'histoire : le titre monte et les photos de l'album se découvrent, puis
+ * les trois cartes s'empilent (l'empilement lui-même est en CSS, avec
+ * position: sticky). Le script ajoute les gestes : le contenu de chaque carte
+ * monte à son arrivée, et la carte du dessous recule et s'assombrit pendant
+ * que la suivante glisse par-dessus.
  *
- * Tout le bloc `.histoire` fait six hauteurs d'écran (sept sur grand écran,
- * voir l'entracte dans histoire.css). Les positions ci-dessous sont exprimées
- * en pourcentage de la hauteur d'écran, depuis le haut du bloc :
- *   0 – 40    l'intro
- *   40 – 120  la première étape monte par-dessus l'intro
- *   200 – 300 la deuxième glisse par-dessus la première
- *   300 – 400 la troisième glisse par-dessus la deuxième (+ 100 sur grand écran)
- *   400 – 500 tout reste en place, puis le bloc s'en va (+ 100 sur grand écran)
+ * Les déclencheurs sont posés sur les pauses entre les cartes, jamais sur les
+ * cartes elles-mêmes : un élément collé fausserait les mesures.
  */
 
-import { depuisLeHaut, element, elements } from "./lib.js";
+import { element, elements } from "./lib.js";
 import { decouperEnLignes } from "./texte.js";
 
 /**
@@ -30,8 +26,8 @@ export function initHistoire(outils, bureau) {
   const intro = gsap.timeline({
     defaults: { ease: "power3.out" },
     scrollTrigger: {
-      trigger: ".histoire",
-      start: "top 40%",
+      trigger: ".histoire__intro",
+      start: "top 75%",
       toggleActions: "play none none reverse",
     },
   });
@@ -40,74 +36,67 @@ export function initHistoire(outils, bureau) {
     .fromTo(titre.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.9, stagger: 0.08 })
     .fromTo(sousTitre.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.06 }, "<0.2");
 
-  if (window.innerWidth >= 768) {
+  if (bureau) {
+    // Les photos entourent le titre : elles se découvrent avec lui.
     intro.fromTo(
       photos,
       { clipPath: "inset(100% 0% 0% 0%)" },
       { clipPath: "inset(0% 0% 0% 0%)", duration: 0.9, stagger: 0.07, ease: "power3.inOut" },
       "<",
     );
+  } else {
+    // Sur téléphone, l'album est sous le titre : chaque photo se découvre en
+    // entrant dans l'écran.
+    photos.forEach((photo) => {
+      gsap.fromTo(
+        photo,
+        { clipPath: "inset(100% 0% 0% 0%)" },
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          duration: 1,
+          ease: "power3.inOut",
+          scrollTrigger: { trigger: photo, start: "top 90%", toggleActions: "play none none reverse" },
+        },
+      );
+    });
   }
 
-  // La première étape monte par-dessus l'intro, comme les deux suivantes.
-  gsap.fromTo(
-    "#etape-1",
-    { yPercent: 100 },
-    {
-      yPercent: 0,
+  const etapes = elements(".etape");
+  const pauses = elements(".histoire__pause");
+
+  etapes.forEach((etape, index) => {
+    // La pause qui précède une carte : son bas est le haut naturel de la carte.
+    const avant = pauses[index - 1];
+    revelerEtape(
+      outils,
+      etape,
+      avant
+        ? { trigger: avant, start: "bottom 55%" }
+        : { trigger: ".histoire__etapes", start: "top 55%" },
+    );
+
+    // La pause qui suit : pendant qu'elle défile hors de l'écran, la carte
+    // suivante monte, et celle-ci recule.
+    const apres = pauses[index];
+    if (!apres) return;
+    gsap.to(etape, {
+      scale: bureau ? 0.9 : 0.94,
+      rotate: bureau ? (index % 2 === 0 ? 1.5 : -1.5) : 0,
+      "--voile": 0.6,
       ease: "none",
-      scrollTrigger: {
-        trigger: ".histoire",
-        start: depuisLeHaut(40),
-        end: depuisLeHaut(120),
-        scrub: 1,
-      },
-    },
-  );
-
-  revelerEtape(outils, "#etape-1", depuisLeHaut(95));
-
-  // Chaque carte recule quand la suivante glisse par-dessus.
-  const entracte = bureau ? 100 : 0;
-  reculer(outils, "#etape-1", depuisLeHaut(200), depuisLeHaut(300), bureau ? 1.5 : 0, bureau);
-  revelerEtape(outils, "#etape-2", depuisLeHaut(250));
-  reculer(outils, "#etape-2", depuisLeHaut(300 + entracte), depuisLeHaut(400 + entracte), bureau ? -1.5 : 0, bureau);
-  revelerEtape(outils, "#etape-3", depuisLeHaut(350 + entracte));
-}
-
-/**
- * La carte du dessous rétrécit et se voile pendant qu'on la recouvre.
- * @param {import("./lib.js").Outils} outils
- * @param {string} selecteur
- * @param {() => string} debut
- * @param {() => string} fin
- * @param {number} rotation en degrés
- * @param {boolean} bureau
- */
-function reculer(outils, selecteur, debut, fin, rotation, bureau) {
-  outils.gsap.to(selecteur, {
-    scale: bureau ? 0.9 : 0.94,
-    rotate: rotation,
-    "--voile": 0.6,
-    ease: "none",
-    scrollTrigger: {
-      trigger: ".histoire",
-      start: debut,
-      end: fin,
-      scrub: 1,
-    },
+      scrollTrigger: { trigger: apres, start: "bottom bottom", end: "bottom top", scrub: 1 },
+    });
   });
 }
 
 /**
- * Fait monter l'année, le titre et le texte d'une étape ; découvre sa photo.
+ * Fait monter l'année, le titre et le texte d'une carte ; découvre sa photo.
  * @param {import("./lib.js").Outils} outils
- * @param {string} selecteur
- * @param {() => string} debut
+ * @param {HTMLElement} etape
+ * @param {{ trigger: HTMLElement | string, start: string }} declencheur
  */
-function revelerEtape(outils, selecteur, debut) {
+function revelerEtape(outils, etape, declencheur) {
   const { gsap, SplitText } = outils;
-  const etape = element(selecteur);
   const annee = decouperEnLignes(SplitText, element(".etape__annee", etape));
   const titre = decouperEnLignes(SplitText, element(".etape__titre", etape));
   const texte = decouperEnLignes(SplitText, element(".etape__texte", etape));
@@ -116,11 +105,7 @@ function revelerEtape(outils, selecteur, debut) {
   gsap
     .timeline({
       defaults: { ease: "power3.out" },
-      scrollTrigger: {
-        trigger: ".histoire",
-        start: debut,
-        toggleActions: "play none none reverse",
-      },
+      scrollTrigger: { ...declencheur, toggleActions: "play none none reverse" },
     })
     .fromTo(annee.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.9 })
     .fromTo(titre.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.08 }, "<0.1")

@@ -39,15 +39,23 @@
   --largeur-max: 112rem;
   --rayon: clamp(0.5rem, 0.35rem + 0.5vw, 0.875rem);
 
-  /* La hauteur de la fenêtre. « Visible » : la plus petite, barres du
-     navigateur déployées — c'est elle qui garantit que le contenu tient. */
+  /* Les hauteurs de fenêtre. --ecran : la plus grande (barres du navigateur
+     repliées), pour les fonds qui doivent couvrir tout l'écran.
+     --ecran-visible : la plus petite (barres déployées), pour que le contenu
+     tienne toujours dans ce qu'on voit, sur téléphone. */
   --ecran: 100vh;
   --ecran-visible: 100vh;
-  --ecran-visible: 100svh;
   /* Place réservée en haut des panneaux pour le bouton « Menu » flottant. */
   --sous-menu: calc(var(--marge) + 3rem);
 
   --sortie: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@supports (height: 100svh) {
+  :root {
+    --ecran: 100lvh;
+    --ecran-visible: 100svh;
+  }
 }
 
 html {

@@ -112,25 +112,27 @@
 
     <div class="espace"></div>
 
-    <!-- L'histoire ------------------------------------------------------------ -->
-    <div class="histoire" id="histoire">
-      <div class="histoire__colle">
-        <section class="histoire__intro" aria-labelledby="titre-histoire">
-          <div class="histoire__texte">
-            <h2 class="histoire__titre" id="titre-histoire">L'histoire de la maison</h2>
-            <p class="histoire__sous">D'un comptoir de quartier à la presse romande</p>
-          </div>
-          <div class="histoire__photos" aria-hidden="true">
-            <div class="histoire__cadre"><img class="histoire__photo" src="assets/photos/enseigne.webp" alt="" loading="lazy" decoding="async" /></div>
-            <div class="histoire__cadre"><img class="histoire__photo" src="assets/photos/frites-terrasse.webp" alt="" loading="lazy" decoding="async" /></div>
-            <div class="histoire__cadre"><img class="histoire__photo" src="assets/photos/comptoir-vitrine.webp" alt="" loading="lazy" decoding="async" /></div>
-            <div class="histoire__cadre"><img class="histoire__photo" src="assets/photos/devanture-nuit.webp" alt="" loading="lazy" decoding="async" /></div>
-            <div class="histoire__cadre"><img class="histoire__photo" src="assets/photos/assiette-frites.webp" alt="" loading="lazy" decoding="async" /></div>
-            <div class="histoire__cadre"><img class="histoire__photo" src="assets/photos/equipe-comptoir.webp" alt="" loading="lazy" decoding="async" /></div>
-          </div>
-        </section>
+    <!-- L'histoire ------------------------------------------------------------
+         L'intro et son album de photos, puis trois cartes qui s'empilent au
+         défilement (position: sticky, sans script). -->
+    <section class="histoire" id="histoire" aria-labelledby="titre-histoire">
+      <div class="histoire__intro">
+        <div class="histoire__texte">
+          <h2 class="histoire__titre" id="titre-histoire">L'histoire de la maison</h2>
+          <p class="histoire__sous">D'un comptoir de quartier à la presse romande</p>
+        </div>
+        <div class="histoire__photos" aria-hidden="true">
+          <div class="histoire__cadre"><img src="assets/photos/enseigne.webp" alt="" loading="lazy" decoding="async" /></div>
+          <div class="histoire__cadre"><img src="assets/photos/devanture-nuit.webp" alt="" loading="lazy" decoding="async" /></div>
+          <div class="histoire__cadre"><img src="assets/photos/frites-terrasse.webp" alt="" loading="lazy" decoding="async" /></div>
+          <div class="histoire__cadre"><img src="assets/photos/comptoir-vitrine.webp" alt="" loading="lazy" decoding="async" /></div>
+          <div class="histoire__cadre"><img src="assets/photos/assiette-frites.webp" alt="" loading="lazy" decoding="async" /></div>
+          <div class="histoire__cadre"><img src="assets/photos/equipe-comptoir.webp" alt="" loading="lazy" decoding="async" /></div>
+        </div>
+      </div>
 
-        <section class="etape etape--premiere" id="etape-1" aria-labelledby="titre-etape-1">
+      <div class="histoire__etapes">
+        <article class="etape" id="etape-1" aria-labelledby="titre-etape-1">
           <div class="etape__contenu">
             <p class="etape__annee">1998</p>
             <div class="etape__tete">
@@ -141,60 +143,64 @@
           <div class="etape__cadre etape__cadre--paysage">
             <img src="assets/photos/deux-generations.webp" alt="Hüseyin et Sertaç Celik derrière le comptoir du Snack du Marché" width="530" height="353" loading="lazy" decoding="async" />
           </div>
-        </section>
+        </article>
+
+        <div class="histoire__pause" aria-hidden="true"></div>
+
+        <article class="etape etape--inverse" id="etape-2" aria-labelledby="titre-etape-2">
+          <div class="etape__contenu">
+            <p class="etape__annee">2018</p>
+            <div class="etape__tete">
+              <h3 class="etape__titre" id="titre-etape-2">La presse</h3>
+              <p class="etape__texte">Le Temps parle de «&nbsp;haute gastronomie&nbsp;», 24 heures titre «&nbsp;Vingt ans que le Snack du Marché régale de ses broches épicées&nbsp;». Le comptoir de quartier devient une adresse.</p>
+            </div>
+          </div>
+          <div class="etape__cadre">
+            <img src="assets/photos/equipe-comptoir.webp" alt="L'équipe du Snack du Marché au comptoir" width="765" height="1020" loading="lazy" decoding="async" />
+          </div>
+        </article>
+
+        <div class="histoire__pause" aria-hidden="true"></div>
+
+        <article class="etape" id="etape-3" aria-labelledby="titre-etape-3">
+          <div class="etape__contenu">
+            <p class="etape__annee">2026</p>
+            <div class="etape__tete">
+              <h3 class="etape__titre" id="titre-etape-3">Deux générations</h3>
+              <p class="etape__texte">Sertaç, le fils, tranche aujourd'hui la broche aux côtés de son père. Les étudiants d'hier amènent leurs enfants. Les recettes des grands-mères, elles, n'ont pas bougé.</p>
+            </div>
+          </div>
+          <div class="etape__cadre">
+            <img src="assets/photos/comptoir-decoupe.webp" alt="La broche tranchée au couteau, derrière le comptoir" width="765" height="1020" loading="lazy" decoding="async" />
+          </div>
+        </article>
       </div>
-
-      <div class="histoire__pause" aria-hidden="true"></div>
-
-      <section class="etape etape--inverse etape--collee" id="etape-2" aria-labelledby="titre-etape-2">
-        <div class="etape__contenu">
-          <p class="etape__annee">2018</p>
-          <div class="etape__tete">
-            <h3 class="etape__titre" id="titre-etape-2">La presse</h3>
-            <p class="etape__texte">Le Temps parle de «&nbsp;haute gastronomie&nbsp;», 24 heures titre «&nbsp;Vingt ans que le Snack du Marché régale de ses broches épicées&nbsp;». Le comptoir de quartier devient une adresse.</p>
-          </div>
-        </div>
-        <div class="etape__cadre">
-          <img src="assets/photos/equipe-comptoir.webp" alt="L'équipe du Snack du Marché au comptoir" width="765" height="1020" loading="lazy" decoding="async" />
-        </div>
-      </section>
-
-      <div class="histoire__entracte" aria-hidden="true"></div>
-
-      <section class="etape etape--collee" id="etape-3" aria-labelledby="titre-etape-3">
-        <div class="etape__contenu">
-          <p class="etape__annee">2026</p>
-          <div class="etape__tete">
-            <h3 class="etape__titre" id="titre-etape-3">Deux générations</h3>
-            <p class="etape__texte">Sertaç, le fils, tranche aujourd'hui la broche aux côtés de son père. Les étudiants d'hier amènent leurs enfants. Les recettes des grands-mères, elles, n'ont pas bougé.</p>
-          </div>
-        </div>
-        <div class="etape__cadre">
-          <img src="assets/photos/comptoir-decoupe.webp" alt="La broche tranchée au couteau, derrière le comptoir" width="765" height="1020" loading="lazy" decoding="async" />
-        </div>
-      </section>
-    </div>
+    </section>
 
     <div class="espace"></div>
 
-    <!-- La broche ------------------------------------------------------------- -->
-    <div class="broche" id="broche">
-      <div class="broche__colle">
-        <section class="broche__avant" aria-labelledby="titre-broche">
-          <h2 class="broche__accroche" id="titre-broche">Une broche montée à la main, tranche après tranche</h2>
-          <p class="broche__texte">Du veau et de l'agneau entiers, jamais de viande reconstituée. Les épices viennent de Gaziantep, la recette vient du père.</p>
-          <div class="broche__apercu">
-            <img src="assets/photos/broche-decoupe.webp" alt="La broche de veau et d'agneau, tranchée au couteau" width="1125" height="642" loading="lazy" decoding="async" />
-          </div>
-        </section>
+    <!-- La broche et son anatomie -------------------------------------------
+         Sur grand écran, l'accroche reste en place et le panneau bordeaux de
+         l'anatomie monte par-dessus (position: sticky). -->
+    <div class="broche-bloc" id="broche">
+      <section class="broche" aria-labelledby="titre-broche">
+        <h2 class="broche__accroche" id="titre-broche">Une broche montée à la main, tranche après tranche</h2>
+        <p class="broche__texte">Du veau et de l'agneau entiers, jamais de viande reconstituée. Les épices viennent de Gaziantep, la recette vient du père.</p>
+        <div class="broche__apercu">
+          <img src="assets/photos/broche-decoupe.webp" alt="La broche de veau et d'agneau, tranchée au couteau" width="1125" height="642" loading="lazy" decoding="async" />
+        </div>
+      </section>
 
-        <!-- La planche : chaque repère est placé en pourcentage de la photo
-             (--x depuis la gauche, --y depuis le haut). Les ingrédients sont
-             listés de haut en bas ; sur grand écran, data-cote et --rang les
-             rangent de part et d'autre de la photo. -->
-        <section class="anatomie" aria-labelledby="titre-anatomie">
-          <h2 class="anatomie__titre" id="titre-anatomie">Anatomie d'un veau-agneau</h2>
-          <figure class="planche">
+      <!-- La planche : chaque repère est placé en pourcentage de la photo
+           (--x depuis la gauche, --y depuis le haut). Les ingrédients sont
+           listés de haut en bas. Sur téléphone, la photo reste en haut de
+           l'écran et chaque ingrédient s'y allume à son tour ; sur grand
+           écran, data-cote et --rang les rangent de part et d'autre de la
+           photo, reliés par des traits. -->
+      <section class="anatomie" id="anatomie" aria-labelledby="titre-anatomie">
+        <h2 class="anatomie__titre" id="titre-anatomie">Anatomie d'un veau-agneau</h2>
+        <figure class="planche">
+          <div class="planche__scene">
             <div class="planche__photo">
               <img src="assets/photos/sandwich-anatomie.webp" alt="Le sandwich veau-agneau, ouvert sur ses crudités" width="574" height="574" loading="lazy" decoding="async" />
               <span class="planche__point" style="--x: 52.3%; --y: 16.6%" aria-hidden="true">1</span>
@@ -206,63 +212,59 @@
               <span class="planche__point" style="--x: 40.6%; --y: 80.5%" aria-hidden="true">7</span>
               <span class="planche__point" style="--x: 53.1%; --y: 85.4%" aria-hidden="true">8</span>
             </div>
-            <ol class="planche__liste">
-              <li data-cote="gauche" style="--rang: 1"><span>Pain croustillant</span></li>
-              <li data-cote="droite" style="--rang: 1"><span>Tomate</span></li>
-              <li data-cote="droite" style="--rang: 2"><span>Persil</span></li>
-              <li data-cote="gauche" style="--rang: 2"><span>Concombre</span></li>
-              <li data-cote="gauche" style="--rang: 3"><span>Salade</span></li>
-              <li data-cote="droite" style="--rang: 3"><span>Sauce blanche</span></li>
-              <li data-cote="gauche" style="--rang: 4"><span>Oignon rouge</span></li>
-              <li data-cote="droite" style="--rang: 4"><span>Veau &amp; agneau</span></li>
-            </ol>
-          </figure>
-          <p class="anatomie__note">Et ce qui ne se voit pas&nbsp;: les épices de Gaziantep dans la viande, le sumac, la sauce piquante maison.</p>
-        </section>
-      </div>
+          </div>
+          <ol class="planche__liste">
+            <li class="planche__etape" data-cote="gauche" style="--rang: 1"><span class="planche__nom">Pain croustillant</span><span class="planche__detail">Croustillant dehors, moelleux dedans.</span></li>
+            <li class="planche__etape" data-cote="droite" style="--rang: 1"><span class="planche__nom">Tomate</span><span class="planche__detail">Fraîche, en tranches.</span></li>
+            <li class="planche__etape" data-cote="droite" style="--rang: 2"><span class="planche__nom">Persil</span><span class="planche__detail">Frais, pour relever le tout.</span></li>
+            <li class="planche__etape" data-cote="gauche" style="--rang: 2"><span class="planche__nom">Concombre</span><span class="planche__detail">Croquant, en bâtonnets.</span></li>
+            <li class="planche__etape" data-cote="gauche" style="--rang: 3"><span class="planche__nom">Salade</span><span class="planche__detail">Émincée finement.</span></li>
+            <li class="planche__etape" data-cote="droite" style="--rang: 3"><span class="planche__nom">Sauce blanche</span><span class="planche__detail">Faite maison, comme toutes les sauces du comptoir.</span></li>
+            <li class="planche__etape" data-cote="gauche" style="--rang: 4"><span class="planche__nom">Oignon rouge</span><span class="planche__detail">Émincé finement.</span></li>
+            <li class="planche__etape" data-cote="droite" style="--rang: 4"><span class="planche__nom">Veau &amp; agneau</span><span class="planche__detail">Entiers, montés à la main sur la broche, relevés d'épices rapportées de Gaziantep.</span></li>
+          </ol>
+        </figure>
+        <p class="anatomie__note">Et si vous l'aimez relevé&nbsp;: la sauce piquante, faite maison elle aussi.</p>
+      </section>
     </div>
 
     <!-- La carte -------------------------------------------------------------- -->
-    <div class="carte" id="carte">
-      <div class="carte__colle">
-        <section class="carte__mots" aria-labelledby="titre-carte">
-          <h2 class="carte__titre" id="titre-carte">
-            <span class="carte__ligne">
-              <span class="carte__mot">Tout est</span>
-              <span class="carte__vignette" aria-hidden="true"><img src="assets/photos/sandwich-veau-agneau.webp" alt="" loading="lazy" decoding="async" /></span>
-            </span>
-            <span class="carte__ligne carte__ligne--inverse">
-              <span class="carte__mot">fait</span>
-              <span class="carte__vignette" aria-hidden="true"><img src="assets/photos/comptoir-vitrine.webp" alt="" loading="lazy" decoding="async" /></span>
-            </span>
-            <span class="carte__ligne">
-              <span class="carte__mot">maison</span>
-              <span class="carte__vignette" aria-hidden="true"><img src="assets/photos/durum-main.webp" alt="" loading="lazy" decoding="async" /></span>
-            </span>
-          </h2>
-        </section>
+    <section class="carte" id="carte" aria-labelledby="titre-carte">
+      <h2 class="carte__titre" id="titre-carte">
+        <span class="carte__ligne">
+          <span class="carte__mot">Tout est</span>
+          <span class="carte__vignette" aria-hidden="true"><img src="assets/photos/sandwich-veau-agneau.webp" alt="" loading="lazy" decoding="async" /></span>
+        </span>
+        <span class="carte__ligne carte__ligne--inverse">
+          <span class="carte__mot">fait</span>
+          <span class="carte__vignette" aria-hidden="true"><img src="assets/photos/comptoir-vitrine.webp" alt="" loading="lazy" decoding="async" /></span>
+        </span>
+        <span class="carte__ligne">
+          <span class="carte__mot">maison</span>
+          <span class="carte__vignette" aria-hidden="true"><img src="assets/photos/durum-main.webp" alt="" loading="lazy" decoding="async" /></span>
+        </span>
+      </h2>
 
-        <section class="carrousel" aria-label="Les plats du comptoir">
-          <p class="carrousel__texte">Sandwich, dürüm, assiette ou box&nbsp;: la même broche, la même famille, depuis 1998.</p>
-          <div class="carrousel__cadre swiper">
-            <div class="carrousel__piste swiper-wrapper">
-              <article class="plat swiper-slide"><div class="plat__photo"><img src="assets/photos/sandwich-veau-agneau.webp" alt="Le sandwich veau-agneau" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Le veau-agneau</h3><p class="plat__note">Yaprak döner · La broche de la maison</p><p class="plat__prix">14.–</p></article>
-              <article class="plat swiper-slide"><div class="plat__photo"><img src="assets/photos/durum-main.webp" alt="Un dürüm, roulé dans sa galette" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Le dürüm</h3><p class="plat__note">Roulé dans la galette, passée au grill</p><p class="plat__prix">dès 14.–</p></article>
-              <article class="plat swiper-slide"><div class="plat__photo"><img src="assets/photos/assiette-frites.webp" alt="L'assiette kebab avec frites" loading="lazy" decoding="async" /></div><h3 class="plat__nom">L'assiette</h3><p class="plat__note">Frites ou riz, salade, sauces</p><p class="plat__prix">dès 20.–</p></article>
-              <article class="plat swiper-slide"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 1.6">Box</span></div><h3 class="plat__nom">La döner box</h3><p class="plat__note">Viande, frites, sauces, dans la boîte</p><p class="plat__prix">14.–</p></article>
-              <article class="plat swiper-slide"><div class="plat__photo"><img src="assets/photos/comptoir-vitrine.webp" alt="La vitrine des mezze, au comptoir" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Les mezze</h3><p class="plat__note">Houmous, aubergine, feuilles de vigne</p><p class="plat__prix">Au comptoir</p></article>
-              <article class="plat swiper-slide"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 2.49">Köfte</span></div><h3 class="plat__nom">La köfte</h3><p class="plat__note">Bœuf haché, persil, cumin · Piquant</p><p class="plat__prix">14.–</p></article>
-              <article class="plat swiper-slide"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 3.28">Falafel</span></div><h3 class="plat__nom">Le falafel</h3><p class="plat__note">Pois chiches, herbes, frit à la commande</p><p class="plat__prix">12.–</p></article>
-              <article class="plat swiper-slide"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 3.61">Baklava</span></div><h3 class="plat__nom">Le baklava</h3><p class="plat__note">Pistache de Gaziantep, à la pièce</p><p class="plat__prix">1.50</p></article>
-            </div>
+      <div class="carrousel" role="region" aria-label="Les plats du comptoir">
+        <p class="carrousel__texte">Sandwich, dürüm, assiette ou box&nbsp;: la même broche, la même famille, depuis 1998.</p>
+        <div class="carrousel__cadre swiper">
+          <div class="carrousel__piste swiper-wrapper">
+            <article class="plat swiper-slide"><div class="plat__photo"><img src="assets/photos/sandwich-veau-agneau.webp" alt="Le sandwich veau-agneau" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Le veau-agneau</h3><p class="plat__note">Yaprak döner · La broche de la maison</p><p class="plat__prix">14.–</p></article>
+            <article class="plat swiper-slide"><div class="plat__photo"><img src="assets/photos/durum-main.webp" alt="Un dürüm, roulé dans sa galette" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Le dürüm</h3><p class="plat__note">Roulé dans la galette, passée au grill</p><p class="plat__prix">dès 14.–</p></article>
+            <article class="plat swiper-slide"><div class="plat__photo"><img src="assets/photos/assiette-frites.webp" alt="L'assiette kebab avec frites" loading="lazy" decoding="async" /></div><h3 class="plat__nom">L'assiette</h3><p class="plat__note">Frites ou riz, salade, sauces</p><p class="plat__prix">dès 20.–</p></article>
+            <article class="plat swiper-slide"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 1.6">Box</span></div><h3 class="plat__nom">La döner box</h3><p class="plat__note">Viande, frites, sauces, dans la boîte</p><p class="plat__prix">14.–</p></article>
+            <article class="plat swiper-slide"><div class="plat__photo"><img src="assets/photos/comptoir-vitrine.webp" alt="La vitrine des mezze, au comptoir" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Les mezze</h3><p class="plat__note">Houmous, aubergine, feuilles de vigne</p><p class="plat__prix">Au comptoir</p></article>
+            <article class="plat swiper-slide"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 2.49">Köfte</span></div><h3 class="plat__nom">La köfte</h3><p class="plat__note">Bœuf haché, persil, cumin · Piquant</p><p class="plat__prix">14.–</p></article>
+            <article class="plat swiper-slide"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 3.28">Falafel</span></div><h3 class="plat__nom">Le falafel</h3><p class="plat__note">Pois chiches, herbes, frit à la commande</p><p class="plat__prix">12.–</p></article>
+            <article class="plat swiper-slide"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 3.61">Baklava</span></div><h3 class="plat__nom">Le baklava</h3><p class="plat__note">Pistache de Gaziantep, à la pièce</p><p class="plat__prix">1.50</p></article>
           </div>
-          <div class="carrousel__boutons">
-            <button class="carrousel__bouton" type="button" data-carrousel-precedent aria-label="Plat précédent"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none"><path d="M13 8H3M7.5 3.5 3 8l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <button class="carrousel__bouton" type="button" data-carrousel-suivant aria-label="Plat suivant"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none"><path d="M3 8h10M8.5 3.5 13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          </div>
-        </section>
+        </div>
+        <div class="carrousel__boutons">
+          <button class="carrousel__bouton" type="button" data-carrousel-precedent aria-label="Plat précédent"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none"><path d="M13 8H3M7.5 3.5 3 8l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="carrousel__bouton" type="button" data-carrousel-suivant aria-label="Plat suivant"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none"><path d="M3 8h10M8.5 3.5 13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
       </div>
-    </div>
+    </section>
 
     <!-- Les prix -------------------------------------------------------------- -->
     <section class="prix" id="prix" aria-labelledby="titre-prix">

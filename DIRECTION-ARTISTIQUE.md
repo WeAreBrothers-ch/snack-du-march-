@@ -70,13 +70,26 @@ il reste centré, les panneaux bordeaux continuent d'aller d'un bord à l'autre.
 
 1. **Le hero** : le nom de part et d'autre de la photo, dans son cadre bordeaux. Pas de rideau : la page est là tout de suite, la photo se découvre de bas en haut, comme un store qu'on lève à l'ouverture, et le nom monte. Une seconde et demie. En bas, ce qui sert : ouvert ou fermé, l'adresse, la carte.
    **L'enseigne** : au premier défilement, le hero reste épinglé ; la photo se referme vers son centre, son cadre s'élargit en un bandeau bordeaux d'un bord à l'autre de l'écran, et les deux mots glissent dessus pour former « Snack du Marché » sur une seule ligne, comme l'enseigne au-dessus de la vitrine.
-2. **Les étapes de l'histoire** : trois panneaux bordeaux qui montent et s'empilent (1998, 2018, 2026), l'année en ardoise géante.
-3. **L'anatomie** : une planche comme dans un livre de sciences naturelles. La vraie photo du veau-agneau, huit repères posés sur les ingrédients, et la légende reliée par des traits (numérotée sur téléphone). Les traits se dessinent un à un.
-4. **La carte** : trois mots (Tout est / fait / maison) qui s'écartent comme deux battants pendant que le carrousel s'ouvre entre eux.
+2. **L'histoire** : le titre, puis un album de photos de la maison (en quinconce sur téléphone, posées autour du titre sur grand écran). Ensuite trois cartes bordeaux qui s'empilent (1998, 2018, 2026), l'année en ardoise géante ; chacune reste le temps d'être lue avant que la suivante glisse par-dessus.
+3. **L'anatomie** : la vraie photo du veau-agneau, huit repères posés sur les ingrédients. Sur téléphone, la photo reste en haut de l'écran et la légende défile dessous : chaque ingrédient s'allume à son tour, avec une ligne pour le décrire. Sur grand écran, une planche comme dans un livre de sciences naturelles : la légende de part et d'autre, reliée par des traits qui se dessinent un à un.
+4. **La carte** : « Tout est fait maison » en grand, puis le carrousel des plats, qu'on feuillette au doigt.
 5. **Le grand texte du quartier** : la copie craie se dévoile de haut en bas sur sa copie bordeaux.
 6. **Le pied de page** : le nom en géant, le ticket d'adresse posé sur le bas des lettres.
 
 Un seul élément décoratif par section.
+
+## Le téléphone d'abord
+
+Le site se pense sur un téléphone, puis s'élargit.
+
+- Chaque section se lit dans le fil de la page : rien ne dépend d'une scène
+  « plein écran » qui supposerait une hauteur d'écran précise.
+- Ce qui doit tenir dans un écran (une carte de l'histoire) se mesure sur la
+  **hauteur toujours visible** (`--ecran-visible`, barres du navigateur
+  déployées) ; les fonds, eux, couvrent la plus grande (`--ecran`).
+- Chaque section a ses images sur téléphone.
+- Le texte courant ne descend pas sous 17 px ; on vérifie sur 375 × 548
+  (petit iPhone, barres déployées) et 390 × 664 avant le grand écran.
 
 ## Photographies
 
@@ -88,7 +101,7 @@ en grand, sur un aplat bordeaux, jamais par la photo d'un autre plat.
 
 ## Mouvement
 
-- Le défilement est lissé (Lenis). Les sections clés sont épinglées le temps de leur animation, avec une pause pour lire.
+- Le défilement est lissé (Lenis) à la souris, natif au doigt. Seul le haut de page est épinglé par le script ; les cartes de l'histoire et la photo de l'anatomie restent en place grâce au CSS (`position: sticky`), sans détourner le défilement.
 - Les textes apparaissent **ligne par ligne**, en montant depuis une fente.
 - Les images se découvrent **de bas en haut** (`clip-path`).
 - Les panneaux **montent** par-dessus le précédent, qui recule et s'assombrit.

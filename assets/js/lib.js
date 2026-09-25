@@ -66,17 +66,6 @@ export function elements(selecteur, racine = document) {
 }
 
 /**
- * Position de départ ScrollTrigger : « le haut du bloc, décalé de n % de la
- * hauteur d'écran, atteint le haut de la fenêtre ». Recalculée à chaque
- * rafraîchissement, pour suivre les changements de taille.
- * @param {number} pourcent
- * @returns {() => string}
- */
-export function depuisLeHaut(pourcent) {
-  return () => `top+=${Math.round((window.innerHeight * pourcent) / 100)} top`;
-}
-
-/**
  * Position d'un élément dans un de ses ancêtres positionnés, sans tenir
  * compte des transformations en cours : une animation ne fausse pas la mesure.
  * @param {HTMLElement} el
