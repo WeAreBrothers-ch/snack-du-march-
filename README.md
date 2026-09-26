@@ -4,7 +4,7 @@ Site du Snack du Marché, kebab à la broche, Rue Pré-du-Marché 3, 1004 Lausan
 
 Le site est **une seule page qui se déroule**, pensée d'abord pour le
 téléphone, et que le défilement anime de bout en bout : le nom qui se
-rassemble sur son enseigne bordeaux, en travers de la photo, la vitrine qui
+rassemble sur son enseigne bordeaux, au-dessus de la photo, la vitrine qui
 s'ouvre sur l'histoire de la maison, la planche d'anatomie qu'une ligne lit
 de haut en bas, la carte à feuilleter au doigt.
 

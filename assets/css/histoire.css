@@ -55,12 +55,16 @@
 /* L'intro devient une scène plein écran, collée en haut comme les cartes qui
    glisseront par-dessus. Le titre est posé au-dessus d'une vitrine ; pendant
    une courte pause, la devanture s'y ouvre en grand (histoire.js). */
-/* La section monte par-dessus la fin du haut de page : l'enseigne est encore
-   là quand le titre arrive. */
+/* La section monte un peu par-dessus la fin du haut de page : elle couvre
+   le bandeau du bas (adresse, ouvert ou fermé), jamais la photo, qui
+   s'arrête plus haut (hero.js, RECOUVREMENT). */
 html.anime .histoire {
   z-index: 1;
-  margin-top: calc(var(--ecran) * -0.35);
+  margin-top: calc(var(--ecran) * -0.15);
 }
+
+/* L'espace qui sépare d'habitude les sections n'a pas lieu d'être ici. */
+html.anime .accueil + .espace { display: none; }
 
 html.anime .histoire__intro {
   position: sticky;

@@ -6,14 +6,22 @@
  * à l'ouverture, et le nom monte de part et d'autre. Une seconde et demie,
  * et le défilement reste libre dès le premier instant.
  *
- * L'enseigne : au défilement, le hero reste épinglé ; la photo reste et
- * grandit un peu, un bandeau bordeaux s'ouvre en travers, du milieu de la
- * photo jusqu'aux bords de l'écran, et les deux mots glissent dessus pour
- * former « Snack du Marché » sur une seule ligne, comme une enseigne.
+ * L'enseigne : au défilement, le hero reste épinglé. Les deux mots se
+ * rejoignent au-dessus de la photo pour former « Snack du Marché » sur une
+ * seule ligne, sur un bandeau bordeaux qui se déroule depuis le milieu,
+ * comme l'enseigne au-dessus de la vitrine. La photo reste entière : rien ne
+ * passe dessus, et elle grandit un peu vers le bas, dans la place que les
+ * mots lui laissent.
  */
 
 import { element, elements, positionDans } from "./lib.js";
 import { decouperEnLignes } from "./texte.js";
+
+/**
+ * Part du bas du haut de page que la section suivante recouvre en montant
+ * (histoire.css) : la photo, en grandissant, s'arrête au-dessus.
+ */
+const RECOUVREMENT = 0.15;
 
 /**
  * Crée et lance l'entrée. Les états de départ sont posés immédiatement, avant
@@ -73,6 +81,9 @@ export function initEnseigne(outils, bureau) {
   const gauche = element(".hero__mot--gauche");
   const droite = element(".hero__mot--droite");
 
+  const haut = element(".hero__haut");
+  const bas = element(".hero__bas");
+
   /**
    * Les positions de départ et d'arrivée, mesurées sur la mise en page (les
    * transformations en cours n'y entrent pas) : recalculées à chaque
@@ -82,25 +93,37 @@ export function initEnseigne(outils, bureau) {
     const largeur = hero.offsetWidth;
     const hauteur = hero.offsetHeight;
     const marge = parseFloat(getComputedStyle(hero).paddingLeft);
-    const rayon = parseFloat(getComputedStyle(cadre).borderTopLeftRadius);
+    const ecart = Math.max(12, hauteur * 0.02);
 
     const posCadre = positionDans(cadre, hero);
-    const centre = posCadre.y + cadre.offsetHeight / 2;
-
-    // La ligne « Snack du Marché » : les deux mots séparés d'une espace de la
-    // police (0,13 em), réduits si nécessaire pour tenir entre les marges
-    // (sur téléphone).
-    const espace = parseFloat(getComputedStyle(gauche).fontSize) * 0.13;
-    const longueur = gauche.offsetWidth + espace + droite.offsetWidth;
-    const echelle = Math.min(1, (largeur - 2 * marge) / longueur);
-    const debutLigne = (largeur - longueur * echelle) / 2;
-
     const posGauche = positionDans(gauche, hero);
     const posDroite = positionDans(droite, hero);
-    const bande = gauche.offsetHeight * echelle * 1.5;
+
+    // La place de l'enseigne : entre le bandeau du haut et la photo.
+    const dessus = positionDans(haut, hero).y + haut.offsetHeight + ecart;
+    const dessous = posCadre.y - ecart;
+
+    // La ligne « Snack du Marché » : les deux mots séparés d'une espace de la
+    // police (0,13 em), réduits pour tenir entre les marges et dans la place
+    // au-dessus de la photo.
+    const espace = parseFloat(getComputedStyle(gauche).fontSize) * 0.13;
+    const longueur = gauche.offsetWidth + espace + droite.offsetWidth;
+    const echelle = Math.max(
+      0.2,
+      Math.min(1, (largeur - 2 * marge) / longueur, (dessous - dessus) / (gauche.offsetHeight * 1.4)),
+    );
+    const bande = gauche.offsetHeight * echelle * 1.4;
+    const centre = (dessus + dessous) / 2;
+    const debutLigne = (largeur - longueur * echelle) / 2;
+
+    // La photo grandit vers le bas, sans toucher le bandeau du bas ni la
+    // section qui monte ensuite.
+    const limite = Math.min(positionDans(bas, hero).y, hauteur * (1 - RECOUVREMENT)) - ecart;
+    const croissance = Math.max(1, Math.min(bureau ? 1.12 : 1.3, (limite - posCadre.y) / cadre.offsetHeight));
 
     return {
       echelle,
+      croissance,
       gauche: {
         x: debutLigne + (gauche.offsetWidth * echelle) / 2 - (posGauche.x + gauche.offsetWidth / 2),
         y: centre - (posGauche.y + gauche.offsetHeight / 2),
@@ -113,12 +136,10 @@ export function initEnseigne(outils, bureau) {
           (posDroite.x + droite.offsetWidth / 2),
         y: centre - (posDroite.y + droite.offsetHeight / 2),
       },
-      // Découpes de l'enseigne : un trait au milieu de la photo, de la
-      // largeur du cadre, puis le bandeau d'un bord à l'autre.
-      depart: `inset(${centre}px ${largeur - posCadre.x - cadre.offsetWidth}px ${hauteur - centre}px ${
-        posCadre.x
-      }px round ${rayon}px)`,
-      arrivee: `inset(${centre - bande / 2}px 0px ${hauteur - centre - bande / 2}px 0px round 0px)`,
+      // Découpes de l'enseigne : un bandeau sans largeur au milieu de
+      // l'écran, qui se déroule jusqu'aux bords.
+      depart: `inset(${centre - bande / 2}px ${largeur / 2}px ${hauteur - centre - bande / 2}px ${largeur / 2}px)`,
+      arrivee: `inset(${centre - bande / 2}px 0px ${hauteur - centre - bande / 2}px 0px)`,
     };
   }
 
@@ -133,20 +154,25 @@ export function initEnseigne(outils, bureau) {
         invalidateOnRefresh: true,
       },
     })
-    // L'enseigne part d'un trait invisible au milieu de la photo, et s'ouvre.
     .fromTo(enseigne, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, ease: "none" }, 0)
-    .fromTo(enseigne, { clipPath: () => mesurer().depart }, { clipPath: () => mesurer().arrivee, duration: 0.8 }, 0.05)
-    // La photo reste, et prend la place que les mots lui laissent.
-    .fromTo(cadre, { scale: 1 }, { scale: bureau ? 1.1 : 1.28, duration: 0.85 }, 0)
     .to(
       gauche,
       { x: () => mesurer().gauche.x, y: () => mesurer().gauche.y, scale: () => mesurer().echelle, duration: 0.75 },
-      0.1,
+      0.05,
     )
     .to(
       droite,
       { x: () => mesurer().droite.x, y: () => mesurer().droite.y, scale: () => mesurer().echelle, duration: 0.75 },
-      0.1,
+      0.05,
+    )
+    // L'enseigne se déroule depuis le milieu pendant que les mots arrivent.
+    .fromTo(enseigne, { clipPath: () => mesurer().depart }, { clipPath: () => mesurer().arrivee, duration: 0.6 }, 0.3)
+    // La photo reste entière, et prend la place que les mots lui laissent.
+    .fromTo(
+      cadre,
+      { scale: 1, transformOrigin: "50% 0%" },
+      { scale: () => mesurer().croissance, transformOrigin: "50% 0%", duration: 0.8 },
+      0.05,
     )
     // Un temps d'arrêt sur l'enseigne complète avant que la page ne reparte.
     .to({}, { duration: 0.15 });

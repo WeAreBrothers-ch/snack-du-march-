@@ -1,7 +1,7 @@
 /* ==========================================================================
    Hero — le nom de la maison de part et d'autre de la photo, qui se
-   rassemble sur une ligne, sur le bandeau bordeaux de l'enseigne posé en
-   travers de la photo
+   rassemble sur une ligne au-dessus d'elle, sur le bandeau bordeaux de
+   l'enseigne
    ========================================================================== */
 
 /* En mode animé, le bloc d'accueil fait deux écrans de haut : le hero reste
@@ -28,14 +28,13 @@ html.anime .hero {
 }
 
 /* L'enseigne : un aplat bordeaux que le script découpe (clip-path). Au
-   départ, c'est un simple trait au milieu de la photo ; au défilement, il
-   s'ouvre en un bandeau d'un bord à l'autre de l'écran, par-dessus la
-   photo, et le nom vient s'y poser. Trois étages : la photo, l'enseigne, le
-   nom. */
+   défilement, un bandeau se déroule d'un bord à l'autre de l'écran,
+   au-dessus de la photo, et le nom vient s'y poser. Les mots passent devant
+   tout le reste. */
 .hero__enseigne {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 0;
   background: var(--bordeaux);
   visibility: hidden;
   pointer-events: none;
