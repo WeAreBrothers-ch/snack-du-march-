@@ -24,21 +24,25 @@ import { decouperEnLignes } from "./texte.js";
  * @param {boolean} bureau
  */
 export function initHistoire(outils, bureau) {
-  // La pause qui suit l'intro, puis celles qui suivent chaque carte.
+  // La pause qui suit l'intro, puis celle qui suit chaque carte (la
+  // dernière comprise : elle reste, elle aussi, le temps d'être lue).
   const pauses = elements(".histoire__pause");
   const [pauseIntro] = pauses;
 
   initIntro(outils, bureau, pauseIntro);
   reculer(outils, element(".histoire__intro"), pauseIntro, { "--recul": 0.6 }, bureau);
 
-  elements(".etape").forEach((etape, index) => {
+  const etapes = elements(".etape");
+  etapes.forEach((etape, index) => {
     const avant = pauses[index];
     const apres = pauses[index + 1];
 
     revelerEtape(outils, etape, { trigger: avant, start: "bottom 55%" });
     animerPendant(outils, etape, avant, apres);
 
-    if (apres) {
+    // La dernière carte n'est recouverte par rien : après sa pause, elle
+    // s'en va avec la section.
+    if (apres && index < etapes.length - 1) {
       reculer(outils, etape, apres, { "--voile": 0.6, rotate: bureau ? (index % 2 === 0 ? 1.5 : -1.5) : 0 }, bureau);
     }
   });

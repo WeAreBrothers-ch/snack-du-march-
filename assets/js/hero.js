@@ -6,11 +6,10 @@
  * à l'ouverture, et le nom monte de part et d'autre. Une seconde et demie,
  * et le défilement reste libre dès le premier instant.
  *
- * L'enseigne : au défilement, le hero reste épinglé ; la photo se referme
- * vers son centre pendant que son cadre bordeaux s'élargit en un bandeau
- * d'un bord à l'autre de l'écran, et les deux mots glissent dessus pour
- * former « Snack du Marché » sur une seule ligne, comme l'enseigne au-dessus
- * de la vitrine.
+ * L'enseigne : au défilement, le hero reste épinglé ; la photo reste et
+ * grandit un peu, un bandeau bordeaux s'ouvre en travers, du milieu de la
+ * photo jusqu'aux bords de l'écran, et les deux mots glissent dessus pour
+ * former « Snack du Marché » sur une seule ligne, comme une enseigne.
  */
 
 import { element, elements, positionDans } from "./lib.js";
@@ -63,8 +62,9 @@ export function retablirHero(outils) {
 /**
  * Le nom qui se rassemble sur le bandeau, lié au défilement.
  * @param {import("./lib.js").Outils} outils
+ * @param {boolean} bureau
  */
-export function initEnseigne(outils) {
+export function initEnseigne(outils, bureau) {
   const { gsap } = outils;
 
   const hero = element(".hero");
@@ -113,10 +113,11 @@ export function initEnseigne(outils) {
           (posDroite.x + droite.offsetWidth / 2),
         y: centre - (posDroite.y + droite.offsetHeight / 2),
       },
-      // Découpes de l'enseigne : exactement le cadre, puis le bandeau.
-      depart: `inset(${posCadre.y}px ${largeur - posCadre.x - cadre.offsetWidth}px ${
-        hauteur - posCadre.y - cadre.offsetHeight
-      }px ${posCadre.x}px round ${rayon}px)`,
+      // Découpes de l'enseigne : un trait au milieu de la photo, de la
+      // largeur du cadre, puis le bandeau d'un bord à l'autre.
+      depart: `inset(${centre}px ${largeur - posCadre.x - cadre.offsetWidth}px ${hauteur - centre}px ${
+        posCadre.x
+      }px round ${rayon}px)`,
       arrivee: `inset(${centre - bande / 2}px 0px ${hauteur - centre - bande / 2}px 0px round 0px)`,
     };
   }
@@ -132,16 +133,11 @@ export function initEnseigne(outils) {
         invalidateOnRefresh: true,
       },
     })
-    // L'enseigne prend le relais du cadre dès le premier pixel de défilement :
-    // elle a sa forme exacte, rien ne saute.
+    // L'enseigne part d'un trait invisible au milieu de la photo, et s'ouvre.
     .fromTo(enseigne, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, ease: "none" }, 0)
-    .fromTo(enseigne, { clipPath: () => mesurer().depart }, { clipPath: () => mesurer().arrivee, duration: 0.8 }, 0)
-    .fromTo(
-      cadre,
-      { clipPath: "inset(0% 0% 0% 0%)" },
-      { clipPath: "inset(50% 0% 50% 0%)", duration: 0.55 },
-      0.05,
-    )
+    .fromTo(enseigne, { clipPath: () => mesurer().depart }, { clipPath: () => mesurer().arrivee, duration: 0.8 }, 0.05)
+    // La photo reste, et prend la place que les mots lui laissent.
+    .fromTo(cadre, { scale: 1 }, { scale: bureau ? 1.1 : 1.28, duration: 0.85 }, 0)
     .to(
       gauche,
       { x: () => mesurer().gauche.x, y: () => mesurer().gauche.y, scale: () => mesurer().echelle, duration: 0.75 },

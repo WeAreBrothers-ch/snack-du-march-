@@ -33,17 +33,6 @@
 
 .broche__apercu img { object-position: 22% 40%; }
 
-/* Les bandes de la photo (mode animé) : chacune est la photo entière,
-   masquée à sa bande, qui glisse en place au défilement (broche.js). La
-   photo d'origine reste dessous pour le mode statique. */
-.broche__tranches,
-.broche__tranche {
-  position: absolute;
-  inset: 0;
-}
-
-.broche__apercu--tranchee > img { visibility: hidden; }
-
 /* L'anatomie ------------------------------------------------------------- */
 
 .anatomie {

@@ -1,6 +1,7 @@
 /* ==========================================================================
    Hero — le nom de la maison de part et d'autre de la photo, qui se
-   rassemble sur une ligne, sur le bandeau bordeaux de l'enseigne
+   rassemble sur une ligne, sur le bandeau bordeaux de l'enseigne posé en
+   travers de la photo
    ========================================================================== */
 
 /* En mode animé, le bloc d'accueil fait deux écrans de haut : le hero reste
@@ -15,6 +16,9 @@ html.anime .hero {
 
 .hero {
   position: relative;
+  /* Les étages ci-dessous (photo, enseigne, nom) restent entre eux : rien
+     ne passe au-dessus de la section qui monte ensuite. */
+  isolation: isolate;
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: clamp(1rem, 3svh, 2rem);
@@ -24,22 +28,31 @@ html.anime .hero {
 }
 
 /* L'enseigne : un aplat bordeaux que le script découpe (clip-path). Au
-   départ, il épouse exactement le cadre de la photo ; au défilement, il
-   s'élargit en un bandeau d'un bord à l'autre de l'écran. */
+   départ, c'est un simple trait au milieu de la photo ; au défilement, il
+   s'ouvre en un bandeau d'un bord à l'autre de l'écran, par-dessus la
+   photo, et le nom vient s'y poser. Trois étages : la photo, l'enseigne, le
+   nom. */
 .hero__enseigne {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 2;
   background: var(--bordeaux);
   visibility: hidden;
   pointer-events: none;
 }
 
-.hero__haut,
-.hero__titre,
-.hero__bas {
+.hero__titre { position: relative; }
+
+.hero__cadre {
   position: relative;
   z-index: 1;
+}
+
+.hero__haut,
+.hero__bas,
+.hero__mot {
+  position: relative;
+  z-index: 3;
 }
 
 /* Haut : l'étiquette et le menu (téléphone), la navigation (grand écran) --- */

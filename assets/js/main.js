@@ -67,7 +67,7 @@ function demarrerAnime(outils) {
       entreeJouee = true;
     }
 
-    initEnseigne(outils);
+    initEnseigne(outils, bureau);
     initHistoire(outils, bureau);
     const nettoyerBroche = initBroche(outils, bureau, planche);
     const nettoyerCarte = initCarte(outils);

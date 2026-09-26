@@ -1,16 +1,15 @@
 /**
  * La broche : l'accroche monte ligne par ligne, et la photo de la broche se
- * monte tranche après tranche : découpée en bandes, elle se reconstitue de
- * bas en haut, chaque bande glissant depuis un côté puis l'autre, au rythme
- * du défilement. Sur grand écran, l'accroche reste ensuite en place (CSS) et
- * recule pendant que le panneau de l'anatomie monte par-dessus.
+ * découvre de bas en haut au rythme du défilement, en reculant depuis un
+ * gros plan ; elle glisse ensuite doucement dans son cadre. Sur grand écran,
+ * l'accroche reste en place (CSS) et recule pendant que le panneau de
+ * l'anatomie monte par-dessus.
  *
- * L'anatomie : le titre monte et la photo se découvre. Sur grand écran, la
- * planche se dessine ensuite d'un seul geste : la légende, les traits qui
- * vont de chaque ingrédient à son repère, les repères eux-mêmes. Sur
- * téléphone, chaque partie se joue en entrant dans l'écran, en une seconde :
- * les repères se posent un à un sur la photo, la légende monte ligne par
- * ligne.
+ * L'anatomie : le panneau bordeaux monte avec un bord en biais ; le titre
+ * monte et la photo se découvre. Sur grand écran, la planche se dessine
+ * ensuite d'un seul geste : la légende, les traits qui vont de chaque
+ * ingrédient à son repère, les repères eux-mêmes. Sur téléphone, une ligne
+ * lit la planche au défilement (lirePlanche).
  */
 
 import { element, elements } from "./lib.js";
@@ -45,15 +44,15 @@ export function initBroche(outils, bureau, planche) {
     ease: "power3.inOut",
   };
 
-  // Sur grand écran, la photo occupe la colonne de droite : elle se monte
+  // Sur grand écran, la photo occupe la colonne de droite : elle se découvre
   // pendant que la section entre dans l'écran. Sur téléphone, elle est sous
-  // le texte : elle se monte pendant qu'elle le traverse.
-  trancher(
+  // le texte : elle se découvre en y entrant.
+  devoiler(
     outils,
     apercu,
     bureau
       ? { trigger: ".broche-bloc", start: "top 85%", end: "top top" }
-      : { trigger: apercu, start: "top 92%", end: "bottom 60%" },
+      : { trigger: apercu, start: "top bottom", end: "center 55%" },
   );
 
   if (bureau) {
@@ -223,56 +222,30 @@ function lirePlanche(outils, photo, points, ingredients) {
   };
 }
 
-/** Nombre de bandes dans la photo de la broche. */
-const TRANCHES = 8;
-
 /**
- * Découpe la photo en bandes horizontales (des copies de la photo, chacune
- * masquée à sa bande) et les fait glisser en place au défilement, de la
- * plus basse à la plus haute, une fois depuis la gauche, une fois depuis la
- * droite. Les bandes ne sont créées qu'une fois, même si la mise en page
- * change.
+ * La photo se découvre de bas en haut au rythme du défilement, et recule
+ * depuis un gros plan pendant qu'elle s'ouvre. Ensuite, tant qu'elle est à
+ * l'écran, elle glisse doucement dans son cadre.
  * @param {import("./lib.js").Outils} outils
  * @param {HTMLElement} apercu
  * @param {{ trigger: string | Element, start: string, end: string }} parcours
  */
-function trancher(outils, apercu, parcours) {
-  let tranches = elements(".broche__tranche", apercu);
+function devoiler(outils, apercu, parcours) {
+  const { gsap } = outils;
+  const image = element("img", apercu);
 
-  if (tranches.length === 0) {
-    const original = element("img", apercu);
-    const pile = document.createElement("div");
-    pile.className = "broche__tranches";
-    pile.setAttribute("aria-hidden", "true");
+  gsap
+    .timeline({ scrollTrigger: { ...parcours, scrub: 0.6 } })
+    .fromTo(apercu, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", ease: "power2.out" }, 0)
+    .fromTo(image, { scale: 1.4 }, { scale: 1.1, ease: "power1.out" }, 0);
 
-    for (let i = 0; i < TRANCHES; i++) {
-      const haut = (i / TRANCHES) * 100;
-      const bas = ((TRANCHES - i - 1) / TRANCHES) * 100;
-      const tranche = document.createElement("div");
-      tranche.className = "broche__tranche";
-      // Un demi-pixel de recouvrement : pas de fil entre deux bandes.
-      tranche.style.clipPath = `inset(calc(${haut}% - 0.5px) 0 calc(${bas}% - 0.5px) 0)`;
-      const copie = /** @type {HTMLImageElement} */ (original.cloneNode(false));
-      copie.alt = "";
-      tranche.appendChild(copie);
-      pile.appendChild(tranche);
-    }
-
-    apercu.appendChild(pile);
-    apercu.classList.add("broche__apercu--tranchee");
-    tranches = elements(".broche__tranche", apercu);
-  }
-
-  const montage = outils.gsap.timeline({
-    defaults: { ease: "power2.out", duration: 1 },
-    scrollTrigger: { ...parcours, scrub: 0.6 },
-  });
-
-  // De bas en haut, en alternant les côtés.
-  tranches
-    .slice()
-    .reverse()
-    .forEach((tranche, rang) => {
-      montage.fromTo(tranche, { xPercent: rang % 2 === 0 ? 102 : -102 }, { xPercent: 0 }, rang * 0.32);
-    });
+  gsap.fromTo(
+    image,
+    { yPercent: -4 },
+    {
+      yPercent: 4,
+      ease: "none",
+      scrollTrigger: { trigger: parcours.trigger, start: "top bottom", end: "bottom top", scrub: true },
+    },
+  );
 }
