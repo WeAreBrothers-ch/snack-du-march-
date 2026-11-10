@@ -1,6 +1,6 @@
 /**
- * Le quartier et les prix : le grand texte craie se dévoile de haut en bas
- * par-dessus sa copie bordeaux, au rythme du défilement. Les photos et les
+ * Le quartier et les prix : le grand texte cobalt se dévoile de haut en bas
+ * par-dessus sa copie pâle, au rythme du défilement. Les photos et les
  * papiers d'avis se posent quand on arrive dessus, puis défilent chacun à
  * sa vitesse : les papiers, posés devant, vont plus vite que les photos.
  */

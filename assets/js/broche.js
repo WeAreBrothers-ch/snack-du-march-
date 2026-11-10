@@ -5,7 +5,7 @@
  * l'accroche reste en place (CSS) et recule pendant que le panneau de
  * l'anatomie monte par-dessus.
  *
- * L'anatomie : le panneau bordeaux monte avec un bord en biais ; le titre
+ * L'anatomie : le panneau cobalt monte avec un bord en biais ; le titre
  * monte et la photo se découvre. Sur grand écran, la planche se dessine
  * ensuite d'un seul geste : la légende, les traits qui vont de chaque
  * ingrédient à son repère, les repères eux-mêmes. Sur téléphone, une ligne

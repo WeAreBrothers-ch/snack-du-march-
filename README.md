@@ -3,8 +3,9 @@
 Site du Snack du Marché, kebab à la broche, Rue Pré-du-Marché 3, 1004 Lausanne.
 
 Le site est **une seule page qui se déroule**, pensée d'abord pour le
-téléphone, et que le défilement anime de bout en bout : le nom qui se
-rassemble sur son enseigne bordeaux, au-dessus de la photo, la vitrine qui
+téléphone, sur un **mur de faïence d'Iznik** (cobalt, turquoise, rouge), et
+que le défilement anime de bout en bout : le nom qui se
+rassemble sur son enseigne cobalt, au-dessus de la photo, la vitrine qui
 s'ouvre sur l'histoire de la maison, la planche d'anatomie qu'une ligne lit
 de haut en bas, la carte à feuilleter au doigt.
 
@@ -42,6 +43,7 @@ index.html          toute la page : textes, prix, plats
 assets/css/         les styles, un fichier par section
 assets/js/          les comportements, un fichier par section
 assets/photos/      les photographies de la maison
+assets/img/         le carreau d'Iznik et ses bordures (tirés de l'image du client)
 favicon.svg         l'icône de l'onglet
 robots.txt          ce que les moteurs de recherche ont le droit de lire
 sitemap.xml         la liste des pages, pour Google
@@ -72,7 +74,7 @@ les repères.
 
 Dans le carrousel, les plats dont la maison n'a pas encore de photo (döner box,
 köfte, falafel, baklava) sont montrés par leur nom, en grand, sur un aplat
-bordeaux. Le jour où une vraie photo existe, on remplace le bloc
+cobalt, dans une arche. Le jour où une vraie photo existe, on remplace le bloc
 `plat__photo--texte` par un `plat__photo` avec l'image, comme pour les autres.
 
 ---
@@ -83,7 +85,7 @@ bordeaux. Le jour où une vraie photo existe, on remplace le bloc
 
 Une seule feuille est liée depuis le HTML : `assets/css/styles.css`. Elle liste
 les fichiers à charger, dans l'ordre : `reset`, `base` (couleurs, polices,
-échelle typographique), `nav`, `hero`, `histoire`, `broche`, `carte`, `prix`,
+échelle typographique, couleurs, motif de faïence, arche), `nav`, `hero`, `histoire`, `broche`, `carte`, `prix`,
 `quartier`, `pied`, `statique` (le mode sans animation) et `pages` (404,
 redirection).
 
@@ -117,6 +119,14 @@ La planche d'anatomie (`assets/js/planche.js`) ne dépend d'aucune librairie :
 sur grand écran, elle trace les traits qui relient la légende aux repères et
 les recalcule dès que la mise en page change ; sur téléphone, la légende
 numérotée se passe de traits.
+
+### La faïence
+
+Le motif et les bordures sont dans `assets/img/`. Les couleurs, la taille du
+motif (`--maille`), sa transparence hors du haut de page (`--mur`), la hauteur
+des bordures (`--bande-h`) et la forme de l'arche (`--arche`) sont des jetons
+en tête de `base.css`. Le drapeau de la Turquie est un symbole SVG au début
+de `index.html` (`#drapeau-tr`). Voir `DIRECTION-ARTISTIQUE.md`.
 
 ### Les polices
 

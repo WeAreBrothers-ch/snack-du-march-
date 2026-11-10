@@ -22,11 +22,11 @@
   transition: color 0.25s var(--sortie), transform 0.16s var(--sortie);
 }
 
-.menu-bouton:hover { color: var(--bordeaux-clair); }
+.menu-bouton:hover { color: var(--turquoise); }
 .menu-bouton:active { transform: scale(0.96); }
 
 /* Le bouton flottant n'apparaît qu'après le hero (classe posée par le script).
-   Une pastille ardoise : lisible sur le fond comme sur les panneaux bordeaux. */
+   Une pastille cobalt, cerclée d'ivoire : lisible sur le mur comme sur les panneaux. */
 .menu-flottant {
   position: fixed;
   top: 0;
@@ -40,12 +40,13 @@
 .menu-flottant .menu-bouton {
   padding: 0.5rem 0.9rem;
   border-radius: 10rem;
-  background: var(--fond);
+  background: var(--cobalt);
   color: var(--craie);
   font-size: 1.125rem;
+  box-shadow: 0 0 0 2px var(--craie), 0 0 0 4px var(--cobalt);
 }
 
-.menu-flottant .menu-bouton:hover { color: var(--bordeaux-clair); }
+.menu-flottant .menu-bouton:hover { color: var(--turquoise); }
 
 .menu-flottant.est-visible { transform: none; }
 
@@ -65,7 +66,7 @@
 .panneau__fond {
   position: absolute;
   inset: 0;
-  background: rgba(18, 22, 21, 0.6);
+  background: rgba(10, 18, 80, 0.6);
 }
 
 .panneau__carte {
@@ -91,12 +92,12 @@
   text-transform: uppercase;
 }
 
-.panneau__lien:hover { color: var(--panneau-tonsurton); }
+.panneau__lien:hover { color: var(--panneau-survol); }
 
 .panneau__tel {
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid var(--trait);
+  border-top: 1px solid var(--panneau-trait);
   font-size: 0.9375rem;
   font-weight: 500;
   font-variant-numeric: tabular-nums;

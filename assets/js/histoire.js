@@ -129,7 +129,10 @@ function initIntro(outils, bureau, pauseIntro) {
     // Pendant la pause, elle s'ouvre jusqu'aux bords, et la photo recule.
     .to(fenetre, { clipPath: "inset(0px 0px 0px 0px round 0px)", duration: 0.8, ease: "power2.inOut" }, 0.85)
     .to(devanture, { scale: 1, duration: 0.85, ease: "power2.out" }, 0.85)
-    .fromTo(fenetre, { "--voile": 0.3 }, { "--voile": 0.5, duration: 0.8 }, 0.85);
+    .fromTo(fenetre, { "--voile": 0.3 }, { "--voile": 0.5, duration: 0.8 }, 0.85)
+    // Le titre, cobalt sur le mur, passe à l'ivoire quand la photo s'ouvre
+    // derrière lui.
+    .to([".histoire__titre", ".histoire__sous"], { color: "#fbf9f2", duration: 0.5 }, 0.9);
 
   if (bureau) {
     // Les photos de l'album s'écartent du centre et s'effacent.

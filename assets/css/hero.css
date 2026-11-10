@@ -1,7 +1,8 @@
 /* ==========================================================================
-   Hero — le nom de la maison de part et d'autre de la photo, qui se
-   rassemble sur une ligne au-dessus d'elle, sur le bandeau bordeaux de
-   l'enseigne
+   Hero — le mur de faïence d'Iznik, encadré par sa bordure cobalt.
+   Le nom de la maison, sur deux plaques de céramique, de part et d'autre de
+   la photo, posée dans une arche. Au défilement, les deux plaques se
+   rassemblent sur une ligne, sur le bandeau cobalt de l'enseigne.
    ========================================================================== */
 
 /* En mode animé, le bloc d'accueil fait deux écrans de haut : le hero reste
@@ -15,19 +16,49 @@ html.anime .hero {
 }
 
 .hero {
+  --gauche: max(var(--marge), (100% - var(--largeur-max)) / 2);
   position: relative;
-  /* Les étages ci-dessous (photo, enseigne, nom) restent entre eux : rien
+  /* Les étages ci-dessous (mur, photo, enseigne, nom) restent entre eux : rien
      ne passe au-dessus de la section qui monte ensuite. */
   isolation: isolate;
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: clamp(1rem, 3svh, 2rem);
+  grid-template-rows: auto auto 1fr auto;
   min-height: var(--ecran-visible);
-  padding: calc(var(--marge) * 0.6) max(var(--marge), (100% - var(--largeur-max)) / 2) var(--marge);
+  padding: 0;
   overflow: hidden;
 }
 
-/* L'enseigne : un aplat bordeaux que le script découpe (clip-path). Au
+/* Le mur : le carreau du client, en plein. Sur grand écran, la bordure
+   descend de chaque côté. */
+.hero__mur {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #f4f4f4 var(--carreau) 50% 0 / var(--maille) auto;
+  pointer-events: none;
+}
+
+.hero__mur::before,
+.hero__mur::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: none;
+  width: clamp(3.25rem, 5vw, 4.75rem);
+  background: var(--bande-v-url) repeat-y 50% 0 / 100% auto;
+  /* Le double filet, du côté du mur. */
+  box-shadow: 3px 0 0 var(--craie), 6px 0 0 var(--cobalt);
+}
+
+.hero__mur::after {
+  left: auto;
+  right: 0;
+  transform: scaleX(-1);
+}
+
+/* L'enseigne : un aplat cobalt que le script découpe (clip-path). Au
    défilement, un bandeau se déroule d'un bord à l'autre de l'écran,
    au-dessus de la photo, et le nom vient s'y poser. Les mots passent devant
    tout le reste. */
@@ -35,7 +66,7 @@ html.anime .hero {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: var(--bordeaux);
+  background: var(--cobalt);
   visibility: hidden;
   pointer-events: none;
 }
@@ -48,24 +79,41 @@ html.anime .hero {
 }
 
 .hero__haut,
+.hero__bande,
 .hero__bas,
 .hero__mot {
   position: relative;
   z-index: 3;
 }
 
-/* Haut : l'étiquette et le menu (téléphone), la navigation (grand écran) --- */
+/* Haut : une barre cobalt, avec l'étiquette et le menu (téléphone) ou la
+   navigation (grand écran), puis la bordure ornée du carreau. ------------- */
 
 .hero__haut {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--gouttiere);
+  padding: 0.7rem var(--gauche);
+  background: var(--cobalt);
+  color: var(--craie);
 }
 
 .hero__lien { display: none; }
 
-.hero__etiquette { white-space: nowrap; }
+.hero__etiquette {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  white-space: nowrap;
+}
+
+.hero__haut a:hover,
+.hero__bas a:hover { color: var(--turquoise); }
+
+.hero__bande {
+  box-shadow: 0 3px 0 var(--craie), 0 6px 0 var(--cobalt);
+}
 
 /* Milieu : le nom et la photo --------------------------------------------- */
 
@@ -74,41 +122,57 @@ html.anime .hero {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.4rem, 1.2svh, 0.9rem);
-  font-size: clamp(3.25rem, 20vw, 8rem);
+  gap: clamp(0.5rem, 1.6svh, 1rem);
+  padding: clamp(1.25rem, 3.5svh, 2.25rem) var(--gauche);
+  font-size: clamp(2.75rem, 16.5vw, 7rem);
   text-align: center;
 }
 
-/* Interligne à peine plus haut que la taille : le masque qui fait monter
-   chaque mot ne doit pas couper l'accent de « Marché ». */
+/* Le nom, sur deux plaques de céramique : lisible sur le motif le plus
+   chargé. Le script les fond dans l'enseigne (hero.js). Interligne à peine
+   plus haut que la taille : le masque qui fait monter chaque mot ne doit
+   pas couper l'accent de « Marché ». */
 .hero__mot {
   display: block;
+  padding: 0.06em 0.2em 0.02em;
   line-height: 0.96;
   white-space: nowrap;
+  color: var(--cobalt);
+  background-color: var(--craie);
+  border: 0.045em solid var(--cobalt);
+  border-radius: 0.14em;
 }
 
-/* La photo, dans un cadre bordeaux épais : la couleur de la maison dès le
-   premier écran. */
+/* La photo, dans une arche (l'arc brisé d'une niche) : un anneau cobalt, un
+   filet d'ivoire, puis la photo. Le masque suit la forme de la boîte. */
 .hero__cadre {
-  --cadre: clamp(0.55rem, 0.35rem + 0.7vw, 1rem);
+  --cadre: clamp(0.5rem, 0.3rem + 0.6vw, 0.9rem);
   display: block;
-  padding: var(--cadre);
-  background: var(--bordeaux);
-  border-radius: calc(var(--rayon) + var(--cadre) * 0.5);
+  padding: var(--cadre) var(--cadre) 0;
+  background: var(--cobalt);
+  -webkit-mask: var(--arche) center / 100% 100% no-repeat;
+  mask: var(--arche) center / 100% 100% no-repeat;
 }
 
-/* La photo prend la hauteur que le nom et les infos laissent libre. */
+/* La photo prend la hauteur que le nom et les barres laissent libre. */
 .hero__image {
   display: block;
-  height: clamp(12rem, calc(var(--ecran-visible) - 25.5rem), 32rem);
+  height: clamp(12rem, calc(var(--ecran-visible) - 27rem), 30rem);
   aspect-ratio: 3 / 4;
+  padding: 0.22rem 0.22rem 0;
   overflow: hidden;
-  border-radius: var(--rayon);
+  background: var(--craie);
+  -webkit-mask: var(--arche) center / 100% 100% no-repeat;
+  mask: var(--arche) center / 100% 100% no-repeat;
 }
 
-.hero__photo { object-position: center 45%; }
+.hero__photo {
+  object-position: center 45%;
+  -webkit-mask: var(--arche) center / 100% 100% no-repeat;
+  mask: var(--arche) center / 100% 100% no-repeat;
+}
 
-/* Bas : ouvert ou fermé, l'adresse, la carte ------------------------------- */
+/* Bas : une barre cobalt — ouvert ou fermé, l'adresse, la carte ----------- */
 
 .hero__bas {
   display: grid;
@@ -118,13 +182,17 @@ html.anime .hero {
     "adresse carte";
   align-items: end;
   gap: 0.4rem var(--gouttiere);
+  padding: 0.85rem var(--gauche) 1rem;
+  background: var(--cobalt);
+  color: var(--craie);
+  box-shadow: 0 -3px 0 var(--craie), 0 -6px 0 var(--cobalt);
 }
 
 .hero__info.etat { grid-area: etat; }
 
 .hero__adresse {
   grid-area: adresse;
-  color: var(--craie-douce);
+  color: var(--panneau-texte-doux);
 }
 
 .hero__descendre {
@@ -146,6 +214,9 @@ html.anime .hero {
 /* Grand écran ------------------------------------------------------------- */
 
 @media (min-width: 992px) {
+  .hero__mur::before,
+  .hero__mur::after { display: block; }
+
   .hero__haut {
     display: grid;
     grid-template-columns: auto auto 1fr auto auto;
@@ -168,16 +239,18 @@ html.anime .hero {
     width: 100%;
     max-width: var(--largeur-max);
     justify-self: center;
-    font-size: min(7.8vw, 8.75rem);
+    /* Entre les bandes latérales de la bordure. */
+    padding-inline: clamp(4.5rem, 7vw, 7rem);
+    font-size: min(6.9vw, 8rem);
   }
 
-  .hero__mot--gauche { justify-self: end; align-self: start; margin-top: -0.06em; }
-  .hero__mot--droite { justify-self: start; align-self: end; margin-bottom: -0.1em; }
+  .hero__mot--gauche { justify-self: end; align-self: start; }
+  .hero__mot--droite { justify-self: start; align-self: end; }
 
   /* Le cadre compris, la photo laisse aux deux mots la place de tenir. */
   .hero__image {
-    height: min(32vw, calc(var(--ecran-visible) - 15rem), 38rem);
-    aspect-ratio: 2 / 3;
+    height: min(30vw, calc(var(--ecran-visible) - 19rem), 36rem);
+    aspect-ratio: 3 / 4;
   }
 
   .hero__bas {

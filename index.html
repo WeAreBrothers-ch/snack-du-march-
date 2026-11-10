@@ -15,10 +15,11 @@
   <meta property="og:url" content="https://snackdumarche.ch/" />
   <meta property="og:image" content="https://snackdumarche.ch/assets/photos/broche-decoupe.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="theme-color" content="#121615" />
+  <meta name="theme-color" content="#1226a0" />
 
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preload" as="image" href="assets/photos/durum-main.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/img/carreau-iznik.webp" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -50,6 +51,16 @@
   <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </head>
 <body>
+  <!-- Le drapeau de la Turquie, défini une fois ; utilisé par <svg class="drapeau">. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="drapeau-tr" viewBox="0 0 90 60">
+      <rect width="90" height="60" fill="#e30a17"/>
+      <circle cx="30" cy="30" r="15" fill="#fff"/>
+      <circle cx="33.75" cy="30" r="12" fill="#e30a17"/>
+      <path fill="#fff" d="M58.00 30.00 L52.82 31.68 L52.82 37.13 L49.61 32.72 L44.43 34.41 L47.64 30.00 L44.43 25.59 L49.61 27.28 L52.82 22.87 L52.82 28.32Z"/>
+    </symbol>
+  </svg>
+
   <a class="saut-contenu" href="#histoire">Aller au contenu</a>
 
   <!-- Menu flottant ------------------------------------------------------- -->
@@ -76,19 +87,22 @@
     <!-- Hero ----------------------------------------------------------------
          En mode animé, le bloc d'accueil fait deux écrans de haut : le hero
          reste épinglé pendant que le nom se rassemble sur une ligne, sur le
-         bandeau bordeaux de l'enseigne. -->
+         bandeau cobalt de l'enseigne. -->
     <div class="accueil" id="accueil">
       <section class="hero">
+        <div class="hero__mur" aria-hidden="true"></div>
         <div class="hero__enseigne" aria-hidden="true"></div>
 
         <div class="hero__haut">
           <a class="hero__lien libelle" href="#histoire">L'histoire</a>
           <a class="hero__lien libelle" href="#broche">La broche</a>
-          <p class="hero__etiquette libelle">Kebab &amp; mezze — Lausanne</p>
+          <p class="hero__etiquette libelle"><svg class="drapeau" aria-hidden="true" focusable="false"><use href="#drapeau-tr"/></svg>Kebab &amp; mezze — Lausanne</p>
           <a class="hero__lien libelle" href="#carte">La carte</a>
           <a class="hero__lien libelle" href="#quartier">Le quartier</a>
           <button class="menu-bouton hero__menu" type="button" data-menu-ouvrir aria-expanded="false" aria-controls="panneau-menu">Menu</button>
         </div>
+
+        <div class="hero__bande bande-h" aria-hidden="true"></div>
 
         <h1 class="hero__titre">
           <span class="hero__mot hero__mot--gauche">Snack du</span>
@@ -193,7 +207,7 @@
     <div class="espace"></div>
 
     <!-- La broche et son anatomie -------------------------------------------
-         Sur grand écran, l'accroche reste en place et le panneau bordeaux de
+         Sur grand écran, l'accroche reste en place et le panneau cobalt de
          l'anatomie monte par-dessus (position: sticky). -->
     <div class="broche-bloc" id="broche">
       <section class="broche" aria-labelledby="titre-broche">
@@ -337,6 +351,7 @@
       <p class="pied__geant"><span class="pied__ligne">Snack</span></p>
       <p class="pied__geant"><span class="pied__ligne">du Marché</span></p>
       <div class="pied__carte" data-pied-carte>
+        <p class="pied__voeu"><svg class="drapeau" aria-hidden="true" focusable="false"><use href="#drapeau-tr"/></svg><span>Afiyet olsun</span></p>
         <p class="pied__adresse">Rue Pré-du-Marché 3<br />1004 Lausanne</p>
         <p class="pied__horaires">Tous les jours<br />11&nbsp;h – 22&nbsp;h</p>
         <a class="pied__tel" href="tel:+41792431113">079&nbsp;243&nbsp;11&nbsp;13</a>

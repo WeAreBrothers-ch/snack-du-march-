@@ -15,20 +15,25 @@
 .broche__accroche {
   max-width: 16ch;
   font-size: clamp(2.5rem, 1rem + 5vw, 7.5rem);
+  color: var(--cobalt);
 }
 
 .broche__texte {
   max-width: 30ch;
   font-size: var(--t-lead);
   line-height: 1.35;
-  color: var(--craie-douce);
+  color: var(--texte-doux);
 }
 
+/* La photo de la broche : un cadre cobalt, un filet d'ivoire, comme un
+   carreau encadré. */
 .broche__apercu {
   position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
+  border: clamp(0.4rem, 0.9vw, 0.7rem) solid var(--cobalt);
   border-radius: var(--rayon);
+  box-shadow: 0 0 0 3px var(--craie), 0 0 0 5px var(--cobalt);
 }
 
 .broche__apercu img { object-position: 22% 40%; }
@@ -38,9 +43,19 @@
 .anatomie {
   position: relative;
   z-index: 1;
-  padding: clamp(3rem, 12vw, 5rem) var(--marge) clamp(3.5rem, 14vw, 6rem);
+  padding: calc(var(--bande-h) + clamp(2rem, 9vw, 4rem)) var(--marge) clamp(3.5rem, 14vw, 6rem);
   background: var(--panneau);
   color: var(--panneau-texte);
+}
+
+/* La bordure du carreau en tête du panneau. */
+.anatomie::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--bande-h);
+  background: var(--bande-h-url) repeat-x 0 50% / auto 100%;
+  box-shadow: 0 3px 0 var(--craie);
 }
 
 /* En mode animé, le panneau monte avec un bord en biais, qui se redresse en
@@ -92,7 +107,7 @@ html.anime .anatomie {
   height: 1.625rem;
   border-radius: 50%;
   background: var(--craie);
-  color: var(--fond);
+  color: var(--nuit);
   font-family: var(--f-titre);
   font-weight: 800;
   font-size: 0.875rem;
@@ -106,7 +121,7 @@ html.anime .anatomie {
   top: var(--y);
   z-index: 2;
   margin: -0.8125rem 0 0 -0.8125rem;
-  box-shadow: 0 0 0 2px var(--bordeaux);
+  box-shadow: 0 0 0 2px var(--cobalt);
 }
 
 /* La légende : deux colonnes de quatre, qui se lisent de haut en bas, entre
@@ -173,7 +188,7 @@ html.anime .anatomie {
   padding: 0.35rem 0.65rem 0.3rem;
   border-radius: 999px;
   background: var(--craie);
-  color: var(--fond);
+  color: var(--nuit);
   font-family: var(--f-titre);
   font-weight: 800;
   font-variation-settings: "wdth" 72;
@@ -198,7 +213,7 @@ html.anime .anatomie {
 
 .planche--lue .planche__point.est-courant {
   scale: 1.25;
-  box-shadow: 0 0 0 2px var(--bordeaux), 0 0 0 4px var(--craie);
+  box-shadow: 0 0 0 2px var(--cobalt), 0 0 0 4px var(--craie);
 }
 
 .planche--lue .planche__ingredient {
@@ -268,7 +283,7 @@ html.anime .anatomie {
     justify-content: center;
     gap: clamp(1rem, 2.5svh, 2rem);
     min-height: var(--ecran);
-    padding: var(--sous-menu) var(--marge) var(--marge);
+    padding: calc(var(--bande-h) + var(--sous-menu) * 0.5) var(--marge) var(--marge);
   }
 
   .anatomie__titre {
@@ -338,7 +353,7 @@ html.anime .anatomie {
     height: 0.875rem;
     margin: -0.4375rem 0 0 -0.4375rem;
     font-size: 0;
-    box-shadow: 0 0 0 3px var(--bordeaux);
+    box-shadow: 0 0 0 3px var(--cobalt);
   }
 
   .planche__traits { display: block; }

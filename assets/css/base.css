@@ -3,23 +3,42 @@
    ========================================================================== */
 
 :root {
-  /* L'ardoise noire de l'enseigne, la craie, et un bordeaux profond en accent.
-     Trois couleurs, jamais plus. */
-  --fond:           #121615;
-  --craie:          #f1efe6;
-  --craie-douce:    rgba(241, 239, 230, 0.72);
-  --bordeaux:       #7b1f2d;
-  --bordeaux-fonce: #5c1521;
-  --bordeaux-clair: #b13a4d; /* la version lisible du bordeaux, pour le texte sur fond noir */
-  --trait:          rgba(241, 239, 230, 0.18);
+  /* La faïence d'Iznik, relevée sur le carreau du client : un cobalt profond,
+     un turquoise, un rouge d'Iznik, sur un blanc de céramique. Le cobalt
+     porte la maison ; le rouge et le turquoise n'ont que de petits rôles. */
+  --cobalt:         #1226a0;
+  --cobalt-fonce:   #0b1778;
+  --nuit:           #0a1250;   /* le bleu le plus sombre : texte, ton sur ton */
+  --turquoise:      #2fa9c4;
+  --rouge:          #d41c0c;   /* le rouge du carreau : prix, survols */
+  --drapeau:        #e30a17;   /* le rouge du drapeau turc, pour le drapeau seul */
 
-  /* Les panneaux pleins (étapes, anatomie, pied de page) : bordeaux, texte craie,
-     et les grands chiffres ton sur ton, en ardoise. */
-  --panneau:            var(--bordeaux);
+  --fond:           #f3eddc;   /* le mur : un ivoire chaud */
+  --craie:          #fbf9f2;   /* la céramique : plaques, papiers, cartouches */
+  --encre:          #0d1553;
+  --texte-doux:     rgba(13, 21, 83, 0.74);
+  --trait:          rgba(18, 38, 160, 0.2);
+
+  /* Les panneaux pleins (étapes, anatomie, pied de page, menu) : cobalt,
+     texte ivoire, et les grands chiffres ton sur ton, en bleu nuit. */
+  --panneau:            var(--cobalt);
   --panneau-texte:      var(--craie);
-  --panneau-texte-doux: rgba(241, 239, 230, 0.82);
-  --panneau-tonsurton:  var(--fond);
-  --panneau-trait:      rgba(241, 239, 230, 0.3);
+  --panneau-texte-doux: rgba(251, 249, 242, 0.84);
+  --panneau-tonsurton:  var(--nuit);
+  --panneau-trait:      rgba(251, 249, 242, 0.34);
+  --panneau-survol:     var(--turquoise);
+
+  /* La faïence en fond. --maille : la largeur d'un motif (un carreau en fait
+     deux de haut). --mur : le motif très atténué, pour tout le site ; il
+     reste plein dans le haut de page et dans les bandes. */
+  --maille: clamp(13rem, 11rem + 9vw, 21rem);
+  --carreau: url("../img/carreau-iznik.webp");
+  --mur: linear-gradient(rgba(243, 237, 220, 0.89), rgba(243, 237, 220, 0.89)), var(--carreau);
+  --bande-h: clamp(2.25rem, 1.8rem + 2vw, 3.5rem);
+  --bande-h-url: url("../img/bande-h.webp");
+  --bande-v-url: url("../img/bande-v.webp");
+  /* L'arche (arc brisé des niches de mihrab) : un masque, étiré à la boîte. */
+  --arche: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 130' preserveAspectRatio='none'%3E%3Cpath d='M0 130V60C0 30 38 24 50 0C62 24 100 30 100 60V130Z'/%3E%3C/svg%3E");
 
   --f-titre: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --f-texte: "DM Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -60,12 +79,13 @@
 
 html {
   background-color: var(--fond);
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
-  background-color: var(--fond);
-  color: var(--craie);
+  background: var(--mur);
+  background-size: auto, var(--maille) auto;
+  color: var(--encre);
   font-family: var(--f-texte);
   font-size: var(--t-corps);
   font-weight: 400;
@@ -84,7 +104,7 @@ html.lenis body { height: auto; }
 .lenis.lenis-stopped { overflow: hidden; }
 
 ::selection {
-  background-color: var(--bordeaux);
+  background-color: var(--cobalt);
   color: var(--craie);
 }
 
@@ -127,11 +147,11 @@ a {
   transition: color 0.25s var(--sortie);
 }
 
-a:hover { color: var(--bordeaux-clair); }
+a:hover { color: var(--rouge); }
 
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--bordeaux-clair);
+  outline: 2px solid var(--turquoise);
   outline-offset: 3px;
 }
 
@@ -149,9 +169,24 @@ section {
 /* --- Utilitaires ---------------------------------------------------------- */
 
 .espace {
+  position: relative;
   width: 100%;
   height: clamp(6rem, 15vw, 15rem);
 }
+
+/* Entre deux sections, un filet de faïence : la bordure du carreau. */
+.espace::after {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto;
+  height: var(--bande-h);
+  transform: translateY(-50%);
+  background: var(--bande-h-url) repeat-x 50% 50% / auto 100%;
+  box-shadow: 0 -3px 0 var(--craie), 0 3px 0 var(--craie);
+}
+
+/* Le pied de page a déjà sa propre bordure : pas de filet juste avant. */
+main > .espace:last-child::after { display: none; }
 
 .visuellement-cache {
   position: absolute;
@@ -171,14 +206,32 @@ section {
   left: 0.5rem;
   z-index: 10000;
   padding: 0.6rem 1rem;
-  background: var(--craie);
-  color: var(--fond);
+  background: var(--cobalt);
+  color: var(--craie);
   font-family: var(--f-titre);
   font-weight: 700;
   transform: translateY(-200%);
 }
 
 .saut-contenu:focus { transform: none; }
+
+/* Le drapeau de la Turquie, en ligne avec le texte (symbole dans index.html). */
+.drapeau {
+  display: inline-block;
+  flex: none;
+  width: 1.5em;
+  height: 1em;
+  vertical-align: -0.12em;
+  border-radius: 0.1em;
+  box-shadow: 0 0 0 1px rgba(10, 18, 80, 0.25);
+}
+
+/* Les bandes ornementales : la bordure du carreau, répétée. */
+.bande-h {
+  display: block;
+  height: var(--bande-h);
+  background: var(--bande-h-url) repeat-x 0 50% / auto 100%;
+}
 
 /* Pastille ouvert / fermé : un point plein quand la maison est ouverte,
    un cercle vide quand elle est fermée. */

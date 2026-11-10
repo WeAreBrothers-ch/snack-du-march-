@@ -9,10 +9,20 @@
   gap: clamp(2rem, 5vw, 4rem);
   width: 100%;
   min-height: var(--ecran-visible);
-  padding: var(--marge);
+  padding: calc(var(--bande-h) + var(--marge)) var(--marge) var(--marge);
   background: var(--panneau);
   color: var(--panneau-texte);
   overflow: hidden;
+}
+
+/* La bordure du carreau, en tête du pied de page. */
+.pied::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--bande-h);
+  background: var(--bande-h-url) repeat-x 0 50% / auto 100%;
+  box-shadow: 0 3px 0 var(--craie);
 }
 
 /* En mode animé, le panneau monte avec un bord en biais (pied.js). */
@@ -54,10 +64,28 @@ html.anime .pied {
   margin-top: 1.5rem;
   padding: clamp(1.25rem, 0.9rem + 1.2vw, 2.25rem);
   background: var(--craie);
-  color: var(--fond);
-  border-radius: 2px;
+  color: var(--cobalt);
+  border: 2px solid var(--cobalt);
+  border-radius: 0.5rem;
+  box-shadow: inset 0 0 0 4px var(--craie), inset 0 0 0 6px var(--cobalt);
   text-align: center;
   rotate: -4deg;
+}
+
+/* « Afiyet olsun » : bon appétit, avec le drapeau. */
+.pied__voeu {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  font-family: var(--f-titre);
+  font-weight: 800;
+  font-variation-settings: "wdth" 80;
+  font-size: var(--t-label);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--rouge);
 }
 
 .pied__adresse,
@@ -71,13 +99,13 @@ html.anime .pied {
 
 .pied__tel {
   padding-top: 0.75em;
-  border-top: 1px solid rgba(18, 22, 21, 0.2);
+  border-top: 1px solid var(--trait);
   font-size: var(--t-corps);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
 
-.pied__tel:hover { color: var(--bordeaux); }
+.pied__tel:hover { color: var(--rouge); }
 
 .pied__bas {
   display: grid;
@@ -88,7 +116,7 @@ html.anime .pied {
 }
 
 .pied__bas a { text-decoration: underline; text-underline-offset: 0.2em; }
-.pied__bas a:hover { color: var(--panneau-tonsurton); }
+.pied__bas a:hover { color: var(--panneau-survol); }
 
 .pied__liens {
   display: flex;

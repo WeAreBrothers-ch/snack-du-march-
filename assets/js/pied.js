@@ -1,5 +1,5 @@
 /**
- * Le pied de page : le panneau bordeaux monte avec un bord en biais, comme
+ * Le pied de page : le panneau cobalt monte avec un bord en biais, comme
  * celui de l'anatomie ; le nom monte en géant depuis le bas au rythme du
  * défilement, et le ticket d'adresse vient se poser dessus.
  */

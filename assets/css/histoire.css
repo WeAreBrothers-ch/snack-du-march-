@@ -24,8 +24,10 @@
   max-width: 22ch;
   font-size: var(--t-lead);
   line-height: 1.3;
-  color: var(--craie-douce);
+  color: var(--texte-doux);
 }
+
+.histoire__titre { color: var(--cobalt); }
 
 .histoire__photos {
   display: grid;
@@ -37,7 +39,9 @@
 .histoire__cadre {
   aspect-ratio: 4 / 5;
   overflow: hidden;
+  border: 0.3rem solid var(--craie);
   border-radius: var(--rayon);
+  box-shadow: 0 0 0 2px var(--cobalt);
 }
 
 /* Les photos de droite descendent d'un cran : l'album se lit en quinconce. */
@@ -71,7 +75,8 @@ html.anime .histoire__intro {
   top: 0;
   /* D'un bord à l'autre de l'écran, par-dessus la marge de la section. */
   margin: calc(var(--marge) * -1) calc(var(--marge) * -1) 0;
-  background: var(--fond);
+  background: var(--mur);
+  background-size: auto, var(--maille) auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,7 +95,7 @@ html.anime .histoire__intro::after {
   position: absolute;
   inset: 0;
   z-index: 3;
-  background: var(--fond);
+  background: var(--nuit);
   opacity: var(--recul, 0);
   pointer-events: none;
 }
@@ -111,7 +116,7 @@ html.anime .histoire__fenetre::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--fond);
+  background: var(--nuit);
   opacity: var(--voile, 0.3);
 }
 
@@ -150,7 +155,7 @@ html.anime .histoire__pause--intro {
   gap: clamp(0.75rem, 2.2svh, 1.5rem);
   height: var(--ecran);
   padding:
-    clamp(1.25rem, 3.5svh, 2.25rem)
+    calc(var(--bande-h) + clamp(0.9rem, 2.6svh, 1.75rem))
     var(--marge)
     calc(var(--ecran) - var(--ecran-visible) + var(--marge));
   overflow: hidden;
@@ -164,6 +169,17 @@ html.anime .histoire__pause--intro {
   height: calc(var(--ecran-visible) * 0.35);
 }
 
+/* La bordure du carreau court en haut de chaque carte : on la voit arriver
+   avant le reste, quand la carte glisse par-dessus la précédente. */
+.etape::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--bande-h);
+  background: var(--bande-h-url) repeat-x 0 50% / auto 100%;
+  box-shadow: 0 3px 0 var(--craie);
+}
+
 /* Un voile sombre, piloté par le script, recouvre la carte du dessous quand la
    suivante glisse par-dessus. Un voile plutôt qu'une transparence : rien ne
    doit apparaître au travers. */
@@ -171,7 +187,7 @@ html.anime .histoire__pause--intro {
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--fond);
+  background: var(--nuit);
   opacity: var(--voile, 0);
   pointer-events: none;
 }
@@ -207,16 +223,16 @@ html.anime .histoire__pause--intro {
   color: var(--panneau-texte-doux);
 }
 
-/* La photo, comme un tirage : un cadre ardoise, des coins doux. Elle prend
+/* La photo, comme un tirage : un cadre ivoire, des coins doux. Elle prend
    toute la hauteur qui reste. */
 .etape__cadre {
   flex: 1;
   min-height: 0;
   width: 100%;
   overflow: hidden;
-  border: clamp(0.3rem, 0.6vw, 0.6rem) solid var(--fond);
+  border: clamp(0.3rem, 0.6vw, 0.6rem) solid var(--craie);
   border-radius: var(--rayon);
-  background: var(--fond);
+  background: var(--craie);
 }
 
 /* La photo prise en paysage garde son format pour être vue en entier, en
@@ -287,7 +303,7 @@ html.anime .histoire__pause--intro {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: calc(var(--gouttiere) * 2);
-    padding: var(--sous-menu) max(var(--marge), (100% - var(--largeur-max)) / 2) var(--marge);
+    padding: calc(var(--bande-h) + var(--sous-menu) * 0.6) max(var(--marge), (100% - var(--largeur-max)) / 2) var(--marge);
   }
 
   /* Le texte est en bas de sa colonne : la carte suivante le recouvrirait
