@@ -16,7 +16,7 @@
   --fond:           #f3eddc;   /* le mur : un ivoire chaud */
   --craie:          #fbf9f2;   /* la céramique : plaques, papiers, cartouches */
   --encre:          #0d1553;
-  --texte-doux:     rgba(13, 21, 83, 0.74);
+  --texte-doux:     rgba(13, 21, 83, 0.88);
   --trait:          rgba(18, 38, 160, 0.2);
 
   /* Les panneaux pleins (étapes, anatomie, pied de page, menu) : cobalt,
@@ -34,7 +34,7 @@
      reste plein dans le haut de page et dans les bandes. */
   --maille: clamp(13rem, 11rem + 9vw, 21rem);
   --carreau: url("../img/carreau-iznik.webp");
-  --mur: linear-gradient(rgba(243, 237, 220, 0.89), rgba(243, 237, 220, 0.89)), var(--carreau);
+  --mur: linear-gradient(rgba(243, 237, 220, 0.74), rgba(243, 237, 220, 0.74)), var(--carreau);
   --bande-h: clamp(2.25rem, 1.8rem + 2vw, 3.5rem);
   --bande-h-url: url("../img/bande-h.webp");
   --bande-v-url: url("../img/bande-v.webp");

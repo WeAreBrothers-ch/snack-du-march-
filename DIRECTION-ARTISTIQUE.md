@@ -56,7 +56,7 @@ Tous tirés de l'image du client (`assets/img/`), débruités en moyennant les
 répétitions du carreau :
 
 - `carreau-iznik.webp` : le motif, sans couture (un motif fait deux carreaux
-  de haut). Plein dans le haut de page ; sous un voile ivoire à 89 % pour le
+  de haut). Plein dans le haut de page ; sous un voile ivoire à 74 % pour le
   reste du site (`--mur`).
 - `bande-h.webp`, `bande-v.webp` : la bordure du carreau, à répéter. En
   filet entre deux sections (`.espace`), en tête de chaque panneau, en haut
