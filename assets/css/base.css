@@ -253,13 +253,11 @@ main > .espace:last-child::after { display: none; }
 
 /* --- Avant que le script ne prenne la main -------------------------------- */
 
-/* Le haut de page attend, caché, que son entrée soit prête à jouer. Si le
+/* Le nom et la photo attendent, cachés, que leur entrée soit prête à jouer (les barres et le mur, eux, sont là d'emblée). Si le
    script tarde, le filet de sécurité (index.html) l'affiche sans son entrée
    (classe « patience ») ; s'il n'arrive pas, le site passe en statique. */
 @media (prefers-reduced-motion: no-preference) {
-  html.js:not(.statique):not(.anime):not(.patience) .hero__haut,
-  html.js:not(.statique):not(.anime):not(.patience) .hero__titre,
-  html.js:not(.statique):not(.anime):not(.patience) .hero__bas {
+  html.js:not(.statique):not(.anime):not(.patience) .hero__titre {
     opacity: 0;
   }
 }

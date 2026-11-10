@@ -1,11 +1,10 @@
 /**
  * Le haut de page.
  *
- * L'entrée : pas de rideau ni de mots qui tournent. Le cadre cobalt apparaît,
- * la photo s'y découvre de bas en haut, comme un store qu'on lève à
- * l'ouverture, et le nom monte de part et d'autre, sur ses plaques de
- * céramique. Une seconde et demie, et le défilement reste libre dès le
- * premier instant.
+ * L'entrée : pas de rideau ni de mots qui tournent. La photo et son cadre se
+ * découvrent de bas en haut, comme un store qu'on lève à l'ouverture, et les
+ * deux plaques du nom apparaissent. Une seconde, et le défilement reste libre
+ * dès le premier instant.
  *
  * L'enseigne : au défilement, le hero reste épinglé. Les deux plaques se
  * rejoignent au-dessus de la photo pour former « Snack du Marché » sur une
@@ -16,7 +15,6 @@
  */
 
 import { element, elements, positionDans, SCRUB } from "./lib.js";
-import { decouperEnLignes } from "./texte.js";
 
 /**
  * Part du bas du haut de page que la section suivante recouvre en montant
@@ -28,34 +26,31 @@ const RECOUVREMENT = 0.22;
 /**
  * Crée et lance l'entrée. Les états de départ sont posés immédiatement, avant
  * que la page ne retire son masque d'attente (classe « anime »).
+ *
+ * Une seule idée : la photo, avec son cadre, se découvre de bas en haut ; les
+ * deux plaques du nom apparaissent à son rythme. Les barres, la bordure et
+ * le mur sont là dès le premier instant : ils ne bougent pas. Rien ne monte
+ * à l'intérieur des plaques (un texte qui sort d'une fente laissait d'abord
+ * des plaques vides).
  * @param {import("./lib.js").Outils} outils
  */
 export function jouerEntree(outils) {
-  const { gsap, SplitText } = outils;
+  const { gsap } = outils;
 
   const cadre = element(".hero__cadre");
-  const image = element(".hero__image");
   const photo = element(".hero__photo");
-  const nom = decouperEnLignes(SplitText, elements(".hero__mot"));
-  const bandeaux = elements(".hero__haut, .hero__bande, .hero__bas");
+  const mots = elements(".hero__mot");
 
   gsap
-    .timeline({ defaults: { ease: "power4.out" } })
-    .fromTo(cadre, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: "power2.out" })
+    .timeline({ defaults: { ease: "power3.out" } })
     .fromTo(
-      image,
+      cadre,
       { clipPath: "inset(100% 0% 0% 0%)" },
-      { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "power3.inOut" },
-      "<0.1",
+      { clipPath: "inset(0% 0% 0% 0%)", duration: 1, ease: "power3.inOut", clearProps: "clipPath" },
+      0,
     )
-    .fromTo(photo, { scale: 1.2 }, { scale: 1, duration: 1.6, ease: "power3.out" }, "<")
-    .fromTo(nom.lines, { yPercent: 120 }, { yPercent: 0, duration: 1, stagger: 0.08 }, "<0.3")
-    .fromTo(
-      bandeaux,
-      { autoAlpha: 0 },
-      { autoAlpha: 1, duration: 0.8, stagger: 0.08, ease: "power2.out" },
-      "<0.35",
-    );
+    .fromTo(photo, { scale: 1.18 }, { scale: 1, duration: 1.4 }, 0)
+    .fromTo(mots, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, stagger: 0.12, ease: "power2.out" }, 0.35);
 }
 
 /**
@@ -64,7 +59,7 @@ export function jouerEntree(outils) {
  * @param {import("./lib.js").Outils} outils
  */
 export function retablirHero(outils) {
-  outils.gsap.set([".hero__haut", ".hero__bande", ".hero__bas", ".hero__cadre", ".hero__image", ".hero__photo"], {
+  outils.gsap.set([".hero__cadre", ".hero__photo", ".hero__mot"], {
     clearProps: "all",
   });
 }
@@ -82,6 +77,7 @@ export function initEnseigne(outils, bureau) {
   const cadre = element(".hero__cadre");
   const gauche = element(".hero__mot--gauche");
   const droite = element(".hero__mot--droite");
+  const nom = element(".hero__enseigne-nom");
 
   const bordure = element(".hero__bande");
   const titre = element(".hero__titre");
@@ -120,8 +116,22 @@ export function initEnseigne(outils, bureau) {
       0.2,
       Math.min(1, (largeur - 2 * marge) / longueur, (dessous - dessus) / (gauche.offsetHeight * 1.4)),
     );
-    const bande = gauche.offsetHeight * echelle * 1.4;
     const centre = (dessus + dessous) / 2;
+    let bande = gauche.offsetHeight * echelle * 1.4;
+    if (!bureau) {
+      // Sur téléphone, le nom est écrit sur l'enseigne même : on le
+      // dimensionne pour qu'il tienne entre les marges et dans la place
+      // au-dessus de la photo.
+      const taille = parseFloat(styleMot.fontSize);
+      nom.style.fontSize = `${taille}px`;
+      const reduction = Math.max(
+        0.2,
+        Math.min(1, (largeur - 2 * marge) / nom.offsetWidth, (dessous - dessus) / (taille * 1.6)),
+      );
+      nom.style.fontSize = `${taille * reduction}px`;
+      nom.style.top = `${centre}px`;
+      bande = taille * reduction * 1.6;
+    }
     const debutLigne = (largeur - longueur * echelle) / 2;
 
     // La photo grandit vers le bas, sans toucher le bandeau du bas ni la
@@ -151,40 +161,58 @@ export function initEnseigne(outils, bureau) {
     };
   }
 
-  gsap
-    .timeline({
-      defaults: { ease: "power2.inOut" },
-      scrollTrigger: {
-        trigger: ".accueil",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: SCRUB,
-        invalidateOnRefresh: true,
-      },
-    })
-    .fromTo(enseigne, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, ease: "none" }, 0)
-    .to(
-      gauche,
-      { x: () => mesurer().gauche.x, y: () => mesurer().gauche.y, scale: () => mesurer().echelle, duration: 0.75 },
-      0.05,
-    )
-    .to(
-      droite,
-      { x: () => mesurer().droite.x, y: () => mesurer().droite.y, scale: () => mesurer().echelle, duration: 0.75 },
-      0.05,
-    )
-    // L'enseigne se déroule depuis le milieu pendant que les mots arrivent.
-    .fromTo(enseigne, { clipPath: () => mesurer().depart }, { clipPath: () => mesurer().arrivee, duration: 0.6 }, 0.3)
-    // La photo reste entière, et prend la place que les mots lui laissent.
-    .fromTo(
-      cadre,
-      { scale: 1, transformOrigin: "50% 0%" },
-      { scale: () => mesurer().croissance, transformOrigin: "50% 0%", duration: 0.8 },
-      0.05,
-    )
+  const scene = gsap.timeline({
+    defaults: { ease: "power2.inOut" },
+    scrollTrigger: {
+      trigger: ".accueil",
+      start: "top top",
+      end: "bottom bottom",
+      scrub: SCRUB,
+      invalidateOnRefresh: true,
+    },
+  });
+
+  scene.fromTo(enseigne, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, ease: "none" }, bureau ? 0 : 0.1);
+
+  if (bureau) {
+    // Les deux plaques glissent jusqu'à leur place sur la ligne.
+    scene
+      .to(
+        gauche,
+        { x: () => mesurer().gauche.x, y: () => mesurer().gauche.y, scale: () => mesurer().echelle, duration: 0.75 },
+        0.05,
+      )
+      .to(
+        droite,
+        { x: () => mesurer().droite.x, y: () => mesurer().droite.y, scale: () => mesurer().echelle, duration: 0.75 },
+        0.05,
+      );
+  } else {
+    // Sur téléphone, rien ne traverse la photo : les plaques s'effacent sur
+    // place, pendant que l'enseigne, nom déjà écrit, s'ouvre derrière.
+    scene.to([gauche, droite], { autoAlpha: 0, duration: 0.35, ease: "power1.in" }, 0.15);
+  }
+
+  // L'enseigne se déroule depuis le milieu.
+  scene.fromTo(
+    enseigne,
+    { clipPath: () => mesurer().depart },
+    { clipPath: () => mesurer().arrivee, duration: 0.6 },
+    bureau ? 0.3 : 0.1,
+  );
+
+  // La photo reste entière, et prend la place que les mots lui laissent.
+  scene.fromTo(
+    cadre,
+    { scale: 1, transformOrigin: "50% 0%" },
+    { scale: () => mesurer().croissance, transformOrigin: "50% 0%", duration: 0.8 },
+    0.05,
+  );
+
+  if (bureau) {
     // La céramique des plaques s'efface, les lettres passent à l'ivoire : le
     // nom est désormais écrit sur l'enseigne.
-    .to(
+    scene.to(
       [gauche, droite],
       {
         backgroundColor: "rgba(251, 249, 242, 0)",
@@ -194,7 +222,9 @@ export function initEnseigne(outils, bureau) {
         ease: "power1.inOut",
       },
       0.4,
-    )
-    // Un temps d'arrêt sur l'enseigne complète avant que la page ne reparte.
-    .to({}, { duration: 0.15 });
+    );
+  }
+
+  // Un temps d'arrêt sur l'enseigne complète avant que la page ne reparte.
+  scene.to({}, { duration: 0.15 });
 }
