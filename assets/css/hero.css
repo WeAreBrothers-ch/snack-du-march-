@@ -176,11 +176,16 @@ html.anime .hero {
   border-radius: calc(var(--rayon) + var(--cadre) * 0.5);
 }
 
-/* La photo prend la hauteur que le nom et les barres laissent libre. */
+/* La photo prend la hauteur que le nom et les barres laissent libre. Sa
+   largeur est écrite (3/4 de la hauteur), pas déduite d'un aspect-ratio :
+   Safari (iPhone) la déduisait autrement du cadre qui l'entoure, qui
+   s'étalait alors sur toute la largeur. */
+.hero__cadre { --photo: clamp(12rem, calc(var(--ecran-visible) - 27rem), 30rem); }
+
 .hero__image {
   display: block;
-  height: clamp(12rem, calc(var(--ecran-visible) - 27rem), 30rem);
-  aspect-ratio: 3 / 4;
+  width: calc(var(--photo) * 0.75);
+  height: var(--photo);
   overflow: hidden;
   border: 0.22rem solid var(--craie);
   border-radius: var(--rayon);
@@ -264,10 +269,7 @@ html.anime .hero {
   .hero__mot--droite { justify-self: start; align-self: end; }
 
   /* Le cadre compris, la photo laisse aux deux mots la place de tenir. */
-  .hero__image {
-    height: min(30vw, calc(var(--ecran-visible) - 19rem), 36rem);
-    aspect-ratio: 3 / 4;
-  }
+  .hero__cadre { --photo: min(30vw, calc(var(--ecran-visible) - 19rem), 36rem); }
 
   .hero__bas {
     grid-template-columns: 1fr auto 1fr;
