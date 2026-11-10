@@ -133,5 +133,9 @@ html.anime .pied {
 }
 
 @media (min-width: 992px) {
+  /* Sur une fenêtre peu haute, le nom doit tenir avec le ticket et la barre
+     du bas dans l'écran : sa taille suit aussi la hauteur. */
+  .pied__geant { font-size: clamp(4rem, min(17.5vw, 19svh), 22rem); }
+
   .pied__carte { width: 23rem; margin-top: -2vw; }
 }

@@ -5,7 +5,7 @@
  * sa vitesse : les papiers, posés devant, vont plus vite que les photos.
  */
 
-import { element, elements } from "./lib.js";
+import { element, elements, SCRUB } from "./lib.js";
 import { decouperEnLignes } from "./texte.js";
 
 /**
@@ -25,7 +25,7 @@ export function initQuartier(outils, bureau) {
         trigger: ".quartier",
         start: bureau ? "top 5%" : "top 40%",
         end: bureau ? "100% 90%" : "100% 80%",
-        scrub: 1,
+        scrub: SCRUB,
       },
     },
   );

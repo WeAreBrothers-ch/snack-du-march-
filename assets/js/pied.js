@@ -4,7 +4,7 @@
  * défilement, et le ticket d'adresse vient se poser dessus.
  */
 
-import { element, elements } from "./lib.js";
+import { element, elements, SCRUB } from "./lib.js";
 
 /** @param {import("./lib.js").Outils} outils */
 export function initPied(outils) {
@@ -23,7 +23,7 @@ export function initPied(outils) {
   gsap
     .timeline({
       defaults: { ease: "none" },
-      scrollTrigger: { trigger: ".pied", start: "top 85%", end: "top 25%", scrub: 0.6 },
+      scrollTrigger: { trigger: ".pied", start: "top 85%", end: "top 25%", scrub: SCRUB },
     })
     .fromTo(elements(".pied__ligne"), { yPercent: 110 }, { yPercent: 0, stagger: 0.25, duration: 1, ease: "power2.out" })
     .fromTo(

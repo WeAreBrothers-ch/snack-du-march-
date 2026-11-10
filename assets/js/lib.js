@@ -38,6 +38,14 @@ export function chargerLibrairies() {
 }
 
 /**
+ * Le lissage des animations liées au défilement. À la souris, Lenis lisse
+ * déjà la molette : un lissage de plus (scrub chiffré) ajouterait de la
+ * traîne. Au doigt, le défilement est natif : un léger lissage gomme les
+ * à-coups des événements de défilement.
+ */
+export const SCRUB = window.matchMedia("(pointer: coarse)").matches ? 0.35 : true;
+
+/**
  * Sélectionne un élément obligatoire. Une erreur claire vaut mieux qu'un
  * `null` qui casse plus loin.
  * @param {string} selecteur

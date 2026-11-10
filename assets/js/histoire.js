@@ -16,7 +16,7 @@
  * l'intro ni sur les cartes : un élément collé fausserait les mesures.
  */
 
-import { element, elements, positionDans } from "./lib.js";
+import { element, elements, positionDans, SCRUB } from "./lib.js";
 import { decouperEnLignes } from "./texte.js";
 
 /**
@@ -112,7 +112,7 @@ function initIntro(outils, bureau, pauseIntro) {
       start: "top 80%",
       endTrigger: pauseIntro,
       end: "bottom bottom",
-      scrub: 0.6,
+      scrub: SCRUB,
       invalidateOnRefresh: true,
     },
   });
@@ -127,12 +127,21 @@ function initIntro(outils, bureau, pauseIntro) {
     )
     .fromTo(devanture, { scale: 1.45 }, { scale: 1.3, duration: 0.8 }, 0)
     // Pendant la pause, elle s'ouvre jusqu'aux bords, et la photo recule.
-    .to(fenetre, { clipPath: "inset(0px 0px 0px 0px round 0px)", duration: 0.8, ease: "power2.inOut" }, 0.85)
+    // Départ explicite : sinon GSAP relit la découpe calculée par le
+    // navigateur, qui abrège « inset(a b c b) » en trois valeurs et confond
+    // alors le bord gauche avec le rayon (l'ouverture partait de travers).
+    .fromTo(
+      fenetre,
+      { clipPath: () => mesurer().vitrine },
+      { clipPath: "inset(0px 0px 0px 0px round 0px)", duration: 0.8, ease: "power2.inOut", immediateRender: false },
+      0.85,
+    )
     .to(devanture, { scale: 1, duration: 0.85, ease: "power2.out" }, 0.85)
     .fromTo(fenetre, { "--voile": 0.3 }, { "--voile": 0.5, duration: 0.8 }, 0.85)
-    // Le titre, cobalt sur le mur, passe à l'ivoire quand la photo s'ouvre
-    // derrière lui.
-    .to([".histoire__titre", ".histoire__sous"], { color: "#fbf9f2", duration: 0.5 }, 0.9);
+    // Le titre, cobalt sur le mur, passe à l'ivoire quand la photo, en
+    // s'ouvrant, arrive derrière lui (et non avant : il resterait pâle sur
+    // le mur).
+    .to([".histoire__titre", ".histoire__sous"], { color: "#fbf9f2", duration: 0.3, ease: "power1.in" }, 1.2);
 
   if (bureau) {
     // Les photos de l'album s'écartent du centre et s'effacent.
@@ -169,7 +178,7 @@ function reculer(outils, panneau, pause, proprietes, bureau) {
     scale: bureau ? 0.9 : 0.94,
     ...proprietes,
     ease: "none",
-    scrollTrigger: { trigger: pause, start: "bottom bottom", end: "bottom top", scrub: 1 },
+    scrollTrigger: { trigger: pause, start: "bottom bottom", end: "bottom top", scrub: SCRUB },
   });
 }
 

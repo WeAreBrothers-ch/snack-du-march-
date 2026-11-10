@@ -15,7 +15,7 @@
  * elle grandit un peu vers le bas, dans la place que les mots lui laissent.
  */
 
-import { element, elements, positionDans } from "./lib.js";
+import { element, elements, positionDans, SCRUB } from "./lib.js";
 import { decouperEnLignes } from "./texte.js";
 
 /**
@@ -143,9 +143,9 @@ export function initEnseigne(outils, bureau) {
           (posDroite.x + droite.offsetWidth / 2),
         y: centre - (posDroite.y + droite.offsetHeight / 2),
       },
-      // Découpes de l'enseigne : un bandeau sans largeur au milieu de
-      // l'écran, qui se déroule jusqu'aux bords.
-      depart: `inset(${centre - bande / 2}px ${largeur / 2}px ${hauteur - centre - bande / 2}px ${largeur / 2}px)`,
+      // Découpes de l'enseigne : un point au milieu de l'écran (et non une
+      // fente haute comme le bandeau), qui s'ouvre en bandeau jusqu'aux bords.
+      depart: `inset(${centre}px ${largeur / 2}px ${hauteur - centre}px ${largeur / 2}px)`,
       arrivee: `inset(${centre - bande / 2}px 0px ${hauteur - centre - bande / 2}px 0px)`,
     };
   }
@@ -157,7 +157,7 @@ export function initEnseigne(outils, bureau) {
         trigger: ".accueil",
         start: "top top",
         end: "bottom bottom",
-        scrub: 1,
+        scrub: SCRUB,
         invalidateOnRefresh: true,
       },
     })

@@ -233,8 +233,8 @@ html.anime .hero {
     max-width: var(--largeur-max);
     justify-self: center;
     /* Entre les bandes latérales de la bordure. */
-    padding-inline: clamp(4.5rem, 7vw, 7rem);
-    font-size: min(6.9vw, 8rem);
+    padding-inline: clamp(4.25rem, 6vw, 7rem);
+    font-size: min(6.1vw, 8rem);
   }
 
   .hero__mot--gauche { justify-self: end; align-self: start; }

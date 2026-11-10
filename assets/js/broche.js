@@ -12,7 +12,7 @@
  * lit la planche au défilement (lirePlanche).
  */
 
-import { element, elements } from "./lib.js";
+import { element, elements, SCRUB } from "./lib.js";
 import { decouperEnLignes } from "./texte.js";
 
 /**
@@ -61,7 +61,7 @@ export function initBroche(outils, bureau, planche) {
       scale: 0.94,
       autoAlpha: 0.4,
       ease: "none",
-      scrollTrigger: { trigger: ".anatomie", start: "top bottom", end: "top top", scrub: 1 },
+      scrollTrigger: { trigger: ".anatomie", start: "top bottom", end: "top top", scrub: SCRUB },
     });
   }
 
@@ -235,7 +235,7 @@ function devoiler(outils, apercu, parcours) {
   const image = element("img", apercu);
 
   gsap
-    .timeline({ scrollTrigger: { ...parcours, scrub: 0.6 } })
+    .timeline({ scrollTrigger: { ...parcours, scrub: SCRUB } })
     .fromTo(apercu, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", ease: "power2.out" }, 0)
     .fromTo(image, { scale: 1.4 }, { scale: 1.1, ease: "power1.out" }, 0);
 

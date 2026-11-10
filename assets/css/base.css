@@ -27,6 +27,7 @@
   --panneau-tonsurton:  var(--nuit);
   --panneau-trait:      rgba(251, 249, 242, 0.34);
   --panneau-survol:     var(--turquoise);
+  --panneau-accent:     #7fd4e8;   /* turquoise clair : les années, lisibles sur le cobalt */
 
   /* La faïence en fond. --maille : la largeur d'un motif (un carreau en fait
      deux de haut). --mur : le motif très atténué, pour tout le site ; il
