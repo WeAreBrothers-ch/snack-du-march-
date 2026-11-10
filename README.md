@@ -74,7 +74,7 @@ les repères.
 
 Dans le carrousel, les plats dont la maison n'a pas encore de photo (döner box,
 köfte, falafel, baklava) sont montrés par leur nom, en grand, sur un aplat
-cobalt, dans une arche. Le jour où une vraie photo existe, on remplace le bloc
+cobalt. Le jour où une vraie photo existe, on remplace le bloc
 `plat__photo--texte` par un `plat__photo` avec l'image, comme pour les autres.
 
 ---
@@ -85,7 +85,7 @@ cobalt, dans une arche. Le jour où une vraie photo existe, on remplace le bloc
 
 Une seule feuille est liée depuis le HTML : `assets/css/styles.css`. Elle liste
 les fichiers à charger, dans l'ordre : `reset`, `base` (couleurs, polices,
-échelle typographique, couleurs, motif de faïence, arche), `nav`, `hero`, `histoire`, `broche`, `carte`, `prix`,
+échelle typographique, couleurs, motif de faïence), `nav`, `hero`, `histoire`, `broche`, `carte`, `prix`,
 `quartier`, `pied`, `statique` (le mode sans animation) et `pages` (404,
 redirection).
 
@@ -124,7 +124,7 @@ numérotée se passe de traits.
 
 Le motif et les bordures sont dans `assets/img/`. Les couleurs, la taille du
 motif (`--maille`), sa transparence hors du haut de page (`--mur`), la hauteur
-des bordures (`--bande-h`) et la forme de l'arche (`--arche`) sont des jetons
+des bordures (`--bande-h`) sont des jetons
 en tête de `base.css`. Le drapeau de la Turquie est un symbole SVG au début
 de `index.html` (`#drapeau-tr`). Voir `DIRECTION-ARTISTIQUE.md`.
 

@@ -37,8 +37,6 @@
   --bande-h: clamp(2.25rem, 1.8rem + 2vw, 3.5rem);
   --bande-h-url: url("../img/bande-h.webp");
   --bande-v-url: url("../img/bande-v.webp");
-  /* L'arche (arc brisé des niches de mihrab) : un masque, étiré à la boîte. */
-  --arche: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 130' preserveAspectRatio='none'%3E%3Cpath d='M0 130V60C0 30 38 24 50 0C62 24 100 30 100 60V130Z'/%3E%3C/svg%3E");
 
   --f-titre: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --f-texte: "DM Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;

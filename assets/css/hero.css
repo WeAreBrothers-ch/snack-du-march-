@@ -1,7 +1,7 @@
 /* ==========================================================================
    Hero — le mur de faïence d'Iznik, encadré par sa bordure cobalt.
    Le nom de la maison, sur deux plaques de céramique, de part et d'autre de
-   la photo, posée dans une arche. Au défilement, les deux plaques se
+   la photo. Au défilement, les deux plaques se
    rassemblent sur une ligne, sur le bandeau cobalt de l'enseigne.
    ========================================================================== */
 
@@ -143,15 +143,14 @@ html.anime .hero {
   border-radius: 0.14em;
 }
 
-/* La photo, dans une arche (l'arc brisé d'une niche) : un anneau cobalt, un
-   filet d'ivoire, puis la photo. Le masque suit la forme de la boîte. */
+/* La photo, dans un cadre cobalt aux coins doux, avec un filet d'ivoire
+   autour d'elle, comme un carreau encadré. */
 .hero__cadre {
   --cadre: clamp(0.5rem, 0.3rem + 0.6vw, 0.9rem);
   display: block;
-  padding: var(--cadre) var(--cadre) 0;
+  padding: var(--cadre);
   background: var(--cobalt);
-  -webkit-mask: var(--arche) center / 100% 100% no-repeat;
-  mask: var(--arche) center / 100% 100% no-repeat;
+  border-radius: calc(var(--rayon) + var(--cadre) * 0.5);
 }
 
 /* La photo prend la hauteur que le nom et les barres laissent libre. */
@@ -159,18 +158,12 @@ html.anime .hero {
   display: block;
   height: clamp(12rem, calc(var(--ecran-visible) - 27rem), 30rem);
   aspect-ratio: 3 / 4;
-  padding: 0.22rem 0.22rem 0;
   overflow: hidden;
-  background: var(--craie);
-  -webkit-mask: var(--arche) center / 100% 100% no-repeat;
-  mask: var(--arche) center / 100% 100% no-repeat;
+  border: 0.22rem solid var(--craie);
+  border-radius: var(--rayon);
 }
 
-.hero__photo {
-  object-position: center 45%;
-  -webkit-mask: var(--arche) center / 100% 100% no-repeat;
-  mask: var(--arche) center / 100% 100% no-repeat;
-}
+.hero__photo { object-position: center 45%; }
 
 /* Bas : une barre cobalt — ouvert ou fermé, l'adresse, la carte ----------- */
 

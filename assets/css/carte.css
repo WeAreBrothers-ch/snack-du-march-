@@ -89,9 +89,7 @@
   max-height: 48svh;
   margin-bottom: 0.6rem;
   overflow: hidden;
-  /* Chaque plat dans sa niche : l'arche, comme la photo du haut de page. */
-  -webkit-mask: var(--arche) center / 100% 100% no-repeat;
-  mask: var(--arche) center / 100% 100% no-repeat;
+  border-radius: var(--rayon);
 }
 
 /* Les plats dont la maison n'a pas encore de photo : leur nom, ton sur ton,

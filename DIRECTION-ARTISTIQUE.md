@@ -25,11 +25,10 @@ d'Iznik, plein dans le haut de page, très pâle partout ailleurs.
 - **Le P'tit Central** (lepetitcentral.ch) : un bistrot de quartier, des
   carreaux bleu et blanc, un ton posé. On garde l'idée d'une maison qui vit
   sous ses carreaux ; on ne copie ni sa mise en page ni ses textes. L'identité
-  du Snack est plus affirmée : le cobalt franc, l'arche, la bordure.
+  du Snack est plus affirmée : le cobalt franc, la bordure.
 - **Bánh Mì Vietnam**, la référence de la version précédente, reste celle du
   rythme : sections épinglées, animations au défilement.
-- Pour l'arche et le hero : le masque en arche de 21st (« SVG Clip Mask ») et
-  les héros à photo en arche vus sur Mobbin.
+- Pour le hero et la carte : les héros à photo encadrée et les menus à prix alignés vus sur Mobbin.
 
 ## Palette
 
@@ -38,7 +37,7 @@ n'ont que de petits rôles.
 
 | Jeton | Valeur | Rôle |
 |---|---|---|
-| `--cobalt` | `#1226a0` | Barres et bordures, panneaux pleins (étapes, anatomie, pied de page, menu), titres de section, boutons, anneau des arches |
+| `--cobalt` | `#1226a0` | Barres et bordures, panneaux pleins (étapes, anatomie, pied de page, menu), titres de section, boutons, cadre de la photo du haut de page |
 | `--cobalt-fonce` | `#0b1778` | Réserve |
 | `--nuit` | `#0a1250` | Le bleu le plus sombre : ton sur ton sur les panneaux (années, nom en pied de page), voiles |
 | `--turquoise` | `#2fa9c4` | Survols sur cobalt, focus. Rien d'autre |
@@ -63,10 +62,8 @@ répétitions du carreau :
   filet entre deux sections (`.espace`), en tête de chaque panneau, en haut
   du hero ; sur grand écran, sur les côtés du hero.
 - Le **drapeau de la Turquie** est un symbole SVG défini dans `index.html`
-  (`#drapeau-tr`), utilisé dans l'étiquette du hero et sur le ticket du pied
-  de page. Pas plus : c'est un clin d'œil, pas un décor.
-- L'**arche** (arc brisé de niche) est un masque SVG, `--arche` dans
-  `base.css`.
+  (`#drapeau-tr`), utilisé sur le ticket du pied de page. Pas dans la
+  navigation, pas plus : c'est un clin d'œil, pas un décor.
 
 ## Typographie
 
@@ -99,16 +96,16 @@ il reste centré, les panneaux cobalt continuent d'aller d'un bord à l'autre.
 
 ## Les gestes du site
 
-1. **Le hero** : le carreau en plein, encadré par ses barres cobalt (en haut l'étiquette avec le drapeau et le menu, puis la bordure ornée ; en bas ouvert ou fermé, l'adresse, la carte). Le nom, sur deux plaques de céramique, de part et d'autre de la photo, posée dans une arche. Pas de rideau : la page est là tout de suite, la photo se découvre de bas en haut, comme un store qu'on lève à l'ouverture, et le nom monte. Une seconde et demie.
+1. **Le hero** : le carreau en plein, encadré par ses barres cobalt (en haut l'étiquette et le menu, puis la bordure ornée ; en bas ouvert ou fermé, l'adresse, la carte). Le nom, sur deux plaques de céramique, de part et d'autre de la photo, dans son cadre cobalt. Pas de rideau : la page est là tout de suite, la photo se découvre de bas en haut, comme un store qu'on lève à l'ouverture, et le nom monte. Une seconde et demie.
    **L'enseigne** : au premier défilement, le hero reste épinglé ; les deux plaques se rejoignent au-dessus de la photo pour former « Snack du Marché » sur une seule ligne, sur un bandeau cobalt qui se déroule depuis le milieu : la céramique s'efface, les lettres passent à l'ivoire. La photo reste entière et grandit un peu vers le bas.
 2. **L'histoire : on entre dans la maison.** Le titre, et sous lui une vitrine où la devanture se découvre. Pendant une courte pause, la vitrine s'ouvre jusqu'aux bords de l'écran et la photo recule, comme si l'on passait la porte ; le titre, cobalt sur le mur, passe à l'ivoire (sur grand écran, les photos de l'album posées autour s'écartent). Puis trois cartes cobalt, chacune coiffée de la bordure du carreau, glissent par-dessus, l'une après l'autre (1998, 2018, 2026), et chacune, la dernière comprise, reste le temps d'être lue ; l'année en bleu nuit géante arrive de la droite, la photo bouge dans son cadre.
 3. **La broche** : la photo se découvre de bas en haut au rythme du défilement, en reculant depuis un gros plan, puis glisse doucement dans son cadre.
 4. **L'anatomie** : le panneau cobalt monte avec un bord en biais, qui se redresse en arrivant. La vraie photo du veau-agneau, huit repères posés sur les ingrédients, la légende numérotée. Sur téléphone, une ligne craie lit la planche : elle reste au milieu de l'écran pendant que la photo passe dessous, chaque repère s'allume quand elle le croise, avec son ingrédient dans la légende, et une étiquette le nomme. Pas un écran de plus à faire défiler. Sur grand écran, une planche comme dans un livre de sciences naturelles : la légende de part et d'autre, reliée à chaque repère par un trait qui se dessine.
-5. **La carte** : « Tout est fait maison » en grand ; tant qu'il est à l'écran, ses lignes glissent en sens contraires. Puis le carrousel des plats, qu'on feuillette au doigt : chaque plat dans sa niche (l'arche).
+5. **La carte** : « Tout est fait maison » en grand ; tant qu'il est à l'écran, ses lignes glissent en sens contraires. Puis le carrousel des plats, qu'on feuillette au doigt
 6. **Le grand texte du quartier** : la copie cobalt se dévoile de haut en bas sur sa copie cobalt pâle ; les photos et les avis défilent chacun à sa vitesse.
 7. **Le pied de page** : le panneau cobalt monte en biais, le nom monte en géant au rythme du défilement, le ticket d'adresse (« Afiyet olsun », avec le drapeau) se pose sur le bas des lettres.
 
-Un seul élément décoratif par section : la bordure en tête, ou l'arche, jamais les deux sur le même bloc.
+Un seul élément décoratif par section : la bordure en tête, ou le cadre cobalt.
 
 ## Le téléphone d'abord
 
@@ -129,10 +126,10 @@ Le site se pense sur un téléphone, puis s'élargit.
 ## Photographies
 
 Toujours en rectangle à coins doux (`--rayon`), jamais en rond. En couleur,
-jamais de noir et blanc. Les étapes ont un cadre ivoire, comme un tirage ; les photos du quartier un filet cobalt ; celles du haut de page et des plats sont dans une arche.
+jamais de noir et blanc. Les étapes ont un cadre ivoire, comme un tirage ; les photos du quartier un filet cobalt ; celle du haut de page a un cadre cobalt.
 
 Une photo montre ce qu'elle dit : un plat sans photo est présenté par son nom,
-en grand, sur un aplat cobalt dans l'arche, jamais par la photo d'un autre plat.
+en grand, sur un aplat cobalt, jamais par la photo d'un autre plat.
 
 ## Mouvement
 

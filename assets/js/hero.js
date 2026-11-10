@@ -1,7 +1,7 @@
 /**
  * Le haut de page.
  *
- * L'entrée : pas de rideau ni de mots qui tournent. L'arche cobalt apparaît,
+ * L'entrée : pas de rideau ni de mots qui tournent. Le cadre cobalt apparaît,
  * la photo s'y découvre de bas en haut, comme un store qu'on lève à
  * l'ouverture, et le nom monte de part et d'autre, sur ses plaques de
  * céramique. Une seconde et demie, et le défilement reste libre dès le
