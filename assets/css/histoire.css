@@ -67,6 +67,18 @@ html.anime .histoire {
   margin-top: calc(var(--ecran) * -0.15);
 }
 
+/* La jonction avec le haut de page : au lieu d'une coupe franche entre le
+   motif plein et le motif voilé, le motif plein se voile peu à peu, jusqu'au
+   même voile que le mur d'en dessous. */
+html.anime .histoire::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 100%;
+  height: clamp(3rem, 7svh, 4.5rem);
+  background: linear-gradient(rgba(243, 237, 220, 0), var(--voile-mur));
+  pointer-events: none;
+}
+
 /* L'espace qui sépare d'habitude les sections n'a pas lieu d'être ici. */
 html.anime .accueil + .espace { display: none; }
 

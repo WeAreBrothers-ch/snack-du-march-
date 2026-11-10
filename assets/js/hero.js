@@ -20,9 +20,10 @@ import { decouperEnLignes } from "./texte.js";
 
 /**
  * Part du bas du haut de page que la section suivante recouvre en montant
- * (histoire.css) : la photo, en grandissant, s'arrête au-dessus.
+ * (histoire.css, 15 %), plus la jonction en dégradé qui la précède : la
+ * photo, en grandissant, s'arrête au-dessus.
  */
-const RECOUVREMENT = 0.15;
+const RECOUVREMENT = 0.22;
 
 /**
  * Crée et lance l'entrée. Les états de départ sont posés immédiatement, avant

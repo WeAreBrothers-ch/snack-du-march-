@@ -34,7 +34,8 @@
      reste plein dans le haut de page et dans les bandes. */
   --maille: clamp(13rem, 11rem + 9vw, 21rem);
   --carreau: url("../img/carreau-iznik.webp");
-  --mur: linear-gradient(rgba(243, 237, 220, 0.74), rgba(243, 237, 220, 0.74)), var(--carreau);
+  --voile-mur: rgba(243, 237, 220, 0.6);
+  --mur: linear-gradient(var(--voile-mur), var(--voile-mur)), var(--carreau);
   --bande-h: clamp(2.25rem, 1.8rem + 2vw, 3.5rem);
   --bande-h-url: url("../img/bande-h.webp");
   --bande-v-url: url("../img/bande-v.webp");
