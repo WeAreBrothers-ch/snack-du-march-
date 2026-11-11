@@ -60,11 +60,9 @@
 .tableau thead th {
   vertical-align: bottom;
   font-family: var(--f-titre);
-  font-weight: 800;
-  font-variation-settings: "wdth" 78;
-  font-size: clamp(0.875rem, 0.7rem + 0.9vw, 1.25rem);
+  font-weight: 700;
+  font-size: clamp(0.8125rem, 0.65rem + 0.9vw, 1.2rem);
   line-height: 1.1;
-  text-transform: uppercase;
   border-bottom: 2px solid var(--cobalt);
   color: var(--cobalt);
 }
@@ -80,7 +78,6 @@
 .tableau td {
   font-family: var(--f-titre);
   font-weight: 900;
-  font-variation-settings: "wdth" 82;
   font-size: clamp(1.25rem, 0.95rem + 1.2vw, 2.25rem);
   line-height: 1;
 }
@@ -103,7 +100,6 @@
 .prix__extras li span:last-child {
   font-family: var(--f-titre);
   font-weight: 900;
-  font-variation-settings: "wdth" 82;
   font-size: clamp(1.125rem, 0.9rem + 0.9vw, 1.75rem);
   line-height: 1;
   font-variant-numeric: tabular-nums;

@@ -43,8 +43,7 @@ html.anime .pied {
   overflow: hidden;
   font-family: var(--f-titre);
   font-weight: 900;
-  font-variation-settings: "wdth" 70;
-  font-size: clamp(4rem, 17.5vw, 22rem);
+  font-size: clamp(3rem, 12.4vw, 15rem);
   line-height: 1;
   margin-bottom: -0.12em;
   text-align: center;
@@ -80,7 +79,6 @@ html.anime .pied {
   gap: 0.55em;
   font-family: var(--f-titre);
   font-weight: 800;
-  font-variation-settings: "wdth" 80;
   font-size: var(--t-label);
   line-height: 1;
   letter-spacing: 0.02em;
@@ -92,7 +90,6 @@ html.anime .pied {
 .pied__horaires {
   font-family: var(--f-titre);
   font-weight: 700;
-  font-variation-settings: "wdth" 85;
   font-size: clamp(1.25rem, 1rem + 0.8vw, 1.875rem);
   line-height: 1.12;
 }
@@ -135,7 +132,7 @@ html.anime .pied {
 @media (min-width: 992px) {
   /* Sur une fenêtre peu haute, le nom doit tenir avec le ticket et la barre
      du bas dans l'écran : sa taille suit aussi la hauteur. */
-  .pied__geant { font-size: clamp(4rem, min(17.5vw, 19svh), 22rem); }
+  .pied__geant { font-size: clamp(3.5rem, min(12.4vw, 16svh), 15rem); }
 
   .pied__carte { width: 23rem; margin-top: -2vw; }
 }

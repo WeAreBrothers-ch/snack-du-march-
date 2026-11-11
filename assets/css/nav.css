@@ -13,7 +13,6 @@
 .menu-bouton {
   font-family: var(--f-titre);
   font-weight: 900;
-  font-variation-settings: "wdth" 80;
   font-size: 1.375rem;
   line-height: 1;
   text-transform: uppercase;
@@ -87,7 +86,6 @@
 .panneau__lien {
   font-family: var(--f-titre);
   font-weight: 900;
-  font-variation-settings: "wdth" 80;
   font-size: 1.5rem;
   line-height: 1.1;
   text-transform: uppercase;

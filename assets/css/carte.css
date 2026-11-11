@@ -13,7 +13,7 @@
   align-items: center;
   gap: 0.08em;
   padding: 0 var(--marge);
-  font-size: clamp(3.5rem, 18vw, 11rem);
+  font-size: clamp(2.6rem, 13.2vw, 8rem);
   line-height: 0.9;
   color: var(--cobalt);
 }
@@ -125,18 +125,15 @@
   padding: 0 4cqi 3cqi;
   font-family: var(--f-titre);
   font-weight: 900;
-  font-variation-settings: "wdth" 68;
-  font-size: calc(92cqi / var(--mot, 3.6));
+  font-size: calc(92cqi / var(--mot, 4));
   line-height: 0.8;
-  letter-spacing: -0.02em;
   text-transform: uppercase;
   white-space: nowrap;
   color: var(--panneau-tonsurton);
 }
 
 .plat__nom {
-  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.5rem);
-  font-variation-settings: "wdth" 75;
+  font-size: clamp(1.3rem, 1rem + 1vw, 2.1rem);
   text-transform: uppercase;
   color: var(--cobalt);
 }
@@ -150,7 +147,6 @@
 .plat__prix {
   font-family: var(--f-titre);
   font-weight: 900;
-  font-variation-settings: "wdth" 80;
   font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.5rem);
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
@@ -203,14 +199,14 @@
 }
 
 @media (min-width: 768px) {
-  .carte__titre { font-size: min(13vw, 11rem); }
+  .carte__titre { font-size: min(9.6vw, 8rem); }
   .carte__vignette { display: block; }
 }
 
 /* Grand écran : le texte et les flèches en tête, les plats dessous ; la
    piste déborde jusqu'au bord droit de l'écran, le plat suivant s'y devine. */
 @media (min-width: 992px) {
-  .carte__titre { font-size: min(10vw, 12rem); }
+  .carte__titre { font-size: min(7.4vw, 8.75rem); }
   .carrousel { --visibles: 3.25; --ecart: 1.5rem; }
 
   .carrousel {

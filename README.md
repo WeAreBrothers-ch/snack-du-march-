@@ -44,7 +44,7 @@ assets/css/         les styles, un fichier par section
 assets/js/          les comportements, un fichier par section
 assets/photos/      les photographies de la maison
 assets/img/         le carreau d'Iznik et ses bordures (tirés de l'image du client)
-assets/fonts/       les polices (Archivo, DM Sans), hébergées avec le site
+assets/fonts/       les polices (Zodiak, Gambetta), hébergées avec le site
 assets/vendor/      GSAP et Lenis, hébergés avec le site (voir LISEZ-MOI.md)
 favicon.svg         l'icône de l'onglet
 robots.txt          ce que les moteurs de recherche ont le droit de lire
@@ -141,11 +141,18 @@ de `index.html` (`#drapeau-tr`). Voir `DIRECTION-ARTISTIQUE.md`.
 
 ### Les polices
 
-- **Archivo** (titres, chiffres, libellés), en version condensée très grasse.
-- **DM Sans** (corps de texte).
+Deux serifs de [Fontshare](https://www.fontshare.com) (licence ITF Free Font
+License : usage libre, web compris), hébergées avec le site (`assets/fonts/`,
+déclarées dans `assets/css/polices.css`, préchargées par `index.html`) :
 
-Les deux sont hébergées avec le site (`assets/fonts/`, version variable,
-déclarées dans `assets/css/polices.css`) et préchargées par `index.html`.
+- **Zodiak** (titres, chiffres, libellés), graisses 700 et 900.
+- **Gambetta** (texte courant), graisses 400 et 500.
+
+Quatre fichiers, ~80 Ko. Pour changer de police : remplacer les fichiers,
+`polices.css` et les deux variables `--f-titre` / `--f-texte` de `base.css`,
+puis recaler l'échelle `--t-*` (les serifs sont plus larges que l'ancien
+grotesque condensé) et les largeurs `--mot` des plats sans photo dans
+`index.html` (largeur du mot en multiples de la taille, en Zodiak 900).
 
 ### La performance sur téléphone
 

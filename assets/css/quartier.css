@@ -54,9 +54,9 @@
 .papier blockquote {
   font-family: var(--f-titre);
   font-weight: 700;
-  font-variation-settings: "wdth" 85;
-  font-size: clamp(1.0625rem, 0.8rem + 1.1vw, 1.875rem);
-  line-height: 1.15;
+  font-size: clamp(0.9375rem, 0.7rem + 1vw, 1.6rem);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .papier figcaption {
@@ -78,8 +78,7 @@
   max-width: 100rem;
   font-family: var(--f-titre);
   font-weight: 900;
-  font-variation-settings: "wdth" 75;
-  font-size: clamp(2.75rem, 10vw, 13rem);
+  font-size: clamp(2.1rem, 7.2vw, 9rem);
   line-height: 1.02;
   letter-spacing: -0.01em;
   text-align: center;

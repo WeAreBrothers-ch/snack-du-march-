@@ -44,18 +44,22 @@
   --bande-h-url: url("../img/bande-h.webp");
   --bande-v-url: url("../img/bande-v.webp");
 
-  --f-titre: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --f-texte: "DM Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --f-titre: "Zodiak", Georgia, "Times New Roman", serif;
+  --f-texte: "Gambetta", Georgia, "Times New Roman", serif;
 
   /* Échelle typographique fluide. Tout grandit avec l'écran, le texte courant
      aussi : c'est ce qui garde la proportion entre les titres, les photos et
      les paragraphes, du téléphone au grand écran. */
-  --t-petit: clamp(0.875rem, 0.83rem + 0.2vw, 1rem);        /* 14 → 16 px */
-  --t-corps: clamp(1.0625rem, 0.98rem + 0.25vw, 1.25rem);   /* 17 → 20 px */
-  --t-lead:  clamp(1.1875rem, 0.95rem + 1vw, 2rem);         /* 19 → 32 px */
-  --t-label: clamp(1rem, 0.9rem + 0.3vw, 1.25rem);          /* 16 → 20 px */
-  --t-h3:    clamp(2.25rem, 1.5rem + 3.2vw, 5rem);          /* 36 → 80 px */
-  --t-h2:    clamp(2.75rem, 1.4rem + 6.4vw, 9.5rem);        /* 47 → 152 px */
+  /* Calée sur Zodiak et Gambetta : deux serifs, plus larges que l'ancien
+     grotesque condensé en capitales (les titres sont donc plus petits), au
+     « œil » un peu plus petit en texte courant (les corps sont donc plus
+     grands). */
+  --t-petit: clamp(0.9375rem, 0.88rem + 0.2vw, 1.0625rem);  /* 15 → 17 px */
+  --t-corps: clamp(1.125rem, 1.03rem + 0.25vw, 1.3125rem);  /* 18 → 21 px */
+  --t-lead:  clamp(1.25rem, 1rem + 1vw, 2.125rem);          /* 20 → 34 px */
+  --t-label: clamp(0.9375rem, 0.85rem + 0.3vw, 1.125rem);   /* 15 → 18 px */
+  --t-h3:    clamp(1.9rem, 1.3rem + 2.6vw, 4rem);           /* 30 → 64 px */
+  --t-h2:    clamp(2.5rem, 1.1rem + 4.6vw, 6.75rem);        /* 40 → 108 px */
 
   --marge: clamp(1.25rem, 0.5rem + 3vw, 4rem);
   --gouttiere: clamp(1rem, 0.4rem + 2.4vw, 3.5rem);
@@ -116,14 +120,13 @@ html.lenis body { height: auto; }
   color: var(--craie);
 }
 
-/* --- Titres : Archivo condensée, très grasse, en capitales ---------------- */
+/* --- Titres : Zodiak, très grasse, en capitales --------------------------- */
 
 h1, h2, h3 {
   font-family: var(--f-titre);
   font-weight: 900;
-  font-variation-settings: "wdth" 75;
-  line-height: 0.92;
-  letter-spacing: -0.01em;
+  line-height: 0.98;
+  letter-spacing: 0;
   text-transform: uppercase;
   text-wrap: balance;
 }
@@ -132,19 +135,18 @@ h2 { font-size: var(--t-h2); }
 
 h3 {
   font-size: var(--t-h3);
-  font-variation-settings: "wdth" 80;
   line-height: 1;
   text-transform: none;
 }
 
-/* Les petits libellés : même famille que les titres, en capitales. */
+/* Les petits libellés : même famille que les titres, en capitales, un peu
+   espacées (une serif en petites capitales veut de l'air). */
 .libelle {
   font-family: var(--f-titre);
-  font-weight: 800;
-  font-variation-settings: "wdth" 80;
+  font-weight: 700;
   font-size: var(--t-label);
   line-height: 1.15;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 

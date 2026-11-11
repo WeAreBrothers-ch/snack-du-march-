@@ -14,7 +14,7 @@
 
 .broche__accroche {
   max-width: 16ch;
-  font-size: clamp(2.5rem, 1rem + 5vw, 7.5rem);
+  font-size: clamp(2rem, 0.9rem + 3.9vw, 5.75rem);
   color: var(--cobalt);
 }
 
@@ -67,7 +67,7 @@ html.anime .anatomie {
 .anatomie__titre {
   max-width: 14ch;
   margin: 0 auto;
-  font-size: clamp(2.5rem, 12vw, 4rem);
+  font-size: clamp(2rem, 8.6vw, 3.25rem);
   text-align: center;
 }
 
@@ -154,11 +154,11 @@ html.anime .anatomie {
 
 .planche__nom {
   font-family: var(--f-titre);
-  font-weight: 800;
-  font-variation-settings: "wdth" 70;
-  font-size: clamp(1.0625rem, 0.55rem + 2.4vw, 1.375rem);
-  line-height: 1.05;
+  font-weight: 700;
+  font-size: clamp(0.8125rem, 0.45rem + 1.9vw, 1.1rem);
+  line-height: 1.1;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
 
 /* La lecture, sur téléphone (mode animé) : une ligne craie traverse la photo
@@ -191,7 +191,6 @@ html.anime .anatomie {
   color: var(--nuit);
   font-family: var(--f-titre);
   font-weight: 800;
-  font-variation-settings: "wdth" 72;
   font-size: 0.875rem;
   line-height: 1;
   text-transform: uppercase;
@@ -288,7 +287,7 @@ html.anime .anatomie {
 
   .anatomie__titre {
     max-width: none;
-    font-size: min(6vw, 7.5rem);
+    font-size: min(4.4vw, 5.5rem);
   }
 
   .anatomie__note {
@@ -342,7 +341,6 @@ html.anime .anatomie {
   .planche__nom {
     font-family: var(--f-texte);
     font-weight: 500;
-    font-variation-settings: normal;
     font-size: clamp(1.25rem, 0.8rem + 1vw, 2rem);
     line-height: 1.1;
     text-transform: none;

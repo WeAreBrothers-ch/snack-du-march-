@@ -9,8 +9,8 @@ CDN est lent. Elles sont maintenant servies avec le site.
 | `gsap.min.js`, `ScrollTrigger.min.js`, `SplitText.min.js` | GSAP 3.13.0 | [Licence standard « sans frais » de GSAP](https://gsap.com/standard-license) |
 | `lenis.min.js` | Lenis 1.3.4 | MIT |
 
-Les polices (`../fonts/`) sont **Archivo** et **DM Sans**, en version variable
-(licence SIL OFL), tirées de Fontsource.
+Les polices (`../fonts/`) sont **Zodiak** et **Gambetta** de Fontshare
+(ITF Free Font License). Voir le README.
 
 Pour mettre à jour une librairie : `npm pack gsap@<version>` (ou `lenis`),
 puis copier le fichier `dist/…min.js` ici, et changer la version dans ce

@@ -82,7 +82,6 @@ html.anime .hero {
   transform: translate(-50%, -50%);
   font-family: var(--f-titre);
   font-weight: 900;
-  font-variation-settings: "wdth" 75;
   line-height: 1;
   letter-spacing: -0.01em;
   text-transform: uppercase;
@@ -147,7 +146,7 @@ html.anime .hero {
   justify-content: center;
   gap: clamp(0.5rem, 1.6svh, 1rem);
   padding: clamp(1.25rem, 3.5svh, 2.25rem) var(--gauche);
-  font-size: clamp(2.75rem, 16.5vw, 7rem);
+  font-size: clamp(2.2rem, 11vw, 5rem);
   text-align: center;
 }
 
@@ -209,10 +208,16 @@ html.anime .hero {
   box-shadow: 0 -3px 0 var(--craie), 0 -6px 0 var(--cobalt);
 }
 
+.hero__bas .libelle {
+  font-size: clamp(0.8125rem, 0.7rem + 0.5vw, 1.125rem);
+  letter-spacing: 0.04em;
+}
+
 .hero__info.etat { grid-area: etat; }
 
 .hero__adresse {
   grid-area: adresse;
+  white-space: nowrap;
   color: var(--panneau-texte-doux);
 }
 
@@ -262,7 +267,7 @@ html.anime .hero {
     justify-self: center;
     /* Entre les bandes latérales de la bordure. */
     padding-inline: clamp(4.25rem, 6vw, 7rem);
-    font-size: min(6.1vw, 8rem);
+    font-size: min(4.3vw, 6rem);
   }
 
   .hero__mot--gauche { justify-self: end; align-self: start; }

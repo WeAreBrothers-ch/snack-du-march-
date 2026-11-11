@@ -67,29 +67,34 @@ répétitions du carreau :
 
 ## Typographie
 
+Deux serifs de Fontshare, choisies pour ne pas faire « site généré » : un
+grotesque condensé en capitales, c'est le réflexe de tous les sites de
+restauration récents ; une serif contrastée, c'est une enseigne de bistrot,
+et elle va avec la faïence.
+
 | Rôle | Police | Réglage |
 |---|---|---|
-| Titres, chiffres, libellés | **Archivo** | graisse 800 à 900, largeur 68 à 85, capitales, interlettrage serré |
-| Corps de texte | **DM Sans** | 400 et 500, interligne 1.35 à 1.5 |
+| Titres, chiffres, libellés | **Zodiak** | graisse 900 (titres, années) ou 700 (libellés, prix), capitales, libellés espacés |
+| Corps de texte | **Gambetta** | 400 et 500, interligne 1.35 à 1.5 |
 
 Aucun italique. Aucun titre bicolore. Espaces insécables de la typographie
 française (avant « : ; ? ! », dans les guillemets, entre l'heure et « h »).
 
 ### L'échelle
 
-Toutes les tailles viennent de six jetons (`base.css`). Ils grandissent avec
+Toutes les tailles viennent de six jetons (`base.css`), calés sur Zodiak et Gambetta (titres plus petits qu'avec l'ancien grotesque condensé, texte courant un peu plus grand). Ils grandissent avec
 l'écran **tous ensemble**, le texte courant compris : c'est ce qui tient les
 proportions entre titres, photos et paragraphes. Le texte courant ne descend
-jamais sous 17 px.
+jamais sous 18 px.
 
 | Jeton | Téléphone → grand écran | Usage |
 |---|---|---|
-| `--t-petit` | 14 → 16 px | Mentions, légendes des avis |
-| `--t-corps` | 17 → 20 px | Texte courant, légende de la planche |
-| `--t-label` | 16 → 20 px | Libellés en capitales : navigation, adresse, ouvert/fermé |
-| `--t-lead` | 19 → 32 px | Textes des étapes, de la broche, du carrousel |
-| `--t-h3` | 36 → 80 px | Titres des étapes |
-| `--t-h2` | 47 → 152 px | Titres de section |
+| `--t-petit` | 15 → 17 px | Mentions, légendes des avis |
+| `--t-corps` | 18 → 21 px | Texte courant, légende de la planche |
+| `--t-label` | 15 → 18 px | Libellés en capitales : navigation, adresse, ouvert/fermé |
+| `--t-lead` | 20 → 34 px | Textes des étapes, de la broche, du carrousel |
+| `--t-h3` | 30 → 64 px | Titres des étapes |
+| `--t-h2` | 40 → 108 px | Titres de section |
 
 Au-delà de 1 792 px de large (`--largeur-max`), le contenu cesse de s'étaler :
 il reste centré, les panneaux cobalt continuent d'aller d'un bord à l'autre.
@@ -120,7 +125,7 @@ Le site se pense sur un téléphone, puis s'élargit.
 - Une animation ne rallonge pas la page : rien ne se raconte sur plusieurs
   écrans de défilement. La vitrine de l'histoire s'ouvre pendant une courte
   pause ; la lecture de l'anatomie se fait pendant que la photo passe.
-- Le texte courant ne descend pas sous 17 px ; on vérifie sur 375 × 548
+- Le texte courant ne descend pas sous 18 px ; on vérifie sur 375 × 548
   (petit iPhone, barres déployées) et 390 × 664 avant le grand écran.
 
 ## Photographies

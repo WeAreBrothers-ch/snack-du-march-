@@ -214,7 +214,6 @@ html.anime .histoire__pause--intro {
 .etape__annee {
   font-family: var(--f-titre);
   font-weight: 900;
-  font-variation-settings: "wdth" 70;
   font-size: min(22vw, 11svh);
   line-height: 0.78;
   letter-spacing: -0.02em;
@@ -334,7 +333,7 @@ html.anime .histoire__pause--intro {
 
   .etape--inverse .etape__contenu { order: 2; }
 
-  .etape__annee { font-size: clamp(8rem, 15vw, 18rem); }
+  .etape__annee { font-size: clamp(6rem, 11.5vw, 13.5rem); }
   .etape__texte { font-size: var(--t-lead); line-height: 1.35; }
 
   .etape__cadre {

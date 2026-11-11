@@ -17,13 +17,12 @@
 .erreur__code {
   font-family: var(--f-titre);
   font-weight: 900;
-  font-variation-settings: "wdth" 70;
-  font-size: clamp(6rem, 25vw, 16rem);
+  font-size: clamp(5rem, 22vw, 13rem);
   line-height: 0.85;
   color: var(--rouge);
 }
 
-.erreur__titre { font-size: clamp(2.25rem, 1.4rem + 4vw, 5rem); color: var(--cobalt); }
+.erreur__titre { font-size: clamp(1.9rem, 1.2rem + 3.2vw, 4rem); color: var(--cobalt); }
 
 .erreur__texte {
   max-width: 30ch;
