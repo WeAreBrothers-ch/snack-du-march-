@@ -6,9 +6,42 @@
 
 import { elements } from "./lib.js";
 
+/** Vrai sur un écran tactile (téléphone, tablette) : le défilement y reste natif. */
+const AU_DOIGT = window.matchMedia("(pointer: coarse)").matches;
+
+/**
+ * Un défilement natif qui répond comme Lenis (scrollTo, stop, start). Au
+ * doigt, le défilement du système est déjà fluide et porté par le processeur
+ * graphique ; le remplacer par un défilement en JavaScript n'apporterait que
+ * du travail en plus, et des à-coups quand la barre d'adresse se replie.
+ */
+function defilementNatif() {
+  const racine = document.documentElement;
+  const natif = {
+    isStopped: false,
+    /**
+     * @param {HTMLElement} cible
+     * @param {{ offset?: number, immediate?: boolean }} [options]
+     */
+    scrollTo(cible, options = {}) {
+      const haut = cible.getBoundingClientRect().top + window.scrollY + (options.offset || 0);
+      window.scrollTo({ top: haut, behavior: options.immediate ? "instant" : "smooth" });
+    },
+    stop() {
+      natif.isStopped = true;
+      racine.classList.add("verrou");
+    },
+    start() {
+      natif.isStopped = false;
+      racine.classList.remove("verrou");
+    },
+  };
+  return natif;
+}
+
 /**
  * @param {import("./lib.js").Outils} outils
- * @returns {any} l'instance Lenis
+ * @returns {any} l'instance Lenis (à la souris) ou un défilement natif (au doigt)
  */
 export function initDefilement(outils) {
   const { gsap, ScrollTrigger, Lenis } = outils;
@@ -20,6 +53,12 @@ export function initDefilement(outils) {
     history.scrollRestoration = "manual";
   }
   if (!window.location.hash) window.scrollTo(0, 0);
+
+  if (AU_DOIGT || !Lenis) {
+    const natif = defilementNatif();
+    initAncres(natif);
+    return natif;
+  }
 
   const lenis = new Lenis({
     duration: 1,

@@ -85,10 +85,23 @@ export function initEnseigne(outils, bureau) {
 
   /**
    * Les positions de départ et d'arrivée, mesurées sur la mise en page (les
-   * transformations en cours n'y entrent pas) : recalculées à chaque
-   * changement de taille de la fenêtre.
+   * transformations en cours n'y entrent pas). Chaque animation les demande
+   * (une dizaine de fois par calcul) : on ne mesure qu'une fois par état de
+   * la page, sinon chaque demande force une remise en page complète.
+   * @type {ReturnType<typeof calculer> | null}
    */
+  let mesure = null;
+  let cle = "";
   function mesurer() {
+    const courante = `${hero.offsetWidth}x${hero.offsetHeight}x${window.innerHeight}`;
+    if (!mesure || cle !== courante) {
+      mesure = calculer();
+      cle = courante;
+    }
+    return mesure;
+  }
+
+  function calculer() {
     const largeur = hero.offsetWidth;
     const hauteur = hero.offsetHeight;
     const marge = parseFloat(getComputedStyle(titre).paddingLeft);
@@ -169,6 +182,9 @@ export function initEnseigne(outils, bureau) {
       end: "bottom bottom",
       scrub: SCRUB,
       invalidateOnRefresh: true,
+      onRefreshInit: () => {
+        mesure = null;
+      },
     },
   });
 

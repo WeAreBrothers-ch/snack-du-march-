@@ -88,8 +88,23 @@ function initIntro(outils, bureau, pauseIntro) {
     );
   }
 
-  /** La vitrine, mesurée sur la mise en page (sans les transformations). */
+  /**
+   * La vitrine, mesurée sur la mise en page (sans les transformations),
+   * une seule fois par état de la page (voir hero.js).
+   * @type {ReturnType<typeof calculer> | null}
+   */
+  let mesure = null;
+  let cle = "";
   function mesurer() {
+    const courante = `${intro.offsetWidth}x${intro.offsetHeight}x${window.innerHeight}`;
+    if (!mesure || cle !== courante) {
+      mesure = calculer();
+      cle = courante;
+    }
+    return mesure;
+  }
+
+  function calculer() {
     const largeur = intro.offsetWidth;
     const hauteur = intro.offsetHeight;
     const position = positionDans(vitrine, intro);
@@ -114,6 +129,9 @@ function initIntro(outils, bureau, pauseIntro) {
       end: "bottom bottom",
       scrub: SCRUB,
       invalidateOnRefresh: true,
+      onRefreshInit: () => {
+        mesure = null;
+      },
     },
   });
 

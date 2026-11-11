@@ -1,5 +1,11 @@
-/* Point d'entrée unique. L'ordre compte : la base avant les sections. */
+/* Point d'entrée des pages annexes (404, redirection). L'ordre compte : la
+   base avant les sections.
+
+   index.html, lui, lie ces mêmes feuilles une à une : des @import se
+   chargent à la chaîne (chacun attend le précédent), des <link> en parallèle.
+   Si on ajoute une feuille, l'ajouter aux deux endroits. */
 @import url("reset.css");
+@import url("polices.css");
 @import url("base.css");
 @import url("nav.css");
 @import url("hero.css");

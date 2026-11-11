@@ -7,8 +7,7 @@
  * @property {any} gsap
  * @property {any} ScrollTrigger
  * @property {any} SplitText
- * @property {any} Lenis
- * @property {any} Swiper
+ * @property {any} [Lenis] absent ou ignoré au doigt : le défilement y est natif
  */
 
 /**
@@ -22,11 +21,10 @@ export function chargerLibrairies() {
     ScrollTrigger: fenetre.ScrollTrigger,
     SplitText: fenetre.SplitText,
     Lenis: fenetre.Lenis,
-    Swiper: fenetre.Swiper,
   };
 
   const manquantes = Object.entries(outils)
-    .filter(([, valeur]) => !valeur)
+    .filter(([nom, valeur]) => nom !== "Lenis" && !valeur)
     .map(([nom]) => nom);
 
   if (manquantes.length > 0) {
@@ -34,6 +32,9 @@ export function chargerLibrairies() {
   }
 
   outils.gsap.registerPlugin(outils.ScrollTrigger, outils.SplitText);
+  // Sur mobile, la barre d'adresse qui se replie redimensionne la fenêtre :
+  // sans cela, chaque geste relancerait tout le calcul des animations.
+  outils.ScrollTrigger.config({ ignoreMobileResize: true });
   return outils;
 }
 

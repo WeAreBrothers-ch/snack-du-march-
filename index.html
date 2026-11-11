@@ -18,37 +18,71 @@
   <meta name="theme-color" content="#1226a0" />
 
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <!-- Tout est servi avec le site : pas de CDN ni de Google Fonts (chacun coûtait
+       une connexion de plus avant le premier affichage, et une feuille de
+       style qui bloquait l'affichage). -->
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/archivo-var.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/dm-sans-var.woff2" crossorigin />
   <link rel="preload" as="image" href="assets/photos/durum-main.webp" fetchpriority="high" />
   <link rel="preload" as="image" href="assets/img/carreau-iznik.webp" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="assets/css/styles.css" />
+  <!-- Les feuilles sont liées une à une, en parallèle (des @import se
+       chargent à la chaîne). Même liste que assets/css/styles.css. -->
+  <link rel="stylesheet" href="assets/css/reset.css" />
+  <link rel="stylesheet" href="assets/css/polices.css" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/nav.css" />
+  <link rel="stylesheet" href="assets/css/hero.css" />
+  <link rel="stylesheet" href="assets/css/histoire.css" />
+  <link rel="stylesheet" href="assets/css/broche.css" />
+  <link rel="stylesheet" href="assets/css/carte.css" />
+  <link rel="stylesheet" href="assets/css/prix.css" />
+  <link rel="stylesheet" href="assets/css/quartier.css" />
+  <link rel="stylesheet" href="assets/css/pied.css" />
+  <link rel="stylesheet" href="assets/css/statique.css" />
+
+  <!-- Les modules, eux aussi, se chargent en parallèle. -->
+  <link rel="modulepreload" href="assets/js/main.js" />
+  <link rel="modulepreload" href="assets/js/lib.js" />
+  <link rel="modulepreload" href="assets/js/defilement.js" />
+  <link rel="modulepreload" href="assets/js/horaires.js" />
+  <link rel="modulepreload" href="assets/js/menu.js" />
+  <link rel="modulepreload" href="assets/js/hero.js" />
+  <link rel="modulepreload" href="assets/js/histoire.js" />
+  <link rel="modulepreload" href="assets/js/broche.js" />
+  <link rel="modulepreload" href="assets/js/planche.js" />
+  <link rel="modulepreload" href="assets/js/carte.js" />
+  <link rel="modulepreload" href="assets/js/quartier.js" />
+  <link rel="modulepreload" href="assets/js/pied.js" />
+  <link rel="modulepreload" href="assets/js/texte.js" />
 
   <script>
     document.documentElement.classList.add("js");
+    // La mise en page animée est posée dès le premier affichage (sauf si le
+    // visiteur demande moins d'animations) : elle est la même avant et après
+    // le démarrage des scripts, la page ne saute pas quand ils arrivent.
+    // Classe « pret » : les animations sont en place (main.js).
+    var racine = document.documentElement;
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) racine.classList.add("anime");
     // Filets de sécurité. Si les animations tardent (réseau lent), le haut de
     // page s'affiche sans son entrée au bout de deux secondes et demie : elles
     // prennent le relais dès qu'elles sont prêtes. Si elles n'ont toujours pas
-    // démarré au bout de douze secondes (CDN injoignable, fichier ouvert en
-    // local), le site passe en version statique, tout visible.
+    // démarré au bout de douze secondes (fichier ouvert en local, script
+    // bloqué), le site passe en version statique, tout visible.
     setTimeout(function () {
-      var racine = document.documentElement;
-      if (!racine.classList.contains("anime")) racine.classList.add("patience");
+      if (!racine.classList.contains("pret")) racine.classList.add("patience");
     }, 2500);
     setTimeout(function () {
-      var racine = document.documentElement;
-      if (!racine.classList.contains("anime")) racine.classList.add("statique");
+      if (!racine.classList.contains("pret")) {
+        racine.classList.remove("anime");
+        racine.classList.add("statique");
+      }
     }, 12000);
   </script>
-  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script defer src="assets/vendor/gsap.min.js"></script>
+  <script defer src="assets/vendor/ScrollTrigger.min.js"></script>
+  <script defer src="assets/vendor/SplitText.min.js"></script>
+  <script defer src="assets/vendor/lenis.min.js"></script>
 </head>
 <body>
   <!-- Le drapeau de la Turquie, défini une fois ; utilisé par <svg class="drapeau">. -->
@@ -271,16 +305,16 @@
 
       <div class="carrousel" role="region" aria-label="Les plats du comptoir">
         <p class="carrousel__texte">Sandwich, dürüm, assiette ou box&nbsp;: la même broche, la même famille, depuis 1998.</p>
-        <div class="carrousel__cadre swiper">
-          <div class="carrousel__piste swiper-wrapper">
-            <article class="plat swiper-slide"><div class="plat__photo"><img src="assets/photos/sandwich-veau-agneau.webp" alt="Le sandwich veau-agneau" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Le veau-agneau</h3><p class="plat__note">Yaprak döner · La broche de la maison</p><p class="plat__prix">14.–</p></article>
-            <article class="plat swiper-slide"><div class="plat__photo"><img src="assets/photos/durum-main.webp" alt="Un dürüm, roulé dans sa galette" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Le dürüm</h3><p class="plat__note">Roulé dans la galette, passée au grill</p><p class="plat__prix">dès 14.–</p></article>
-            <article class="plat swiper-slide"><div class="plat__photo"><img src="assets/photos/assiette-frites.webp" alt="L'assiette kebab avec frites" loading="lazy" decoding="async" /></div><h3 class="plat__nom">L'assiette</h3><p class="plat__note">Frites ou riz, salade, sauces</p><p class="plat__prix">dès 20.–</p></article>
-            <article class="plat swiper-slide"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 1.6">Box</span></div><h3 class="plat__nom">La döner box</h3><p class="plat__note">Viande, frites, sauces, dans la boîte</p><p class="plat__prix">14.–</p></article>
-            <article class="plat swiper-slide"><div class="plat__photo"><img src="assets/photos/comptoir-vitrine.webp" alt="La vitrine des mezze, au comptoir" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Les mezze</h3><p class="plat__note">Houmous, aubergine, feuilles de vigne</p><p class="plat__prix">Au comptoir</p></article>
-            <article class="plat swiper-slide"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 2.49">Köfte</span></div><h3 class="plat__nom">La köfte</h3><p class="plat__note">Bœuf haché, persil, cumin · Piquant</p><p class="plat__prix">14.–</p></article>
-            <article class="plat swiper-slide"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 3.28">Falafel</span></div><h3 class="plat__nom">Le falafel</h3><p class="plat__note">Pois chiches, herbes, frit à la commande</p><p class="plat__prix">12.–</p></article>
-            <article class="plat swiper-slide"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 3.61">Baklava</span></div><h3 class="plat__nom">Le baklava</h3><p class="plat__note">Pistache de Gaziantep, à la pièce</p><p class="plat__prix">1.50</p></article>
+        <div class="carrousel__cadre" tabindex="0" role="group" aria-label="Plats, à faire défiler">
+          <div class="carrousel__piste">
+            <article class="plat"><div class="plat__photo"><img src="assets/photos/sandwich-veau-agneau.webp" alt="Le sandwich veau-agneau" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Le veau-agneau</h3><p class="plat__note">Yaprak döner · La broche de la maison</p><p class="plat__prix">14.–</p></article>
+            <article class="plat"><div class="plat__photo"><img src="assets/photos/durum-main.webp" alt="Un dürüm, roulé dans sa galette" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Le dürüm</h3><p class="plat__note">Roulé dans la galette, passée au grill</p><p class="plat__prix">dès 14.–</p></article>
+            <article class="plat"><div class="plat__photo"><img src="assets/photos/assiette-frites.webp" alt="L'assiette kebab avec frites" loading="lazy" decoding="async" /></div><h3 class="plat__nom">L'assiette</h3><p class="plat__note">Frites ou riz, salade, sauces</p><p class="plat__prix">dès 20.–</p></article>
+            <article class="plat"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 1.6">Box</span></div><h3 class="plat__nom">La döner box</h3><p class="plat__note">Viande, frites, sauces, dans la boîte</p><p class="plat__prix">14.–</p></article>
+            <article class="plat"><div class="plat__photo"><img src="assets/photos/comptoir-vitrine.webp" alt="La vitrine des mezze, au comptoir" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Les mezze</h3><p class="plat__note">Houmous, aubergine, feuilles de vigne</p><p class="plat__prix">Au comptoir</p></article>
+            <article class="plat"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 2.49">Köfte</span></div><h3 class="plat__nom">La köfte</h3><p class="plat__note">Bœuf haché, persil, cumin · Piquant</p><p class="plat__prix">14.–</p></article>
+            <article class="plat"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 3.28">Falafel</span></div><h3 class="plat__nom">Le falafel</h3><p class="plat__note">Pois chiches, herbes, frit à la commande</p><p class="plat__prix">12.–</p></article>
+            <article class="plat"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 3.61">Baklava</span></div><h3 class="plat__nom">Le baklava</h3><p class="plat__note">Pistache de Gaziantep, à la pièce</p><p class="plat__prix">1.50</p></article>
           </div>
         </div>
         <div class="carrousel__boutons">

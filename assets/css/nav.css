@@ -66,6 +66,7 @@
 .panneau__fond {
   position: absolute;
   inset: 0;
+  touch-action: none;
   background: rgba(10, 18, 80, 0.6);
 }
 

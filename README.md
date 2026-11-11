@@ -44,6 +44,8 @@ assets/css/         les styles, un fichier par section
 assets/js/          les comportements, un fichier par section
 assets/photos/      les photographies de la maison
 assets/img/         le carreau d'Iznik et ses bordures (tirés de l'image du client)
+assets/fonts/       les polices (Archivo, DM Sans), hébergées avec le site
+assets/vendor/      GSAP et Lenis, hébergés avec le site (voir LISEZ-MOI.md)
 favicon.svg         l'icône de l'onglet
 robots.txt          ce que les moteurs de recherche ont le droit de lire
 sitemap.xml         la liste des pages, pour Google
@@ -83,11 +85,13 @@ cobalt. Le jour où une vraie photo existe, on remplace le bloc
 
 ### Les styles
 
-Une seule feuille est liée depuis le HTML : `assets/css/styles.css`. Elle liste
-les fichiers à charger, dans l'ordre : `reset`, `base` (couleurs, polices,
-échelle typographique, couleurs, motif de faïence), `nav`, `hero`, `histoire`, `broche`, `carte`, `prix`,
-`quartier`, `pied`, `statique` (le mode sans animation) et `pages` (404,
-redirection).
+`index.html` lie les feuilles une à une (elles se chargent en parallèle ; des
+`@import` se chargeraient à la chaîne), dans l'ordre : `reset`, `polices`,
+`base` (couleurs, échelle typographique, motif de faïence), `nav`, `hero`,
+`histoire`, `broche`, `carte`, `prix`, `quartier`, `pied` et `statique` (le
+mode sans animation). `assets/css/styles.css` liste les mêmes pour les pages
+annexes (404, redirection, avec `pages.css`) : **ajouter une feuille aux deux
+endroits**.
 
 Toutes les tailles de texte viennent de quelques jetons définis dans
 `base.css` (`--t-corps`, `--t-lead`, `--t-h2`…) : ils grandissent avec
@@ -97,17 +101,24 @@ au grand écran.
 ### Les animations
 
 Un seul script est appelé : `assets/js/main.js`. Il charge un module par
-section. Les animations s'appuient sur des librairies chargées depuis un CDN :
+section. Les animations s'appuient sur des librairies **hébergées avec le
+site** (`assets/vendor/`) : aucun CDN, donc aucune connexion externe avant le
+premier affichage.
 
 | Librairie | Rôle |
 |---|---|
 | GSAP + ScrollTrigger | Les animations liées au défilement |
 | SplitText | Le texte qui apparaît ligne par ligne |
-| Lenis | Le défilement lissé |
-| Swiper | Le carrousel des plats |
+| Lenis | Le défilement lissé, **à la souris seulement** : au doigt, le défilement reste celui du système |
 
-Sur un réseau lent, le haut de page s'affiche au bout de deux secondes et
-demie sans son entrée, et les animations prennent le relais dès qu'elles
+Le carrousel des plats n'utilise aucune librairie : c'est du `scroll-snap`
+CSS, `carte.js` ne branche que les deux flèches.
+
+La mise en page animée (classe `anime`, posée par `index.html` dès le premier
+affichage) est la même avant et après le démarrage des scripts : la page ne
+saute pas quand ils arrivent. La classe `pret` dit que les animations sont en
+place. Sur un réseau lent, le haut de page s'affiche au bout de deux secondes
+et demie sans son entrée, et les animations prennent le relais dès qu'elles
 sont prêtes. Si l'une des librairies ne charge pas, si le visiteur a demandé
 « moins d'animations » dans son système, ou si rien n'a démarré au bout de
 douze secondes, **le site bascule en mode statique** : tout est visible, le
@@ -133,8 +144,20 @@ de `index.html` (`#drapeau-tr`). Voir `DIRECTION-ARTISTIQUE.md`.
 - **Archivo** (titres, chiffres, libellés), en version condensée très grasse.
 - **DM Sans** (corps de texte).
 
-Les deux sont chargées depuis Google Fonts. Pour un site suisse, il est
-préférable de les héberger nous-mêmes avant la mise en ligne.
+Les deux sont hébergées avec le site (`assets/fonts/`, version variable,
+déclarées dans `assets/css/polices.css`) et préchargées par `index.html`.
+
+### La performance sur téléphone
+
+Ce qui a été mesuré (réseau 4G lent et processeur 4× plus lent simulés) et
+corrigé : plus aucune dépendance externe (Google Fonts, jsDelivr), CSS et
+modules chargés en parallèle (`<link>` et `modulepreload`), mise en page
+animée figée dès le premier affichage, fond en une seule image (le voile
+ivoire est cuit dans `img/mur.webp`), mesures des animations calculées une
+fois par état de la page, défilement natif au doigt, carrousel en
+`scroll-snap`, photos chargées au calme une fois la page installée. Si on
+change `--voile-mur` ou le carreau, **refaire `img/mur.webp`** (le carreau à
+40 % sur l'ivoire `#f3eddc`).
 
 ---
 

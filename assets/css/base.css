@@ -34,8 +34,12 @@
      reste plein dans le haut de page et dans les bandes. */
   --maille: clamp(13rem, 11rem + 9vw, 21rem);
   --carreau: url("../img/carreau-iznik.webp");
+  /* Le voile ivoire est cuit dans l'image (mur.webp = le carreau à 40 %, sur
+     l'ivoire du mur) : une seule image à peindre, au lieu d'un dégradé
+     superposé à une image sur toute la hauteur de la page. --voile-mur ne
+     sert plus qu'au dégradé de la jonction du haut de page (histoire.css). */
   --voile-mur: rgba(243, 237, 220, 0.6);
-  --mur: linear-gradient(var(--voile-mur), var(--voile-mur)), var(--carreau);
+  --mur: url("../img/mur.webp");
   --bande-h: clamp(2.25rem, 1.8rem + 2vw, 3.5rem);
   --bande-h-url: url("../img/bande-h.webp");
   --bande-v-url: url("../img/bande-v.webp");
@@ -83,8 +87,7 @@ html {
 }
 
 body {
-  background: var(--mur);
-  background-size: auto, var(--maille) auto;
+  background: var(--mur) 0 0 / var(--maille) auto;
   color: var(--encre);
   font-family: var(--f-texte);
   font-size: var(--t-corps);
@@ -94,6 +97,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
+
+/* Le défilement verrouillé (menu ouvert, au doigt) : sur iPhone, bloquer la
+   seule racine ne suffit pas toujours, le corps de page défilait derrière. */
+html.verrou,
+html.verrou body { overflow: hidden; }
 
 /* --- Lenis : le défilement lissé prend la main sur le natif --------------- */
 
@@ -253,13 +261,17 @@ main > .espace:last-child::after { display: none; }
 
 /* --- Avant que le script ne prenne la main -------------------------------- */
 
-/* Le nom et la photo attendent, cachés, que leur entrée soit prête à jouer (les barres et le mur, eux, sont là d'emblée). Si le
-   script tarde, le filet de sécurité (index.html) l'affiche sans son entrée
-   (classe « patience ») ; s'il n'arrive pas, le site passe en statique. */
-@media (prefers-reduced-motion: no-preference) {
-  html.js:not(.statique):not(.anime):not(.patience) .hero__titre {
-    opacity: 0;
-  }
+/* La mise en page animée (classe « anime », posée dès le premier affichage
+   par index.html) est la même avant et après le démarrage des scripts : la
+   page ne saute pas quand ils arrivent. Le nom et la photo attendent,
+   cachés, que leur entrée soit prête à jouer (classe « pret »). Les barres
+   et le mur, eux, sont là d'emblée. Si le script tarde, le filet de sécurité
+   (index.html) les affiche sans l'entrée (classe « patience ») ; s'il
+   n'arrive pas, le site passe en statique. */
+html.anime:not(.pret):not(.patience) .hero__titre,
+html.anime:not(.pret) .histoire__fenetre {
+  opacity: 0;
+  visibility: hidden;
 }
 
 /* Les lignes découpées par le script montent depuis une fente (le masque).

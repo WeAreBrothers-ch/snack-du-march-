@@ -2,7 +2,9 @@
  * La carte : les trois lignes du titre montent et leurs vignettes s'ouvrent ;
  * tant que le titre est à l'écran, ses lignes glissent en sens contraires au
  * rythme du défilement. Puis le texte, les plats et les flèches du carrousel
- * arrivent à leur tour. Le carrousel se feuillette au doigt (Swiper).
+ * arrivent à leur tour. Le carrousel défile nativement (scroll-snap) : au
+ * doigt, c'est le défilement du système, fluide et sans JavaScript à chaque
+ * mouvement ; les flèches le font avancer d'un plat.
  */
 
 import { element, elements } from "./lib.js";
@@ -62,29 +64,46 @@ export function initCarte(outils) {
     .fromTo(cadre, { autoAlpha: 0, x: 48 }, { autoAlpha: 1, x: 0, duration: 1 }, "<0.15")
     .fromTo(boutons, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.08 }, "<0.3");
 
-  const glisseur = initGlisseur(outils, cadre, boutons[0], boutons[1]);
-  return () => glisseur.destroy(true, true);
+  return initGlisseur(cadre, boutons[0], boutons[1]);
 }
 
 /**
- * @param {import("./lib.js").Outils} outils
+ * Le carrousel : le défilement est celui du navigateur (CSS : scroll-snap).
+ * Le script ne fait que brancher les deux flèches et les griser aux
+ * extrémités.
  * @param {HTMLElement} cadre
  * @param {HTMLElement} precedent
  * @param {HTMLElement} suivant
+ * @returns {() => void} fonction de nettoyage
  */
-function initGlisseur(outils, cadre, precedent, suivant) {
-  return new outils.Swiper(cadre, {
-    wrapperClass: "carrousel__piste",
-    slideClass: "plat",
-    loop: true,
-    speed: 500,
-    grabCursor: true,
-    navigation: { nextEl: suivant, prevEl: precedent },
-    breakpoints: {
-      320: { slidesPerView: 1.3, spaceBetween: 12 },
-      560: { slidesPerView: 2.2, spaceBetween: 16 },
-      992: { slidesPerView: 3.25, spaceBetween: 24 },
-      1440: { slidesPerView: 4.25, spaceBetween: 28 },
-    },
-  });
+function initGlisseur(cadre, precedent, suivant) {
+  /** Largeur d'un pas : un plat, et l'espace qui le sépare du suivant. */
+  const pas = () => {
+    const [premier, second] = elements(".plat", cadre);
+    return second ? second.offsetLeft - premier.offsetLeft : premier.offsetWidth;
+  };
+
+  /** @param {number} sens */
+  const aller = (sens) => cadre.scrollBy({ left: sens * pas(), behavior: "smooth" });
+  const versPrecedent = () => aller(-1);
+  const versSuivant = () => aller(1);
+
+  const majBoutons = () => {
+    const reste = cadre.scrollWidth - cadre.clientWidth - cadre.scrollLeft;
+    precedent.toggleAttribute("disabled", cadre.scrollLeft < 4);
+    suivant.toggleAttribute("disabled", reste < 4);
+  };
+
+  precedent.addEventListener("click", versPrecedent);
+  suivant.addEventListener("click", versSuivant);
+  cadre.addEventListener("scroll", majBoutons, { passive: true });
+  window.addEventListener("resize", majBoutons, { passive: true });
+  majBoutons();
+
+  return () => {
+    precedent.removeEventListener("click", versPrecedent);
+    suivant.removeEventListener("click", versSuivant);
+    cadre.removeEventListener("scroll", majBoutons);
+    window.removeEventListener("resize", majBoutons);
+  };
 }

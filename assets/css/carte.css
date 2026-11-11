@@ -58,6 +58,15 @@
   text-align: center;
 }
 
+/* Le défilement est celui du navigateur : scroll-snap, sans JavaScript à
+   chaque mouvement (carte.js ne branche que les deux flèches). --visibles :
+   combien de plats on voit à la fois (le suivant dépasse, pour appeler le
+   doigt) ; --ecart : l'espace entre deux plats. */
+.carrousel {
+  --visibles: 1.3;
+  --ecart: 0.75rem;
+}
+
 .carrousel__cadre {
   position: relative;
   flex: none;
@@ -65,22 +74,31 @@
   max-width: calc(var(--largeur-max) + 2 * var(--marge));
   margin: 0 auto;
   padding: 0 var(--marge);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--marge);
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
+
+.carrousel__cadre::-webkit-scrollbar { display: none; }
 
 .carrousel__piste {
   display: flex;
   align-items: stretch;
+  gap: var(--ecart);
   width: 100%;
 }
 
 .plat {
   display: flex;
-  flex: none;
+  flex: 0 0 calc((100% - (var(--visibles) - 1) * var(--ecart)) / var(--visibles));
   flex-direction: column;
   gap: 0.3rem;
-  width: 100%;
   height: auto;
+  scroll-snap-align: start;
 }
 
 .plat__photo {
@@ -170,8 +188,19 @@
 }
 
 .carrousel__bouton:hover { background: var(--rouge); }
+
+/* Aux extrémités, la flèche ne sert plus à rien : elle se grise. */
+.carrousel__bouton[disabled] {
+  background: var(--trait);
+  color: var(--texte-doux);
+  pointer-events: none;
+}
 .carrousel__bouton:hover svg { transform: scale(1.12); }
 .carrousel__bouton:active svg { transform: scale(0.92); }
+
+@media (min-width: 560px) {
+  .carrousel { --visibles: 2.2; --ecart: 1rem; }
+}
 
 @media (min-width: 768px) {
   .carte__titre { font-size: min(13vw, 11rem); }
@@ -182,6 +211,7 @@
    piste déborde jusqu'au bord droit de l'écran, le plat suivant s'y devine. */
 @media (min-width: 992px) {
   .carte__titre { font-size: min(10vw, 12rem); }
+  .carrousel { --visibles: 3.25; --ecart: 1.5rem; }
 
   .carrousel {
     display: grid;
@@ -209,10 +239,15 @@
     max-width: none;
     margin: 0 calc(-1 * max(var(--marge), (100vw - var(--largeur-max)) / 2)) 0 0;
     padding: 0;
+    scroll-padding-inline: 0;
   }
 
   .plat__photo {
     aspect-ratio: 4 / 5;
     max-height: 46svh;
   }
+}
+
+@media (min-width: 1440px) {
+  .carrousel { --visibles: 4.25; --ecart: 1.75rem; }
 }

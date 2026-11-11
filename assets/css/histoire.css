@@ -87,8 +87,7 @@ html.anime .histoire__intro {
   top: 0;
   /* D'un bord à l'autre de l'écran, par-dessus la marge de la section. */
   margin: calc(var(--marge) * -1) calc(var(--marge) * -1) 0;
-  background: var(--mur);
-  background-size: auto, var(--maille) auto;
+  background: var(--mur) 0 0 / var(--maille) auto;
   display: flex;
   align-items: center;
   justify-content: center;
