@@ -15,7 +15,8 @@
      un double filet cobalt autour. */
   background: var(--craie);
   border-radius: var(--rayon);
-  box-shadow: 0 0 0 3px var(--cobalt), 0 0 0 6px var(--craie), 0 0 0 8px var(--cobalt);
+  border: 3px solid var(--cobalt);
+  box-shadow: inset 0 0 0 3px var(--craie), inset 0 0 0 5px var(--cobalt);
 }
 
 .prix::before {

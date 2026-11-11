@@ -31,9 +31,11 @@
   position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  border: clamp(0.4rem, 0.9vw, 0.7rem) solid var(--cobalt);
-  border-radius: var(--rayon);
-  box-shadow: 0 0 0 3px var(--craie), 0 0 0 5px var(--cobalt);
+  --epaisseur: clamp(0.4rem, 0.9vw, 0.7rem);
+  border: var(--epaisseur) solid var(--cobalt);
+  /* Arrondi extérieur = arrondi de la photo + épaisseur du cadre : la photo
+     garde ses coins arrondis à l'intérieur, sans coin carré qui dépasse. */
+  border-radius: calc(var(--rayon) + var(--epaisseur));
 }
 
 .broche__apercu img { object-position: 22% 40%; }

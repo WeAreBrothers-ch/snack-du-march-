@@ -40,7 +40,7 @@
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border: 0.3rem solid var(--craie);
-  border-radius: var(--rayon);
+  border-radius: calc(var(--rayon) + 0.3rem);
   box-shadow: 0 0 0 2px var(--cobalt);
 }
 
@@ -241,7 +241,7 @@ html.anime .histoire__pause--intro {
   width: 100%;
   overflow: hidden;
   border: clamp(0.3rem, 0.6vw, 0.6rem) solid var(--craie);
-  border-radius: var(--rayon);
+  border-radius: calc(var(--rayon) + clamp(0.3rem, 0.6vw, 0.6rem));
   background: var(--craie);
 }
 
