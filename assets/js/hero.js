@@ -111,25 +111,23 @@ export function initEnseigne(outils, bureau) {
     const posGauche = positionDans(gauche, hero);
     const posDroite = positionDans(droite, hero);
 
-    // La place de l'enseigne : entre la bordure du haut et la photo.
-    const dessus = positionDans(bordure, hero).y + bordure.offsetHeight + ecart;
-    const dessous = posCadre.y - ecart;
+    // L'enseigne s'accroche sous la frise, après son filet ivoire (3 px) ;
+    // elle a pour hauteur ce que la photo lui laisse, double filet du bas
+    // (6 px) et respiration compris.
+    const dessus = positionDans(bordure, hero).y + bordure.offsetHeight + 3;
+    const place = posCadre.y - ecart - 6 - dessus;
 
     // La ligne « Snack du Marché » : les deux mots séparés d'une espace de la
-    // police (0,13 em), réduits pour tenir entre les marges et dans la place
+    // police (0,22 em), réduits pour tenir entre les marges et dans la place
     // au-dessus de la photo.
     // Chaque plaque déborde du mot de son rembourrage et de son filet : une
     // fois la céramique effacée, il ne reste que les lettres, qu'on
     // rapproche d'autant.
     const styleMot = getComputedStyle(gauche);
     const bord = parseFloat(styleMot.paddingLeft) + parseFloat(styleMot.borderLeftWidth);
-    const espace = parseFloat(styleMot.fontSize) * 0.13 - 2 * bord;
+    const espace = parseFloat(styleMot.fontSize) * 0.22 - 2 * bord;
     const longueur = gauche.offsetWidth + espace + droite.offsetWidth;
-    const echelle = Math.max(
-      0.2,
-      Math.min(1, (largeur - 2 * marge) / longueur, (dessous - dessus) / (gauche.offsetHeight * 1.4)),
-    );
-    const centre = (dessus + dessous) / 2;
+    const echelle = Math.max(0.2, Math.min(1, (largeur - 2 * marge) / longueur, place / (gauche.offsetHeight * 1.4)));
     let bande = gauche.offsetHeight * echelle * 1.4;
     if (!bureau) {
       // Sur téléphone, le nom est écrit sur l'enseigne même : on le
@@ -137,23 +135,27 @@ export function initEnseigne(outils, bureau) {
       // au-dessus de la photo.
       const taille = parseFloat(styleMot.fontSize);
       nom.style.fontSize = `${taille}px`;
-      const reduction = Math.max(
-        0.2,
-        Math.min(1, (largeur - 2 * marge) / nom.offsetWidth, (dessous - dessus) / (taille * 1.6)),
-      );
+      const reduction = Math.max(0.2, Math.min(1, (largeur - 2 * marge) / nom.offsetWidth, place / (taille * 1.6)));
       nom.style.fontSize = `${taille * reduction}px`;
-      nom.style.top = `${centre}px`;
       bande = taille * reduction * 1.6;
     }
+    enseigne.style.setProperty("--enseigne-haut", `${dessus}px`);
+    enseigne.style.setProperty("--enseigne-hauteur", `${bande}px`);
+    const centre = dessus + bande / 2;
     const debutLigne = (largeur - longueur * echelle) / 2;
 
-    // La photo grandit vers le bas, sans toucher le bandeau du bas ni la
-    // section qui monte ensuite.
+    // La photo remonte sous l'enseigne, comme la vitrine sous son fronton,
+    // puis grandit vers le bas, sans toucher le bandeau du bas ni la section
+    // qui monte ensuite.
+    const cible = dessus + bande + 6 + Math.max(16, hauteur * 0.03);
+    const monte = Math.min(0, cible - posCadre.y);
+    const haut = posCadre.y + monte;
     const limite = Math.min(positionDans(bas, hero).y, hauteur * (1 - RECOUVREMENT)) - ecart;
-    const croissance = Math.max(1, Math.min(bureau ? 1.12 : 1.3, (limite - posCadre.y) / cadre.offsetHeight));
+    const croissance = Math.max(1, Math.min(bureau ? 1.12 : 1.3, (limite - haut) / cadre.offsetHeight));
 
     return {
       echelle,
+      monte,
       croissance,
       gauche: {
         x: debutLigne + (gauche.offsetWidth * echelle) / 2 - (posGauche.x + gauche.offsetWidth / 2),
@@ -167,10 +169,11 @@ export function initEnseigne(outils, bureau) {
           (posDroite.x + droite.offsetWidth / 2),
         y: centre - (posDroite.y + droite.offsetHeight / 2),
       },
-      // Découpes de l'enseigne : un point au milieu de l'écran (et non une
-      // fente haute comme le bandeau), qui s'ouvre en bandeau jusqu'aux bords.
-      depart: `inset(${centre}px ${largeur / 2}px ${hauteur - centre}px ${largeur / 2}px)`,
-      arrivee: `inset(${centre - bande / 2}px 0px ${hauteur - centre - bande / 2}px 0px)`,
+      // Découpes de l'enseigne : un point au milieu de l'écran, qui s'ouvre
+      // en bandeau jusqu'aux bords. À l'arrivée, la découpe descend sous le
+      // bandeau pour laisser voir son double filet.
+      depart: `inset(${bande / 2}px ${largeur / 2}px ${bande / 2}px ${largeur / 2}px)`,
+      arrivee: "inset(0px 0px -6px 0px)",
     };
   }
 
@@ -217,12 +220,13 @@ export function initEnseigne(outils, bureau) {
     bureau ? 0.3 : 0.1,
   );
 
-  // La photo reste entière, et prend la place que les mots lui laissent.
+  // La photo reste entière : elle remonte sous l'enseigne et prend la place
+  // que les mots lui laissent.
   scene.fromTo(
     cadre,
-    { scale: 1, transformOrigin: "50% 0%" },
-    { scale: () => mesurer().croissance, transformOrigin: "50% 0%", duration: 0.8 },
-    0.05,
+    { y: 0, scale: 1, transformOrigin: "50% 0%" },
+    { y: () => mesurer().monte, scale: () => mesurer().croissance, transformOrigin: "50% 0%", duration: 0.8 },
+    bureau ? 0.05 : 0.15,
   );
 
   if (bureau) {

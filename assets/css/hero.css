@@ -58,15 +58,21 @@ html.anime .hero {
   transform: scaleX(-1);
 }
 
-/* L'enseigne : un aplat cobalt que le script découpe (clip-path). Au
-   défilement, un bandeau se déroule d'un bord à l'autre de l'écran,
-   au-dessus de la photo, et le nom vient s'y poser. Les mots passent devant
-   tout le reste. */
+/* L'enseigne : un bandeau cobalt accroché juste sous la frise, comme le
+   fronton au-dessus de la vitrine. Le filet ivoire de la frise le borde en
+   haut ; en bas, il reprend le double filet ivoire et cobalt des autres
+   barres. Le script le place, le dimensionne et le déroule depuis le milieu
+   (clip-path) ; le nom vient s'y poser. Les mots passent devant tout le
+   reste. */
 .hero__enseigne {
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  top: var(--enseigne-haut, 0);
+  height: var(--enseigne-hauteur, 0);
   z-index: 0;
   background: var(--cobalt);
+  box-shadow: 0 3px 0 var(--craie), 0 6px 0 var(--cobalt);
   visibility: hidden;
   pointer-events: none;
 }
@@ -77,6 +83,7 @@ html.anime .hero {
    poser. */
 .hero__enseigne-nom {
   position: absolute;
+  top: 50%;
   left: 50%;
   display: none;
   transform: translate(-50%, -50%);
