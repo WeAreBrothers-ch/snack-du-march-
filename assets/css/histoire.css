@@ -255,6 +255,20 @@ html.anime .histoire__pause--intro {
 
 .etape__cadre--paysage img { object-position: center 30%; }
 
+/* Sur téléphone, les cartes vont d'un bord à l'autre de l'écran, comme
+   l'intro : une carte plus étroite que l'intro qui recule laissait voir
+   celle-ci en bandes sombres sur les côtés. La dernière carte, qui s'en va
+   avec la section, laisse sa photo descendre dans la place réservée aux
+   barres du navigateur : en partant, elle ne montre pas un pan de cobalt
+   vide sous la photo, seulement la marge. */
+@media (max-width: 991px) {
+  .histoire__etapes { margin-inline: calc(var(--marge) * -1); }
+
+  .etape:last-of-type .etape__cadre {
+    margin-bottom: calc(var(--ecran-visible) - var(--ecran));
+  }
+}
+
 /* Tablette : l'album sur une ligne. */
 @media (min-width: 600px) {
   .histoire__photos { grid-template-columns: repeat(4, minmax(0, 1fr)); }

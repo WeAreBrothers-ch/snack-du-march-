@@ -1,6 +1,6 @@
 /**
- * Le pied de page : le panneau cobalt monte avec un bord en biais, comme
- * celui de l'anatomie ; le nom monte en géant depuis le bas au rythme du
+ * Le pied de page : le panneau cobalt monte comme une carte qui s'élargit
+ * jusqu'aux bords, comme celui de l'anatomie ; le nom monte en géant depuis le bas au rythme du
  * défilement, et le ticket d'adresse vient se poser dessus.
  */
 
@@ -12,10 +12,14 @@ export function initPied(outils) {
 
   gsap.fromTo(
     ".pied",
-    { "--biais": () => `${Math.round(window.innerWidth * 0.3)}px` },
     {
-      "--biais": "0px",
-      ease: "none",
+      "--retrait": () => `${Math.round(Math.min(window.innerWidth * 0.06, 48))}px`,
+      "--arrondi": () => `${window.innerWidth >= 992 ? 32 : 20}px`,
+    },
+    {
+      "--retrait": "0px",
+      "--arrondi": "0px",
+      ease: "power1.inOut",
       scrollTrigger: { trigger: ".pied", start: "top bottom", end: "top 40%", scrub: true, invalidateOnRefresh: true },
     },
   );

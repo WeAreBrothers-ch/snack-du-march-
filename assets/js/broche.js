@@ -5,7 +5,7 @@
  * l'accroche reste en place (CSS) et recule pendant que le panneau de
  * l'anatomie monte par-dessus.
  *
- * L'anatomie : le panneau cobalt monte avec un bord en biais ; le titre
+ * L'anatomie : le panneau cobalt monte comme une carte qui s'élargit ; le titre
  * monte et la photo se découvre. Sur grand écran, la planche se dessine
  * ensuite d'un seul geste : la légende, les traits qui vont de chaque
  * ingrédient à son repère, les repères eux-mêmes. Sur téléphone, une ligne
@@ -65,18 +65,22 @@ export function initBroche(outils, bureau, planche) {
     });
   }
 
-  // Le panneau de l'anatomie monte avec un bord en biais, qui se redresse
-  // quand il arrive en haut de l'écran.
+  // Le panneau de l'anatomie monte comme une carte en retrait des bords, et
+  // s'élargit jusqu'aux bords quand il arrive en haut de l'écran.
   gsap.fromTo(
     ".anatomie",
-    { "--biais": () => `${Math.round(window.innerWidth * 0.3)}px` },
     {
-      "--biais": "0px",
-      ease: "none",
+      "--retrait": () => `${Math.round(Math.min(window.innerWidth * 0.06, 48))}px`,
+      "--arrondi": () => `${bureau ? 32 : 20}px`,
+    },
+    {
+      "--retrait": "0px",
+      "--arrondi": "0px",
+      ease: "power1.inOut",
       scrollTrigger: {
         trigger: ".anatomie",
         start: "top bottom",
-        end: bureau ? "top top" : "top 25%",
+        end: bureau ? "top top" : "top 15%",
         scrub: true,
         invalidateOnRefresh: true,
       },
