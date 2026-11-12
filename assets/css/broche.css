@@ -60,14 +60,6 @@
   box-shadow: 0 3px 0 var(--craie);
 }
 
-/* En mode animé, le panneau monte comme une carte, un peu en retrait des
-   bords et les coins du haut arrondis, puis s'élargit jusqu'aux bords en
-   arrivant (broche.js règle --retrait et --arrondi). La frise reste
-   droite et entière. */
-html.anime .anatomie {
-  clip-path: inset(0 var(--retrait, 0px) 0 var(--retrait, 0px) round var(--arrondi, 0px) var(--arrondi, 0px) 0 0);
-}
-
 .anatomie__titre {
   max-width: 14ch;
   margin: 0 auto;

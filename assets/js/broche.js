@@ -67,16 +67,20 @@ export function initBroche(outils, bureau, planche) {
 
   // Le panneau de l'anatomie monte comme une carte en retrait des bords, et
   // s'élargit jusqu'aux bords quand il arrive en haut de l'écran.
+  // La découpe est animée telle quelle (et non par des variables CSS, qui
+  // recalculeraient le style de tout le panneau à chaque image).
+  const carteDe = () => {
+    const retrait = Math.round(Math.min(window.innerWidth * 0.06, 48));
+    const arrondi = bureau ? 32 : 20;
+    return `inset(0px ${retrait}px 0px ${retrait}px round ${arrondi}px ${arrondi}px 0px 0px)`;
+  };
   gsap.fromTo(
     ".anatomie",
+    { clipPath: carteDe },
     {
-      "--retrait": () => `${Math.round(Math.min(window.innerWidth * 0.06, 48))}px`,
-      "--arrondi": () => `${bureau ? 32 : 20}px`,
-    },
-    {
-      "--retrait": "0px",
-      "--arrondi": "0px",
+      clipPath: "inset(0px 0px 0px 0px round 0px 0px 0px 0px)",
       ease: "power1.inOut",
+      immediateRender: true,
       scrollTrigger: {
         trigger: ".anatomie",
         start: "top bottom",

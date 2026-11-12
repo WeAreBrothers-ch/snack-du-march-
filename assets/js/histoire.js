@@ -30,7 +30,7 @@ export function initHistoire(outils, bureau) {
   const [pauseIntro] = pauses;
 
   initIntro(outils, bureau, pauseIntro);
-  reculer(outils, element(".histoire__intro"), pauseIntro, { "--recul": 0.6 }, bureau);
+  reculer(outils, element(".histoire__intro"), element(".histoire__recul"), pauseIntro, {}, bureau);
 
   const etapes = elements(".etape");
   etapes.forEach((etape, index) => {
@@ -43,7 +43,14 @@ export function initHistoire(outils, bureau) {
     // La dernière carte n'est recouverte par rien : après sa pause, elle
     // s'en va avec la section.
     if (apres && index < etapes.length - 1) {
-      reculer(outils, etape, apres, { "--voile": 0.6, rotate: bureau ? (index % 2 === 0 ? 1.5 : -1.5) : 0 }, bureau);
+      reculer(
+        outils,
+        etape,
+        element(".etape__voile", etape),
+        apres,
+        { rotate: bureau ? (index % 2 === 0 ? 1.5 : -1.5) : 0 },
+        bureau,
+      );
     }
   });
 }
@@ -155,7 +162,7 @@ function initIntro(outils, bureau, pauseIntro) {
       0.85,
     )
     .to(devanture, { scale: 1, duration: 0.85, ease: "power2.out" }, 0.85)
-    .fromTo(fenetre, { "--voile": 0.3 }, { "--voile": 0.5, duration: 0.8 }, 0.85)
+    .fromTo(element(".histoire__fenetre-voile"), { opacity: 0.3 }, { opacity: 0.5, duration: 0.8 }, 0.85)
     // Le titre, cobalt sur le mur, passe à l'ivoire quand la photo, en
     // s'ouvrant, arrive derrière lui (et non avant : il resterait pâle sur
     // le mur).
@@ -184,20 +191,24 @@ function initIntro(outils, bureau, pauseIntro) {
 }
 
 /**
- * Pendant qu'un panneau suivant glisse par-dessus, celui-ci recule.
+ * Pendant qu'un panneau suivant glisse par-dessus, celui-ci recule, et son
+ * voile s'assombrit (l'opacité d'un calque à part : rien n'est repeint).
  * @param {import("./lib.js").Outils} outils
  * @param {HTMLElement} panneau
+ * @param {HTMLElement} voile
  * @param {HTMLElement} pause la pause qui défile pendant ce temps
  * @param {Record<string, number>} proprietes
  * @param {boolean} bureau
  */
-function reculer(outils, panneau, pause, proprietes, bureau) {
+function reculer(outils, panneau, voile, pause, proprietes, bureau) {
+  const parcours = { trigger: pause, start: "bottom bottom", end: "bottom top", scrub: SCRUB };
   outils.gsap.to(panneau, {
     scale: bureau ? 0.9 : 0.94,
     ...proprietes,
     ease: "none",
-    scrollTrigger: { trigger: pause, start: "bottom bottom", end: "bottom top", scrub: SCRUB },
+    scrollTrigger: parcours,
   });
+  outils.gsap.fromTo(voile, { opacity: 0 }, { opacity: 0.6, ease: "none", scrollTrigger: { ...parcours } });
 }
 
 /**

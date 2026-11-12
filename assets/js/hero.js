@@ -10,8 +10,10 @@
  * rejoignent au-dessus de la photo pour former « Snack du Marché » sur une
  * seule ligne, sur un bandeau cobalt qui se déroule depuis le milieu, comme
  * l'enseigne au-dessus de la vitrine : la céramique s'efface, les lettres
- * passent à l'ivoire. La photo reste entière : rien ne passe dessus, et
- * elle grandit un peu vers le bas, dans la place que les mots lui laissent.
+ * passent à l'ivoire. Sur téléphone, « Marché », posé sous la photo, monte
+ * devant elle pour rejoindre « Snack du ». La photo reste entière : elle
+ * remonte sous l'enseigne et grandit un peu vers le bas, dans la place que
+ * les mots lui laissent.
  */
 
 import { element, elements, positionDans, SCRUB } from "./lib.js";
@@ -77,7 +79,6 @@ export function initEnseigne(outils, bureau) {
   const cadre = element(".hero__cadre");
   const gauche = element(".hero__mot--gauche");
   const droite = element(".hero__mot--droite");
-  const nom = element(".hero__enseigne-nom");
 
   const bordure = element(".hero__bande");
   const titre = element(".hero__titre");
@@ -128,17 +129,7 @@ export function initEnseigne(outils, bureau) {
     const espace = parseFloat(styleMot.fontSize) * 0.22 - 2 * bord;
     const longueur = gauche.offsetWidth + espace + droite.offsetWidth;
     const echelle = Math.max(0.2, Math.min(1, (largeur - 2 * marge) / longueur, place / (gauche.offsetHeight * 1.4)));
-    let bande = gauche.offsetHeight * echelle * 1.4;
-    if (!bureau) {
-      // Sur téléphone, le nom est écrit sur l'enseigne même : on le
-      // dimensionne pour qu'il tienne entre les marges et dans la place
-      // au-dessus de la photo.
-      const taille = parseFloat(styleMot.fontSize);
-      nom.style.fontSize = `${taille}px`;
-      const reduction = Math.max(0.2, Math.min(1, (largeur - 2 * marge) / nom.offsetWidth, place / (taille * 1.6)));
-      nom.style.fontSize = `${taille * reduction}px`;
-      bande = taille * reduction * 1.6;
-    }
+    const bande = gauche.offsetHeight * echelle * 1.4;
     enseigne.style.setProperty("--enseigne-haut", `${dessus}px`);
     enseigne.style.setProperty("--enseigne-hauteur", `${bande}px`);
     const centre = dessus + bande / 2;
@@ -191,33 +182,31 @@ export function initEnseigne(outils, bureau) {
     },
   });
 
-  scene.fromTo(enseigne, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, ease: "none" }, bureau ? 0 : 0.1);
+  scene.fromTo(enseigne, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, ease: "none" }, 0);
 
-  if (bureau) {
-    // Les deux plaques glissent jusqu'à leur place sur la ligne.
-    scene
-      .to(
-        gauche,
-        { x: () => mesurer().gauche.x, y: () => mesurer().gauche.y, scale: () => mesurer().echelle, duration: 0.75 },
-        0.05,
-      )
-      .to(
-        droite,
-        { x: () => mesurer().droite.x, y: () => mesurer().droite.y, scale: () => mesurer().echelle, duration: 0.75 },
-        0.05,
-      );
-  } else {
-    // Sur téléphone, rien ne traverse la photo : les plaques s'effacent sur
-    // place, pendant que l'enseigne, nom déjà écrit, s'ouvre derrière.
-    scene.to([gauche, droite], { autoAlpha: 0, duration: 0.35, ease: "power1.in" }, 0.15);
-  }
+  // Les deux plaques glissent jusqu'à leur place sur la ligne. Sur
+  // téléphone, « Marché » monte de sous la photo et passe devant elle pour
+  // rejoindre « Snack du ».
+  scene
+    .to(
+      gauche,
+      { x: () => mesurer().gauche.x, y: () => mesurer().gauche.y, scale: () => mesurer().echelle, duration: 0.75 },
+      0.05,
+    )
+    .to(
+      droite,
+      { x: () => mesurer().droite.x, y: () => mesurer().droite.y, scale: () => mesurer().echelle, duration: 0.75 },
+      0.05,
+    );
 
-  // L'enseigne se déroule depuis le milieu.
+  // L'enseigne se déroule depuis le milieu. Sur téléphone, elle est en
+  // place plus tôt : « Marché » arrive par en dessous et doit trouver le
+  // bandeau déjà là.
   scene.fromTo(
     enseigne,
     { clipPath: () => mesurer().depart },
-    { clipPath: () => mesurer().arrivee, duration: 0.6 },
-    bureau ? 0.3 : 0.1,
+    { clipPath: () => mesurer().arrivee, duration: bureau ? 0.6 : 0.45 },
+    bureau ? 0.3 : 0.15,
   );
 
   // La photo reste entière : elle remonte sous l'enseigne et prend la place
@@ -229,20 +218,21 @@ export function initEnseigne(outils, bureau) {
     bureau ? 0.05 : 0.15,
   );
 
+  // La céramique des plaques s'efface, les lettres passent à l'ivoire : le
+  // nom est désormais écrit sur l'enseigne. Chaque plaque s'efface quand
+  // elle arrive sur le bandeau, pas avant (des lettres ivoire sur le mur ne
+  // se lisent pas) : sur téléphone, « Snack du », tout proche, d'abord ;
+  // « Marché », qui monte de sous la photo, ensuite.
+  const effacer = {
+    backgroundColor: "rgba(251, 249, 242, 0)",
+    borderColor: "rgba(18, 38, 160, 0)",
+    color: "#fbf9f2",
+    ease: "power1.inOut",
+  };
   if (bureau) {
-    // La céramique des plaques s'efface, les lettres passent à l'ivoire : le
-    // nom est désormais écrit sur l'enseigne.
-    scene.to(
-      [gauche, droite],
-      {
-        backgroundColor: "rgba(251, 249, 242, 0)",
-        borderColor: "rgba(18, 38, 160, 0)",
-        color: "#fbf9f2",
-        duration: 0.35,
-        ease: "power1.inOut",
-      },
-      0.4,
-    );
+    scene.to([gauche, droite], { ...effacer, duration: 0.35 }, 0.4);
+  } else {
+    scene.to(gauche, { ...effacer, duration: 0.25 }, 0.42).to(droite, { ...effacer, duration: 0.25 }, 0.55);
   }
 
   // Un temps d'arrêt sur l'enseigne complète avant que la page ne reparte.

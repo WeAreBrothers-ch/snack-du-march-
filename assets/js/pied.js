@@ -10,17 +10,27 @@ import { element, elements, SCRUB } from "./lib.js";
 export function initPied(outils) {
   const { gsap } = outils;
 
+  // La découpe est animée telle quelle (et non par des variables CSS, qui
+  // recalculeraient le style de tout le panneau à chaque image).
+  const carteDe = () => {
+    const retrait = Math.round(Math.min(window.innerWidth * 0.06, 48));
+    const arrondi = window.innerWidth >= 992 ? 32 : 20;
+    return `inset(0px ${retrait}px 0px ${retrait}px round ${arrondi}px ${arrondi}px 0px 0px)`;
+  };
   gsap.fromTo(
     ".pied",
+    { clipPath: carteDe },
     {
-      "--retrait": () => `${Math.round(Math.min(window.innerWidth * 0.06, 48))}px`,
-      "--arrondi": () => `${window.innerWidth >= 992 ? 32 : 20}px`,
-    },
-    {
-      "--retrait": "0px",
-      "--arrondi": "0px",
+      clipPath: "inset(0px 0px 0px 0px round 0px 0px 0px 0px)",
       ease: "power1.inOut",
-      scrollTrigger: { trigger: ".pied", start: "top bottom", end: "top 40%", scrub: true, invalidateOnRefresh: true },
+      immediateRender: true,
+      scrollTrigger: {
+        trigger: ".pied",
+        start: "top bottom",
+        end: "top 40%",
+        scrub: true,
+        invalidateOnRefresh: true,
+      },
     },
   );
 

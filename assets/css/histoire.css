@@ -100,14 +100,17 @@ html.anime .histoire__intro {
 }
 
 /* Quand la première carte glisse par-dessus, l'intro recule et s'assombrit,
-   comme les cartes entre elles. */
-html.anime .histoire__intro::after {
-  content: "";
+   comme les cartes entre elles. Un calque à part, dont le script anime
+   l'opacité : le téléphone le gère sans repeindre la scène. */
+.histoire__recul { display: none; }
+
+html.anime .histoire__recul {
   position: absolute;
   inset: 0;
   z-index: 3;
+  display: block;
   background: var(--nuit);
-  opacity: var(--recul, 0);
+  opacity: 0;
   pointer-events: none;
 }
 
@@ -123,12 +126,11 @@ html.anime .histoire__fenetre {
 
 html.anime .histoire__fenetre img { object-position: 50% 42%; }
 
-html.anime .histoire__fenetre::after {
-  content: "";
+.histoire__fenetre-voile {
   position: absolute;
   inset: 0;
   background: var(--nuit);
-  opacity: var(--voile, 0.3);
+  opacity: 0.3;
 }
 
 html.anime .histoire__texte {
@@ -193,13 +195,13 @@ html.anime .histoire__pause--intro {
 
 /* Un voile sombre, piloté par le script, recouvre la carte du dessous quand la
    suivante glisse par-dessus. Un voile plutôt qu'une transparence : rien ne
-   doit apparaître au travers. */
-.etape::after {
-  content: "";
+   doit apparaître au travers. Un calque à part, dont seule l'opacité change :
+   pas de repeinte de la carte à chaque image. */
+.etape__voile {
   position: absolute;
   inset: 0;
   background: var(--nuit);
-  opacity: var(--voile, 0);
+  opacity: 0;
   pointer-events: none;
 }
 

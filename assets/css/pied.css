@@ -25,12 +25,6 @@
   box-shadow: 0 3px 0 var(--craie);
 }
 
-/* En mode animé, le panneau monte comme une carte qui s'élargit jusqu'aux
-   bords, comme celui de l'anatomie (pied.js). */
-html.anime .pied {
-  clip-path: inset(0 var(--retrait, 0px) 0 var(--retrait, 0px) round var(--arrondi, 0px) var(--arrondi, 0px) 0 0);
-}
-
 .pied__contenu {
   display: flex;
   flex-direction: column;
