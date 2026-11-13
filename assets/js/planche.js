@@ -15,7 +15,7 @@ import { positionDans } from "./lib.js";
 const NS = "http://www.w3.org/2000/svg";
 const BUREAU = "(min-width: 992px)";
 /** Espace entre la fin du mot et le début du trait, en pixels. */
-const ECART = 14;
+const ECART = 6;
 
 /**
  * @typedef {Object} Planche
@@ -57,11 +57,13 @@ export function initPlanche() {
       if (!point || !(ligne instanceof HTMLElement)) return;
 
       const aGauche = ligne.dataset.cote === "gauche";
-      const mot = positionDans(libelle, planche);
+      // Le trait part du bord de la ligne (le petit rond numéroté en fait partie,
+      // du côté de la photo), à hauteur de son centre.
+      const boite = positionDans(ligne, planche);
       const repere = positionDans(point, planche);
 
-      const x1 = aGauche ? mot.x + libelle.offsetWidth + ECART : mot.x - ECART;
-      const y1 = mot.y + libelle.offsetHeight / 2;
+      const x1 = aGauche ? boite.x + ligne.offsetWidth + ECART : boite.x - ECART;
+      const y1 = boite.y + ligne.offsetHeight / 2;
       const x2 = repere.x + point.offsetWidth / 2;
       const y2 = repere.y + point.offsetHeight / 2;
 
