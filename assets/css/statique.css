@@ -1,8 +1,11 @@
 /* ==========================================================================
    Régime statique — sans animation. Les sections se lisent déjà dans le fil
    de la page ; il ne reste qu'à rendre visible ce que le script aurait
-   dévoilé, et à laisser les plats se déplier au doigt.
+   dévoilé, et à laisser le carrousel défiler au doigt.
    ========================================================================== */
+
+/* Le carrousel défile déjà tout seul ; seules les flèches ont besoin du script. */
+html.statique .carrousel__boutons { display: none; }
 
 html.statique .quartier__titre[data-quartier-devant] {
   position: static;

@@ -445,3 +445,66 @@ html.anime .histoire__intro { z-index: 0; }
   .chapitre:nth-child(1) .chapitre__photo { width: min(100%, 36rem); }
   .chapitre:nth-child(3) .chapitre__photo { width: min(100%, 42rem); }
 }
+
+/* Téléphone : des cartes compactes, pas une grande plaque ----------------- */
+
+/* Une seule grande plaque avec trois chapitres très hauts, c'était trop :
+   sur téléphone, chaque chapitre est sa propre petite carte, le mur de
+   carreaux se voit entre elles ; la photo est basse, l'année et le titre
+   tiennent sur une ligne, le récit est au corps du texte courant. */
+@media (max-width: 991px) {
+  .frise.plaque {
+    margin-inline: var(--retrait);
+    padding: clamp(0.75rem, 3vw, 1.25rem) 0 clamp(2rem, 8vw, 3rem);
+    background: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .frise__chapitres { gap: clamp(1.25rem, 5vw, 2rem); }
+
+  .chapitre {
+    gap: clamp(0.7rem, 3vw, 1rem);
+    padding: clamp(0.9rem, 3.5vw, 1.25rem);
+    background: var(--craie);
+    border: 3px solid var(--cobalt);
+    border-radius: calc(var(--rayon) * 1.5);
+    box-shadow: inset 0 0 0 3px var(--craie), inset 0 0 0 5px var(--cobalt);
+  }
+
+  .chapitre__photo,
+  .chapitre:nth-child(1) .chapitre__photo,
+  .chapitre:nth-child(3) .chapitre__photo { aspect-ratio: 4 / 3; }
+
+  .chapitre:nth-child(2) .chapitre__photo img { object-position: center 55%; }
+
+  .chapitre__texte {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: baseline;
+    column-gap: clamp(0.6rem, 3vw, 1rem);
+    row-gap: clamp(0.4rem, 2vw, 0.7rem);
+  }
+
+  .chapitre__texte > * { grid-column: 1 / -1; }
+
+  .chapitre__annee {
+    grid-column: 1;
+    font-size: clamp(2.5rem, 12.5vw, 3.6rem);
+  }
+
+  .chapitre__titre {
+    grid-column: 2;
+    font-size: clamp(1.25rem, 5.6vw, 1.8rem);
+  }
+
+  .chapitre__recit {
+    font-size: var(--t-corps);
+    line-height: 1.4;
+  }
+
+  .chapitre__citation { font-size: clamp(1.1rem, 4.8vw, 1.5rem); }
+
+  /* L'ouverture de la devanture demande moins de défilement. */
+  html.anime .histoire__pause--intro { height: calc(var(--ecran-visible) * 0.55); }
+}

@@ -3,7 +3,7 @@
    ========================================================================== */
 
 /* ==========================================================================
-   Le quartier — le grand texte, la devanture en tranches qui tournent, deux
+   Le quartier — le grand texte, la devanture, deux
    clichés à leur format (jamais rognés), les avis, l'adresse
    ========================================================================== */
 
@@ -14,33 +14,18 @@
   padding: clamp(1.75rem, 7vw, 4rem) clamp(1.25rem, 5vw, 3rem) clamp(2rem, 8vw, 4rem);
 }
 
-/* La devanture : un carré, jamais rognée. Les tranches (quartier.js) la
-   recouvrent et se décalent ; elles dépassent un peu du cadre, c'est voulu. */
+/* La devanture : un carré, jamais rognée. */
 .quartier__scene {
   position: relative;
-  width: min(84%, 32rem);
+  width: min(86%, 32rem);
   margin-inline: auto;
 }
 
 .tourne {
-  position: relative;
+  overflow: hidden;
   aspect-ratio: 1;
   border-radius: var(--rayon);
   box-shadow: 0 0 0 2px var(--cobalt);
-}
-
-.tourne img { border-radius: inherit; }
-
-.tourne--prete { box-shadow: none; }
-.tourne--prete img { opacity: 0; }
-
-.tourne__tranche {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  background-repeat: no-repeat;
-  background-size: 100% 900%;
-  will-change: transform;
 }
 
 /* Les deux clichés, à leur format : le portrait et le carré, décalés. */

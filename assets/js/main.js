@@ -18,11 +18,11 @@ import { chargerLibrairies } from "./lib.js";
 import { initDefilement, rejoindreAncre } from "./defilement.js";
 import { initHoraires } from "./horaires.js";
 import { initMenu, initTitreOnglet } from "./menu.js";
-import { initHeroDefilement, jouerEntree, retablirHero } from "./hero.js";
+import { initEnseigne, jouerEntree, retablirHero } from "./hero.js";
 import { initHistoire } from "./histoire.js";
 import { initBroche } from "./broche.js";
 import { initPlanche } from "./planche.js";
-import { initCarte, initPlats } from "./carte.js";
+import { initCarte } from "./carte.js";
 import { initQuartier, initPrix } from "./quartier.js";
 import { initPied } from "./pied.js";
 import { restaurerDecoupes } from "./texte.js";
@@ -39,7 +39,6 @@ function passerEnStatique() {
   racine.classList.add("statique");
   initMenu(null);
   initPlanche();
-  initPlats(null);
 }
 
 /**
@@ -55,7 +54,6 @@ function demarrerAnime(outils) {
 
   initMenu(outils, lenis);
   initTitreOnglet();
-  initPlats(outils);
 
   const media = gsap.matchMedia();
 
@@ -71,16 +69,15 @@ function demarrerAnime(outils) {
       entreeJouee = true;
     }
 
-    initHeroDefilement(outils, bureau);
+    initEnseigne(outils, bureau);
     const nettoyerHistoire = initHistoire(outils, bureau);
     const nettoyerBroche = initBroche(outils, bureau, planche);
     const nettoyerCarte = initCarte(outils);
     initPrix(outils);
-    const nettoyerQuartier = initQuartier(outils, bureau);
+    initQuartier(outils, bureau);
     initPied(outils);
 
     return () => {
-      nettoyerQuartier();
       nettoyerHistoire();
       nettoyerBroche();
       nettoyerCarte();
