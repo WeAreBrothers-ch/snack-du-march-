@@ -1,11 +1,22 @@
 /* ==========================================================================
    Hero — le mur de faïence d'Iznik, encadré par sa bordure cobalt.
    Le nom de la maison, sur deux plaques de céramique, de part et d'autre de
-   la photo. Au défilement, les plaques et la photo s'en vont chacune à sa
-   vitesse (hero.js) : la composition reste entière.
+   la photo. Au défilement, le haut de page reste épinglé : les plaques
+   sortent de chaque côté, la photo change de plat en grandissant, le mur
+   s'approche (hero.js).
    ========================================================================== */
 
 .hero {
+  position: sticky;
+  top: 0;
+}
+
+/* En mode animé, le bloc d'accueil est plus haut que l'écran : le hero reste
+   épinglé tout le temps que la scène se joue au défilement (hero.js). Sans
+   animation, il retrouve la hauteur du hero. */
+html.anime .accueil { height: calc(var(--ecran) * 2.15); }
+
+html.anime .hero {
   position: sticky;
   top: 0;
 }
@@ -179,7 +190,7 @@ html.anime.pret .hero__tuiles {
 .hero__photo { object-position: center 45%; }
 
 /* Les plats suivants, empilés sur le premier et découpés à zéro : hero.js
-   les découvre de bas en haut, l'un après l'autre. */
+   les découvre de bas en haut, l'un après l'autre, au défilement. */
 .hero__photo--suite {
   position: absolute;
   inset: 0;

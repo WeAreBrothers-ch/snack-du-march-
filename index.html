@@ -120,8 +120,9 @@
   <main>
     <!-- Hero ----------------------------------------------------------------
          Le mur de faïence, le nom sur ses deux plaques de part et d'autre de
-         la photo. Au défilement, rien ne se rassemble : les plaques et la
-         photo s'en vont chacune à sa vitesse. -->
+         la photo. En mode animé, le bloc d'accueil fait plus de deux écrans de
+         haut : le hero reste épinglé pendant que les plaques sortent, que la
+         photo change de plat en grandissant et que le mur s'approche. -->
     <div class="accueil" id="accueil">
       <section class="hero">
         <div class="hero__mur" aria-hidden="true"><span class="hero__tuiles"></span></div>
@@ -142,12 +143,11 @@
           <span class="hero__cadre" aria-hidden="true">
             <span class="hero__image">
               <img class="hero__photo" src="assets/photos/durum-main.webp" alt="" width="765" height="1020" fetchpriority="high" decoding="async" />
-              <!-- Les plats suivants : le script les charge au calme et les
-                   découvre, l'un après l'autre, par-dessus (hero.js). -->
+              <!-- Les plats suivants : au défilement, le script les découvre,
+                   l'un après l'autre, par-dessus (hero.js). -->
               <img class="hero__photo hero__photo--suite" data-src="assets/photos/comptoir-decoupe.webp" alt="" width="765" height="1020" decoding="async" />
               <img class="hero__photo hero__photo--suite" data-src="assets/photos/assiette-frites.webp" alt="" width="765" height="1020" decoding="async" />
               <img class="hero__photo hero__photo--suite" data-src="assets/photos/sandwich-veau-agneau.webp" alt="" width="574" height="1020" decoding="async" />
-              <img class="hero__photo hero__photo--suite" data-src="assets/photos/durum-main.webp" alt="" width="765" height="1020" decoding="async" />
             </span>
           </span>
           <span class="hero__mot hero__mot--droite">Marché</span>
@@ -317,40 +317,185 @@
 
     <!-- La carte -------------------------------------------------------------- -->
     <section class="carte plaque" id="carte" aria-labelledby="titre-carte">
-      <h2 class="carte__titre" id="titre-carte">
-        <span class="carte__ligne">
-          <span class="carte__mot">Tout est</span>
-          <span class="carte__vignette" aria-hidden="true"><img src="assets/photos/sandwich-veau-agneau.webp" alt="" loading="lazy" decoding="async" /></span>
-        </span>
-        <span class="carte__ligne carte__ligne--inverse">
-          <span class="carte__mot">fait</span>
-          <span class="carte__vignette" aria-hidden="true"><img src="assets/photos/comptoir-vitrine.webp" alt="" loading="lazy" decoding="async" /></span>
-        </span>
-        <span class="carte__ligne">
-          <span class="carte__mot">maison</span>
-          <span class="carte__vignette" aria-hidden="true"><img src="assets/photos/durum-main.webp" alt="" loading="lazy" decoding="async" /></span>
-        </span>
-      </h2>
-
-      <div class="carrousel" role="region" aria-label="Les plats du comptoir">
-        <p class="carrousel__texte">Sandwich, dürüm, assiette ou box&nbsp;: la même broche, la même famille, depuis 1998.</p>
-        <div class="carrousel__cadre" tabindex="0" role="group" aria-label="Plats, à faire défiler">
-          <div class="carrousel__piste">
-            <article class="plat"><div class="plat__photo"><img src="assets/photos/sandwich-veau-agneau.webp" alt="Le sandwich veau-agneau" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Le veau-agneau</h3><p class="plat__note">Yaprak döner · La broche de la maison</p><p class="plat__prix">14.–</p></article>
-            <article class="plat"><div class="plat__photo"><img src="assets/photos/durum-main.webp" alt="Un dürüm, roulé dans sa galette" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Le dürüm</h3><p class="plat__note">Roulé dans la galette, passée au grill</p><p class="plat__prix">dès 14.–</p></article>
-            <article class="plat"><div class="plat__photo"><img src="assets/photos/assiette-frites.webp" alt="L'assiette kebab avec frites" loading="lazy" decoding="async" /></div><h3 class="plat__nom">L'assiette</h3><p class="plat__note">Frites ou riz, salade, sauces</p><p class="plat__prix">dès 20.–</p></article>
-            <article class="plat"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 2.45">Box</span></div><h3 class="plat__nom">La döner box</h3><p class="plat__note">Viande, frites, sauces, dans la boîte</p><p class="plat__prix">14.–</p></article>
-            <article class="plat"><div class="plat__photo"><img src="assets/photos/comptoir-vitrine.webp" alt="La vitrine des mezze, au comptoir" loading="lazy" decoding="async" /></div><h3 class="plat__nom">Les mezze</h3><p class="plat__note">Houmous, aubergine, feuilles de vigne</p><p class="plat__prix">Au comptoir</p></article>
-            <article class="plat"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 3.92">Köfte</span></div><h3 class="plat__nom">La köfte</h3><p class="plat__note">Bœuf haché, persil, cumin · Piquant</p><p class="plat__prix">14.–</p></article>
-            <article class="plat"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 5.16">Falafel</span></div><h3 class="plat__nom">Le falafel</h3><p class="plat__note">Pois chiches, herbes, frit à la commande</p><p class="plat__prix">12.–</p></article>
-            <article class="plat"><div class="plat__photo plat__photo--texte" aria-hidden="true"><span style="--mot: 5.4">Baklava</span></div><h3 class="plat__nom">Le baklava</h3><p class="plat__note">Pistache de Gaziantep, à la pièce</p><p class="plat__prix">1.50</p></article>
-          </div>
-        </div>
-        <div class="carrousel__boutons">
-          <button class="carrousel__bouton" type="button" data-carrousel-precedent aria-label="Plat précédent"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none"><path d="M13 8H3M7.5 3.5 3 8l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <button class="carrousel__bouton" type="button" data-carrousel-suivant aria-label="Plat suivant"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none"><path d="M3 8h10M8.5 3.5 13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        </div>
+      <div class="carte__tete">
+        <h2 class="carte__titre" id="titre-carte">Tout est fait maison</h2>
+        <p class="carte__texte">Sandwich, dürüm, assiette ou box&nbsp;: la même broche, la même famille, depuis 1998. Touchez un plat pour voir ce qu'il y a dedans.</p>
+        <a class="carte__lien libelle" href="#prix">Tous les prix <span aria-hidden="true">↓</span></a>
       </div>
+
+      <!-- Le menu : tous les plats d'un coup d'œil, avec leur prix ; on en
+           déplie un à la fois pour voir la photo, la description et ce qu'il
+           y a dedans (carte.js). Sans script, tout reste déplié. -->
+      <ol class="menu">
+        <li class="plat est-ouvert">
+          <h3 class="plat__titre">
+            <button class="plat__tete" type="button" aria-expanded="true" aria-controls="plat-1">
+              <span class="plat__num" aria-hidden="true">01</span>
+              <span class="plat__nom">Le veau-agneau</span>
+              <span class="plat__prix">14.–</span>
+              <span class="plat__signe" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="plat__corps" id="plat-1" role="region" aria-label="Le veau-agneau">
+            <div class="plat__interieur">
+              <div class="plat__contenu">
+                <figure class="plat__photo" style="--ratio: 574 / 1020"><img src="assets/photos/sandwich-veau-agneau.webp" alt="Le sandwich veau-agneau, ouvert sur ses crudités" width="574" height="1020" loading="lazy" decoding="async" /></figure>
+                <div class="plat__texte">
+                  <p class="plat__note">Le sandwich de la maison&nbsp;: pain croustillant, veau et agneau tranchés à la broche, crudités et sauce blanche.</p>
+                  <ul class="plat__compo"><li>Pain croustillant</li><li>Veau &amp; agneau</li><li>Tomate</li><li>Concombre</li><li>Salade</li><li>Oignon rouge</li><li>Persil</li><li>Sauce blanche</li></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="plat">
+          <h3 class="plat__titre">
+            <button class="plat__tete" type="button" aria-expanded="false" aria-controls="plat-2">
+              <span class="plat__num" aria-hidden="true">02</span>
+              <span class="plat__nom">Le dürüm</span>
+              <span class="plat__prix">dès 14.–</span>
+              <span class="plat__signe" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="plat__corps" id="plat-2" role="region" aria-label="Le dürüm">
+            <div class="plat__interieur">
+              <div class="plat__contenu">
+                <figure class="plat__photo" style="--ratio: 765 / 1020"><img src="assets/photos/durum-main.webp" alt="Un dürüm, roulé dans sa galette" width="765" height="1020" loading="lazy" decoding="async" /></figure>
+                <div class="plat__texte">
+                  <p class="plat__note">La même broche, roulée dans une galette passée au grill.</p>
+                  <ul class="plat__compo"><li>Poulet · 14.–</li><li>Falafel · 14.–</li><li>Veau &amp; agneau · 15.–</li><li>Köfte · 15.–</li></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="plat">
+          <h3 class="plat__titre">
+            <button class="plat__tete" type="button" aria-expanded="false" aria-controls="plat-3">
+              <span class="plat__num" aria-hidden="true">03</span>
+              <span class="plat__nom">L'assiette</span>
+              <span class="plat__prix">dès 20.–</span>
+              <span class="plat__signe" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="plat__corps" id="plat-3" role="region" aria-label="L'assiette">
+            <div class="plat__interieur">
+              <div class="plat__contenu">
+                <figure class="plat__photo" style="--ratio: 765 / 1020"><img src="assets/photos/assiette-frites.webp" alt="L'assiette kebab avec frites" width="765" height="1020" loading="lazy" decoding="async" /></figure>
+                <div class="plat__texte">
+                  <p class="plat__note">Viande, frites ou riz, salade et sauces. 22.– avec le poulet, le veau-agneau ou la köfte&nbsp;; 20.– avec le falafel.</p>
+                  <ul class="plat__compo"><li>Frites ou riz</li><li>Salade</li><li>Sauces</li></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="plat">
+          <h3 class="plat__titre">
+            <button class="plat__tete" type="button" aria-expanded="false" aria-controls="plat-4">
+              <span class="plat__num" aria-hidden="true">04</span>
+              <span class="plat__nom">La döner box</span>
+              <span class="plat__prix">14.–</span>
+              <span class="plat__signe" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="plat__corps" id="plat-4" role="region" aria-label="La döner box">
+            <div class="plat__interieur">
+              <div class="plat__contenu">
+                <ul class="plat__recette"><li>Viande</li><li>Frites</li><li>Sauces</li></ul>
+                <div class="plat__texte">
+                  <p class="plat__note">Viande, frites et sauces, tout dans la boîte.</p>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="plat">
+          <h3 class="plat__titre">
+            <button class="plat__tete" type="button" aria-expanded="false" aria-controls="plat-5">
+              <span class="plat__num" aria-hidden="true">05</span>
+              <span class="plat__nom">Les mezze</span>
+              <span class="plat__prix">Au comptoir</span>
+              <span class="plat__signe" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="plat__corps" id="plat-5" role="region" aria-label="Les mezze">
+            <div class="plat__interieur">
+              <div class="plat__contenu">
+                <figure class="plat__photo" style="--ratio: 765 / 1020"><img src="assets/photos/comptoir-vitrine.webp" alt="La vitrine des mezze, au comptoir" width="765" height="1020" loading="lazy" decoding="async" /></figure>
+                <div class="plat__texte">
+                  <p class="plat__note">Le comptoir de mezze, fait sur place. Les prix sont au comptoir.</p>
+                  <ul class="plat__compo"><li>Houmous</li><li>Caviar d'aubergine</li><li>Taboulé</li><li>Feuilles de vigne farcies</li></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="plat">
+          <h3 class="plat__titre">
+            <button class="plat__tete" type="button" aria-expanded="false" aria-controls="plat-6">
+              <span class="plat__num" aria-hidden="true">06</span>
+              <span class="plat__nom">La köfte</span>
+              <span class="plat__prix">14.–</span>
+              <span class="plat__signe" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="plat__corps" id="plat-6" role="region" aria-label="La köfte">
+            <div class="plat__interieur">
+              <div class="plat__contenu">
+                <ul class="plat__recette"><li>Bœuf haché</li><li>Persil</li><li>Cumin</li></ul>
+                <div class="plat__texte">
+                  <p class="plat__note">Du bœuf haché, parfumé au persil et au cumin. Elle est piquante.</p>
+                  <ul class="plat__compo"><li>Piquant</li></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="plat">
+          <h3 class="plat__titre">
+            <button class="plat__tete" type="button" aria-expanded="false" aria-controls="plat-7">
+              <span class="plat__num" aria-hidden="true">07</span>
+              <span class="plat__nom">Le falafel</span>
+              <span class="plat__prix">12.–</span>
+              <span class="plat__signe" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="plat__corps" id="plat-7" role="region" aria-label="Le falafel">
+            <div class="plat__interieur">
+              <div class="plat__contenu">
+                <ul class="plat__recette"><li>Pois chiches</li><li>Herbes</li><li>Frit à la commande</li></ul>
+                <div class="plat__texte">
+                  <p class="plat__note">Des boulettes de pois chiches aux herbes, frites à la commande.</p>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="plat">
+          <h3 class="plat__titre">
+            <button class="plat__tete" type="button" aria-expanded="false" aria-controls="plat-8">
+              <span class="plat__num" aria-hidden="true">08</span>
+              <span class="plat__nom">Le baklava</span>
+              <span class="plat__prix">1.50</span>
+              <span class="plat__signe" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="plat__corps" id="plat-8" role="region" aria-label="Le baklava">
+            <div class="plat__interieur">
+              <div class="plat__contenu">
+                <ul class="plat__recette"><li>Pistache de Gaziantep</li><li>À la pièce</li></ul>
+                <div class="plat__texte">
+                  <p class="plat__note">À la pièce. La pistache vient de Gaziantep, la ville d'où est partie la famille.</p>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ol>
     </section>
 
     <!-- Les prix -------------------------------------------------------------- -->
@@ -404,24 +549,45 @@
     <div class="espace"></div>
 
     <!-- Le quartier ------------------------------------------------------------ -->
-    <section class="quartier plaque" id="quartier">
-      <div class="quartier__rangee">
-        <div class="quartier__photo"><img src="assets/photos/devanture-nuit.webp" alt="La devanture éclairée du Snack du Marché à la nuit tombée" width="1020" height="1020" loading="lazy" decoding="async" /></div>
+    <section class="quartier plaque" id="quartier" aria-labelledby="titre-quartier">
+      <div class="quartier__typo">
+        <h2 class="quartier__titre" id="titre-quartier" data-quartier-devant>À deux pas de la Riponne, la broche tourne depuis 1998</h2>
+        <p class="quartier__titre quartier__titre--fantome" aria-hidden="true">À deux pas de la Riponne, la broche tourne depuis 1998</p>
+      </div>
+
+      <!-- La devanture, à son format. Au défilement, le script la découpe en
+           tranches qui se décalent comme une broche qui tourne, puis se
+           recomposent quand la photo arrive au centre de l'écran. -->
+      <div class="quartier__scene">
+        <div class="tourne" data-tourne role="img" aria-label="La devanture éclairée du Snack du Marché, à la nuit tombée">
+          <img src="assets/photos/devanture-nuit.webp" alt="" width="1020" height="1020" loading="lazy" decoding="async" />
+        </div>
         <figure class="papier papier--haut">
           <blockquote>«&nbsp;Littérale&shy;ment le meilleur kebab que j'ai jamais mangé.&nbsp;»</blockquote>
           <figcaption>Avis Google</figcaption>
         </figure>
       </div>
-      <div class="quartier__typo">
-        <h2 class="quartier__titre" data-quartier-devant>À deux pas de la Riponne, la broche tourne depuis 1998</h2>
-        <p class="quartier__titre quartier__titre--fantome" aria-hidden="true">À deux pas de la Riponne, la broche tourne depuis 1998</p>
-      </div>
-      <div class="quartier__rangee quartier__rangee--basse">
-        <figure class="papier papier--bas">
-          <blockquote>«&nbsp;Accueil chaleureux du patron et de son fils.&nbsp;»</blockquote>
-          <figcaption>Avis Google</figcaption>
+
+      <div class="quartier__duo">
+        <figure class="cliche">
+          <img src="assets/photos/frites-terrasse.webp" alt="Une assiette de frites sur la terrasse, la rue du quartier en arrière-plan" width="765" height="1020" loading="lazy" decoding="async" />
+          <figcaption class="libelle">La terrasse, côté rue</figcaption>
         </figure>
-        <div class="quartier__photo"><img src="assets/photos/frites-terrasse.webp" alt="Une assiette de frites sur la terrasse, la rue du quartier en arrière-plan" width="765" height="1020" loading="lazy" decoding="async" /></div>
+        <figure class="cliche cliche--bas">
+          <img src="assets/photos/enseigne.webp" alt="L'enseigne lumineuse du Snack du Marché" width="1020" height="1020" loading="lazy" decoding="async" />
+          <figcaption class="libelle">L'enseigne</figcaption>
+        </figure>
+      </div>
+
+      <figure class="papier papier--bas">
+        <blockquote>«&nbsp;Accueil chaleureux du patron et de son fils.&nbsp;»</blockquote>
+        <figcaption>Avis Google</figcaption>
+      </figure>
+
+      <div class="quartier__acces">
+        <p class="quartier__adresse">Rue Pré-du-Marché 3<br />1004 Lausanne</p>
+        <p class="quartier__repere">À deux pas de la place de la Riponne. Tous les jours, de 11&nbsp;h à 22&nbsp;h.</p>
+        <a class="quartier__itineraire libelle" href="https://www.google.com/maps/dir/?api=1&amp;destination=Rue+Pr%C3%A9-du-March%C3%A9+3%2C+1004+Lausanne" target="_blank" rel="noopener noreferrer">Itinéraire <span aria-hidden="true">→</span></a>
       </div>
     </section>
 
@@ -432,9 +598,9 @@
   <footer class="pied" id="pied">
     <p class="pied__voeu"><svg class="drapeau" aria-hidden="true" focusable="false"><use href="#drapeau-tr"/></svg><span lang="tr">Afiyet olsun</span><span class="pied__traduction">— bon appétit</span></p>
 
-    <!-- Les trois choses qu'on vient chercher en bas de page, en grand. -->
+    <!-- Ce qu'on vient chercher en bas de page, sur trois lignes serrées. -->
     <div class="pied__infos">
-      <div class="pied__bloc">
+      <div class="pied__bloc pied__bloc--adresse">
         <p class="pied__intitule">Adresse</p>
         <p class="pied__valeur"><span class="pied__rue">Rue Pré-du-Marché 3</span><br />1004 Lausanne</p>
         <a class="pied__action" href="https://www.google.com/maps/dir/?api=1&amp;destination=Rue+Pr%C3%A9-du-March%C3%A9+3%2C+1004+Lausanne" target="_blank" rel="noopener noreferrer">Itinéraire</a>
@@ -458,7 +624,7 @@
 
     <div class="pied__bas">
       <p>© 2026 Snack du Marché · Site créé par <a href="https://wearebrothers.ch" target="_blank" rel="noopener noreferrer">WeAreBrothers</a></p>
-      <a class="pied__haut" href="#accueil">Remonter</a>
+      <a class="pied__haut" href="#accueil">Remonter ↑</a>
     </div>
   </footer>
 

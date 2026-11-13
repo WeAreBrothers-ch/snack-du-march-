@@ -1,17 +1,17 @@
 /* ==========================================================================
-   Pied de page — ce qu'on vient chercher en bas : l'adresse, les horaires,
-   le téléphone, en grand et en clair ; puis le nom, d'un bord à l'autre.
+   Pied de page — court : l'adresse, les horaires, le téléphone, puis le nom
+   d'un bord à l'autre. Tout tient dans un écran de téléphone.
    ========================================================================== */
 
 .pied {
   position: relative;
   display: grid;
-  gap: clamp(2.5rem, 8vw, 4.5rem);
+  gap: clamp(1.1rem, 4vw, 1.75rem);
   width: 100%;
   padding:
-    calc(var(--bande-h) + clamp(2.5rem, 8vw, 5rem))
+    calc(var(--bande-h) + clamp(1.1rem, 4vw, 2rem))
     max(var(--marge), (100% - var(--largeur-max)) / 2)
-    var(--marge);
+    clamp(1rem, 3vw, 1.5rem);
   background: var(--panneau);
   color: var(--panneau-texte);
   overflow: hidden;
@@ -49,19 +49,24 @@
   color: var(--panneau-texte-doux);
 }
 
+/* Sur téléphone : l'adresse sur toute la largeur, puis les horaires et le
+   téléphone côte à côte. */
 .pied__infos {
   display: grid;
-  gap: clamp(2rem, 7vw, 2.5rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 3.5vw, 1.4rem) clamp(1rem, 4vw, 1.5rem);
 }
 
 .pied__bloc {
   display: grid;
   align-content: start;
   justify-items: start;
-  gap: 0.7rem;
-  padding-top: 1.1rem;
+  gap: 0.35rem;
+  padding-top: 0.8rem;
   border-top: 1px solid var(--panneau-trait);
 }
+
+.pied__bloc--adresse { grid-column: 1 / -1; }
 
 .pied__intitule {
   font-family: var(--f-titre);
@@ -76,18 +81,18 @@
 .pied__valeur {
   font-family: var(--f-titre);
   font-weight: 700;
-  font-size: clamp(1.6rem, 1.15rem + 1.25vw, 2.4rem);
-  line-height: 1.08;
+  font-size: clamp(1.2rem, 0.95rem + 1.1vw, 1.9rem);
+  line-height: 1.1;
   color: var(--craie);
 }
 
-.pied__tel { font-variant-numeric: tabular-nums; }
+.pied__tel { font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* Le nom de la rue ne se coupe pas à ses traits d'union. */
 .pied__rue { white-space: nowrap; }
 
 .pied__action {
-  font-size: var(--t-corps);
+  font-size: var(--t-petit);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.25em;
@@ -96,44 +101,36 @@
 .pied a:hover { color: var(--panneau-survol); }
 
 .pied__etat {
-  font-size: var(--t-corps);
+  font-size: var(--t-petit);
   color: var(--panneau-texte-doux);
 }
 
 .pied__reseaux {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem 1.25rem;
+  gap: 0.2rem 1rem;
 }
 
-/* Le nom, d'un bord à l'autre, en ivoire plein. Sur téléphone, sur deux
-   lignes (« Snack du » mesure un peu plus de 6 fois la taille de la police) ;
-   plus large, sur une seule (« Snack du Marché » : 11 fois). */
+/* Le nom, d'un bord à l'autre, sur une seule ligne, en ivoire plein
+   (« Snack du Marché » mesure 11 fois la taille de la police). */
 .pied__nom {
-  margin-block: clamp(0.5rem, 3vw, 2rem) 0;
   font-family: var(--f-titre);
   font-weight: 900;
-  font-size: 15.5cqi;
-  line-height: 0.92;
+  font-size: 8.9cqi;
+  line-height: 0.95;
   letter-spacing: -0.01em;
   text-align: center;
   text-transform: uppercase;
+  white-space: nowrap;
   color: var(--craie);
-}
-
-@media (min-width: 768px) {
-  .pied__nom {
-    font-size: 8.9cqi;
-    white-space: nowrap;
-  }
 }
 
 .pied__bas {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 0.75rem 1.5rem;
-  padding-top: 1rem;
+  gap: 0.4rem 1.5rem;
+  padding-top: 0.8rem;
   border-top: 1px solid var(--panneau-trait);
   font-size: var(--t-petit);
   color: var(--panneau-texte-doux);
@@ -141,15 +138,17 @@
 
 .pied__bas a { text-decoration: underline; text-underline-offset: 0.2em; }
 
+/* Les fentes des lettres (pied.js) : assez hautes pour l'accent du É. */
+.pied__nom .lettre-mask {
+  overflow: visible !important;
+  clip-path: inset(-0.35em -0.1em 0 -0.1em);
+}
+
 @media (min-width: 768px) {
   .pied__infos {
     grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr);
     column-gap: calc(var(--gouttiere) * 2);
   }
-}
 
-/* Les fentes des lettres (pied.js) : assez hautes pour l'accent du É. */
-.pied__nom .lettre-mask {
-  overflow: visible !important;
-  clip-path: inset(-0.35em -0.1em 0 -0.1em);
+  .pied__bloc--adresse { grid-column: auto; }
 }

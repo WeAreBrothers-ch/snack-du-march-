@@ -7,8 +7,8 @@ téléphone, sur un **mur de faïence d'Iznik** (cobalt, turquoise, rouge), et
 que le défilement anime de bout en bout : le nom qui se
 rassemble sur son enseigne cobalt, au-dessus de la vitrine, la devanture qui
 s'ouvre sur l'histoire de la maison et sa frise à l'année qui roule, la
-planche d'anatomie qu'une ligne lit de haut en bas, la carte à feuilleter au
-doigt.
+planche d'anatomie qu'une ligne lit de haut en bas, la carte, un menu qu'on
+déplie au doigt.
 
 | Fichier | Ce que c'est |
 |---|---|
@@ -56,7 +56,7 @@ sitemap.xml         la liste des pages, pour Google
 
 Tout est écrit **directement dans `index.html`**. Pour changer un prix, on
 cherche le chiffre dans la section « Les prix » (les fiches `.format`) et dans le
-carrousel (les cartes `article.plat`), et on le change aux deux endroits.
+menu de la carte (les lignes `li.plat`), et on le change aux deux endroits.
 
 ### Les horaires
 
@@ -75,10 +75,11 @@ pour la planche d'anatomie : les repères (`--x`, `--y` dans `index.html`) sont
 placés en pourcentage de **cette** image. Si on la remplace, il faut replacer
 les repères.
 
-Dans le carrousel, les plats dont la maison n'a pas encore de photo (döner box,
-köfte, falafel, baklava) sont montrés par leur nom, en grand, sur un aplat
-cobalt. Le jour où une vraie photo existe, on remplace le bloc
-`plat__photo--texte` par un `plat__photo` avec l'image, comme pour les autres.
+Dans le menu, les plats dont la maison n'a pas encore de photo (döner box,
+köfte, falafel, baklava) montrent leur recette en grand, sur un aplat cobalt
+(`ul.plat__recette`). Le jour où une vraie photo existe, on remplace cette liste
+par un `figure.plat__photo` avec l'image (et son `--ratio`, largeur / hauteur),
+comme pour les autres.
 
 ---
 
@@ -112,8 +113,9 @@ premier affichage.
 | SplitText | Le texte qui apparaît ligne par ligne |
 | Lenis | Le défilement lissé, **à la souris seulement** : au doigt, le défilement reste celui du système |
 
-Le carrousel des plats n'utilise aucune librairie : c'est du `scroll-snap`
-CSS, `carte.js` ne branche que les deux flèches.
+Le menu de la carte n'utilise aucune librairie : `carte.js` déplie un plat à la
+fois (la hauteur est animée en CSS, `grid-template-rows`). Sans animation, il
+fonctionne aussi.
 
 La mise en page animée (classe `anime`, posée par `index.html` dès le premier
 affichage) est la même avant et après le démarrage des scripts : la page ne
@@ -161,7 +163,7 @@ corrigé : plus aucune dépendance externe (Google Fonts, jsDelivr), CSS et
 modules chargés en parallèle (`<link>` et `modulepreload`), mise en page
 animée figée dès le premier affichage, fond ivoire uni (aucune image en
 fond de page), mesures des animations calculées une fois par état de la page,
-défilement natif au doigt, carrousel en `scroll-snap`, photos chargées au
+défilement natif au doigt, menu déplié en CSS, photos chargées au
 calme une fois la page installée.
 
 ---

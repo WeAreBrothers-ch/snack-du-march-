@@ -6,13 +6,11 @@
  * deux plaques du nom apparaissent. Une seconde, et le défilement reste libre
  * dès le premier instant.
  *
- * Une fois en place, le haut de page vit : le mur s'approche très
- * lentement (CSS), et la photo change de plat (initHeroPhotos). Au
- * défilement, la composition reste entière : les plaques et la photo s'en
- * vont chacune à sa vitesse (initHeroDefilement).
+ * Une fois en place, le mur s'approche très lentement (CSS). Au défilement,
+ * le haut de page reste épinglé et se joue comme une scène (initHeroDefilement).
  */
 
-import { element, elements, SCRUB } from "./lib.js";
+import { element, elements, positionDans, SCRUB } from "./lib.js";
 
 /**
  * Crée et lance l'entrée. Les états de départ sont posés immédiatement, avant
@@ -73,58 +71,106 @@ export function retablirHero(outils) {
 }
 
 /**
- * Au défilement, le haut de page s'en va comme une composition en
- * profondeur : les deux plaques s'écartent doucement de la photo (la
- * première monte, la seconde traîne), et la photo s'approche un peu dans
- * son cadre.
- * Rien ne se rassemble, rien ne change de couleur : le nom reste sur ses
- * plaques, de part et d'autre de la photo.
+ * La scène du défilement. Le hero reste épinglé (CSS) pendant plus d'un
+ * écran de défilement, et tout est lié au doigt :
+ * - les deux plaques du nom sortent chacune de son côté ;
+ * - la photo grandit jusqu'à remplir le haut de page (tout l'écran sur
+ *   téléphone ; sur grand écran, toute la hauteur) ;
+ * - pendant qu'elle grandit, elle change de plat : le comptoir, l'assiette,
+ *   le sandwich, chacun se découvrant de bas en haut comme à l'entrée ;
+ * - le mur de faïence s'approche.
+ * Les barres cobalt du haut et du bas restent : le plat grandit derrière,
+ * comme une vitrine qu'on approche.
  * @param {import("./lib.js").Outils} outils
+ * @param {boolean} bureau
  */
-export function initHeroDefilement(outils) {
+export function initHeroDefilement(outils, bureau) {
   const { gsap } = outils;
-  const parcours = { trigger: ".hero", start: "top top", end: "bottom top", scrub: SCRUB };
 
-  gsap
-    .timeline({ defaults: { ease: "none" }, scrollTrigger: parcours })
-    .fromTo(".hero__mot--gauche", { y: 0 }, { y: () => -window.innerHeight * 0.1 }, 0)
-    .fromTo(".hero__mot--droite", { y: 0 }, { y: () => window.innerHeight * 0.06 }, 0)
-    .fromTo(".hero__cadre", { y: 0 }, { y: () => window.innerHeight * 0.05, immediateRender: false }, 0);
-}
-
-/**
- * La photo du cadre change de plat toutes les quelques secondes : le
- * comptoir, l'assiette, le sandwich, puis le dürüm du départ. Chaque plat se
- * découvre de bas en haut, comme à l'entrée, et recule un peu dans son
- * cadre. Le cycle s'arrête quand le haut de page n'est plus à l'écran. Les
- * photos suivantes ne sont chargées qu'une fois la page installée.
- * @param {import("./lib.js").Outils} outils
- */
-export function initHeroPhotos(outils) {
-  const { gsap, ScrollTrigger } = outils;
+  const hero = element(".hero");
+  const cadre = element(".hero__cadre");
   const suite = elements(".hero__photo--suite");
-  if (suite.length === 0) return;
 
+  // Les plats suivants se chargent maintenant (et non au premier affichage :
+  // ils ne disputent pas le réseau à la première photo).
   suite.forEach((image) => {
     if (!image.getAttribute("src") && image.dataset.src) image.setAttribute("src", image.dataset.src);
   });
 
-  const cache = "inset(100% 0% 0% 0%)";
-  const cycle = gsap.timeline({ repeat: -1, paused: true });
-  // À chaque tour, tout repart de zéro : le dernier plat est le premier.
-  cycle.set(suite, { clipPath: cache, scale: 1.15 }, 0);
-  suite.forEach((image, rang) => {
-    const debut = 3.4 + rang * 4.4;
-    cycle
-      .to(image, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "power3.inOut" }, debut)
-      .to(image, { scale: 1, duration: 1.8, ease: "power2.out" }, debut);
-  });
-  cycle.to({}, { duration: 3.4 });
+  /**
+   * L'échelle d'arrivée et le décalage qui amène le centre de la photo au
+   * centre du haut de page, mesurés sur la mise en page (sans les
+   * transformations en cours), une seule fois par état de la page.
+   * @type {{ echelle: number, y: number } | null}
+   */
+  let mesure = null;
+  let cle = "";
+  function mesurer() {
+    const courante = `${hero.offsetWidth}x${hero.offsetHeight}x${window.innerHeight}`;
+    if (!mesure || cle !== courante) {
+      const largeur = hero.offsetWidth;
+      const hauteur = hero.offsetHeight;
+      const position = positionDans(cadre, hero);
+      const couvrir = Math.max(largeur / cadre.offsetWidth, hauteur / cadre.offsetHeight) * 1.02;
+      const remplir = Math.min(largeur / cadre.offsetWidth, hauteur / cadre.offsetHeight);
+      mesure = {
+        echelle: bureau ? remplir : couvrir,
+        y: hauteur / 2 - (position.y + cadre.offsetHeight / 2),
+      };
+      cle = courante;
+    }
+    return mesure;
+  }
 
-  ScrollTrigger.create({
-    trigger: ".hero",
-    start: "top bottom",
-    end: "bottom top",
-    onToggle: (/** @type {any} */ declencheur) => (declencheur.isActive ? cycle.play() : cycle.pause()),
+  const scene = gsap.timeline({
+    defaults: { ease: "none" },
+    scrollTrigger: {
+      trigger: ".accueil",
+      start: "top top",
+      end: "bottom bottom",
+      scrub: SCRUB,
+      invalidateOnRefresh: true,
+      onRefreshInit: () => {
+        mesure = null;
+      },
+    },
   });
+
+  // Les plaques sortent, chacune de son côté.
+  scene
+    .to(".hero__mot--gauche", { x: () => -window.innerWidth * 1.1, duration: 0.4, ease: "power2.in" }, 0.02)
+    .to(".hero__mot--droite", { x: () => window.innerWidth * 1.1, duration: 0.4, ease: "power2.in" }, 0.06);
+
+  // Le mur s'approche.
+  scene.fromTo(".hero__mur", { scale: 1 }, { scale: 1.35, duration: 1, immediateRender: false }, 0);
+
+  // La photo grandit, jusqu'à remplir le haut de page.
+  scene.fromTo(
+    cadre,
+    { scale: 1, y: 0, transformOrigin: "50% 50%" },
+    {
+      scale: () => mesurer().echelle,
+      y: () => mesurer().y,
+      transformOrigin: "50% 50%",
+      duration: 0.78,
+      ease: "power2.inOut",
+    },
+    0.1,
+  );
+
+  // Et change de plat en grandissant.
+  suite.forEach((image, rang) => {
+    const debut = 0.22 + rang * 0.17;
+    scene
+      .fromTo(
+        image,
+        { clipPath: "inset(100% 0% 0% 0%)" },
+        { clipPath: "inset(0% 0% 0% 0%)", duration: 0.15, ease: "power2.inOut" },
+        debut,
+      )
+      .fromTo(image, { scale: 1.2 }, { scale: 1, duration: 0.2, ease: "power2.out" }, debut);
+  });
+
+  // Un temps d'arrêt sur le dernier plat, avant que la page ne reparte.
+  scene.to({}, { duration: 0.08 });
 }
