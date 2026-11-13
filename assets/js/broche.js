@@ -107,11 +107,14 @@ export function initBroche(outils, bureau, planche) {
     { yPercent: 120 },
     { yPercent: 0, duration: 0.9, stagger: 0.08, ease: "power3.out", scrollTrigger: enEntrant(".anatomie", bureau ? "top 40%" : "top 75%") },
   );
+  // Une fois découverte, la photo n'a plus de découpe : l'étiquette et la
+  // ligne de lecture, qui dépassent un peu de son cadre, ne sont plus rognées.
   gsap.fromTo(
     photo,
     { clipPath: "inset(100% 0% 0% 0%)" },
     {
       clipPath: "inset(0% 0% 0% 0%)",
+      clearProps: "clipPath",
       duration: 1,
       ease: "power3.inOut",
       scrollTrigger: enEntrant(bureau ? ".anatomie" : photo, bureau ? "top 30%" : "top 85%"),

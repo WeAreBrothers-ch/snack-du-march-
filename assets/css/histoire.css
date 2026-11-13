@@ -143,9 +143,23 @@ html.anime .histoire__pause--intro {
   height: calc(var(--ecran-visible) * 0.9);
 }
 
-/* Sur téléphone, la vitrine suffit : l'album ne sert qu'au mode statique. */
+/* Sur téléphone, la vitrine suffit : l'album ne sert qu'au mode statique.
+   Les deux plaques sont petites : elles étaient si grandes qu'elles
+   cachaient la devanture une fois ouverte. */
 @media (max-width: 991px) {
   html.anime .histoire__photos { display: none; }
+
+  .histoire__titre {
+    max-width: 13ch;
+    font-size: clamp(1.4rem, 6vw, 2.25rem);
+    line-height: 1;
+  }
+
+  .histoire__sous {
+    max-width: 22ch;
+    padding: 0.35em 0.7em;
+    font-size: clamp(0.9375rem, 3.9vw, 1.25rem);
+  }
 }
 
 /* Tablette : l'album sur une ligne. */
@@ -223,14 +237,15 @@ html.anime .histoire__intro { z-index: 0; }
   padding: clamp(1.5rem, 6vw, 5rem) var(--marge) clamp(4rem, 12vw, 9rem);
 }
 
-/* Le repère. Sur téléphone, une barre qui reste en haut de l'écran : l'année
-   à gauche, le chapitre en cours à côté (le bouton « Menu » flotte à
-   droite). */
+/* Le repère (grand écran seulement) : l'année qui roule et la table des
+   chapitres. Sur téléphone, une barre collée en haut cachait le titre sous le
+   bouton « Menu » et montrait des chiffres à moitié roulés : chaque chapitre
+   porte son année en grand, qui se compte une fois en arrivant. */
 .frise__repere {
   position: sticky;
   top: 0;
   z-index: 2;
-  display: flex;
+  display: none;
   align-items: center;
   gap: 1rem;
   margin: 0 calc(6px - var(--marge)) clamp(1.5rem, 6vw, 2.5rem);
@@ -321,26 +336,29 @@ html.anime .histoire__intro { z-index: 0; }
   max-width: 38rem;
 }
 
-/* L'année de chaque chapitre : visible sans animation ; en mode animé, le
-   compteur la dit déjà (elle reste pour les lecteurs d'écran). */
+/* L'année de chaque chapitre, en grand (téléphone). Sur grand écran en mode
+   animé, c'est le compteur du repère qui la dit : elle reste, cachée, pour les
+   lecteurs d'écran. */
 .chapitre__annee {
   font-family: var(--f-titre);
   font-weight: 900;
-  font-size: var(--t-h3);
-  line-height: 1;
+  font-size: clamp(4rem, 22vw, 6.5rem);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
   color: var(--cobalt);
 }
 
-html.anime .chapitre__annee {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
+@media (min-width: 992px) {
+  html.anime .chapitre__annee {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
 }
-
-html:not(.anime) .frise__repere { display: none; }
 
 .chapitre__titre {
   font-size: var(--t-h3);
@@ -387,6 +405,7 @@ html:not(.anime) .frise__repere { display: none; }
   .frise__repere {
     top: calc(var(--sous-menu) + 1rem);
     align-self: start;
+    display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: clamp(1.5rem, 4svh, 3rem);
@@ -418,6 +437,7 @@ html:not(.anime) .frise__repere { display: none; }
 
   /* Sans animation, pas de repère : les chapitres prennent la largeur. */
   html:not(.anime) .frise { display: block; }
+  html:not(.anime) .frise__repere { display: none; }
 
   .chapitre { gap: clamp(1.5rem, 3svh, 2.5rem); }
 

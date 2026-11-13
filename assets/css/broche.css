@@ -216,7 +216,7 @@
 .planche__lecture-nom {
   position: absolute;
   top: 0.5rem;
-  right: 0;
+  right: 0.75rem;
   padding: 0.35rem 0.65rem 0.3rem;
   border-radius: 999px;
   background: var(--craie);

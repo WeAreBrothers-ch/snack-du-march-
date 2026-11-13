@@ -81,9 +81,19 @@ export function initMenu(outils, lenis) {
     return;
   }
 
+  // En descendant, le bouton se retire ; il revient dès qu'on remonte.
+  outils.ScrollTrigger.create({
+    start: 0,
+    end: "max",
+    onUpdate: (/** @type {any} */ declencheur) => {
+      if (Math.abs(declencheur.getVelocity()) < 60) return;
+      flottant.classList.toggle("est-retire", declencheur.direction === 1);
+    },
+  });
+
   // Le bouton flottant attend que le haut de page s'en aille.
   outils.ScrollTrigger.create({
-    trigger: ".accueil",
+    trigger: ".hero",
     start: "bottom 80%",
     endTrigger: ".pied",
     end: "top 20%",

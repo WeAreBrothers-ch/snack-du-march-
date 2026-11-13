@@ -266,6 +266,7 @@ section {
    (index.html) les affiche sans l'entrée (classe « patience ») ; s'il
    n'arrive pas, le site passe en statique. */
 html.anime:not(.pret):not(.patience) .hero__titre,
+html.anime:not(.pret):not(.patience) .hero__bas > *,
 html.anime:not(.pret) .histoire__fenetre {
   opacity: 0;
   visibility: hidden;

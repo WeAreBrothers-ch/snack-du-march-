@@ -41,49 +41,70 @@
 
 .prix__titre { color: var(--cobalt); }
 
-/* Le tableau tient sur la largeur d'un téléphone : colonnes fixes, en-têtes
-   qui passent à la ligne, prix en capitales condensées. */
-.tableau {
-  table-layout: fixed;
-  font-variant-numeric: tabular-nums;
+/* Les formats : quatre fiches, chacune avec ses prix regroupés, le prix en
+   grand à droite, relié à la viande par une ligne de points, comme sur une
+   carte de brasserie. Une colonne sur téléphone, deux à partir de la
+   tablette. */
+.formats {
+  display: grid;
+  gap: clamp(1rem, 3vw, 1.5rem);
 }
 
-.tableau th,
-.tableau td {
-  padding: clamp(0.8rem, 0.6rem + 0.6vw, 1.25rem) 0 clamp(0.8rem, 0.6rem + 0.6vw, 1.25rem) 0.5rem;
-  text-align: right;
-  vertical-align: baseline;
-  border-bottom: 1px solid var(--trait);
+.format {
+  display: grid;
+  gap: 0.35rem;
+  padding: clamp(1rem, 0.8rem + 1.2vw, 1.75rem);
+  border: 2px solid var(--cobalt);
+  border-radius: var(--rayon);
+  background: var(--craie);
 }
 
-.tableau th:first-child { width: 25%; padding-left: 0; }
-
-.tableau thead th {
-  vertical-align: bottom;
-  font-family: var(--f-titre);
-  font-weight: 700;
-  font-size: clamp(0.8125rem, 0.65rem + 0.9vw, 1.2rem);
-  line-height: 1.1;
-  border-bottom: 2px solid var(--cobalt);
+.format__nom {
+  font-size: clamp(1.75rem, 1.3rem + 2vw, 3rem);
   color: var(--cobalt);
 }
 
-.tableau thead th:first-child { text-align: left; }
+.format__prix-liste { display: grid; }
 
-.tableau tbody th {
-  font-size: clamp(1.0625rem, 0.9rem + 0.5vw, 1.5rem);
-  font-weight: 500;
-  text-align: left;
+.format__prix-liste li {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(1rem, 1fr) auto;
+  align-items: baseline;
+  column-gap: 0.5rem;
+  padding-block: 0.7rem;
+  border-top: 1px solid var(--trait);
 }
 
-.tableau td {
+/* La ligne de points qui mène de la viande au prix. */
+.format__prix-liste li::before {
+  content: "";
+  grid-column: 2;
+  grid-row: 1;
+  align-self: baseline;
+  position: relative;
+  top: -0.25em;
+  border-bottom: 2px dotted var(--cobalt);
+  opacity: 0.45;
+}
+
+.format__viandes {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: var(--t-corps);
+  line-height: 1.2;
+}
+
+.format__prix {
+  grid-column: 3;
+  grid-row: 1;
   font-family: var(--f-titre);
   font-weight: 900;
-  font-size: clamp(1.25rem, 0.95rem + 1.2vw, 2.25rem);
+  font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
   line-height: 1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--rouge);
 }
-
-.tableau tbody tr:hover td { color: var(--rouge); }
 
 .prix__extras {
   display: grid;
@@ -122,4 +143,5 @@
 
   .prix__note { text-align: right; }
   .prix__extras { grid-template-columns: repeat(2, 1fr); column-gap: clamp(2rem, 5vw, 5rem); }
+  .formats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

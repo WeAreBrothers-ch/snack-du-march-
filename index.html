@@ -124,7 +124,7 @@
          photo s'en vont chacune à sa vitesse. -->
     <div class="accueil" id="accueil">
       <section class="hero">
-        <div class="hero__mur" aria-hidden="true"></div>
+        <div class="hero__mur" aria-hidden="true"><span class="hero__tuiles"></span></div>
 
         <div class="hero__haut">
           <a class="hero__lien libelle" href="#histoire">L'histoire</a>
@@ -142,6 +142,12 @@
           <span class="hero__cadre" aria-hidden="true">
             <span class="hero__image">
               <img class="hero__photo" src="assets/photos/durum-main.webp" alt="" width="765" height="1020" fetchpriority="high" decoding="async" />
+              <!-- Les plats suivants : le script les charge au calme et les
+                   découvre, l'un après l'autre, par-dessus (hero.js). -->
+              <img class="hero__photo hero__photo--suite" data-src="assets/photos/comptoir-decoupe.webp" alt="" width="765" height="1020" decoding="async" />
+              <img class="hero__photo hero__photo--suite" data-src="assets/photos/assiette-frites.webp" alt="" width="765" height="1020" decoding="async" />
+              <img class="hero__photo hero__photo--suite" data-src="assets/photos/sandwich-veau-agneau.webp" alt="" width="574" height="1020" decoding="async" />
+              <img class="hero__photo hero__photo--suite" data-src="assets/photos/durum-main.webp" alt="" width="765" height="1020" decoding="async" />
             </span>
           </span>
           <span class="hero__mot hero__mot--droite">Marché</span>
@@ -209,7 +215,7 @@
               <img src="assets/photos/enseigne.webp" alt="L'enseigne lumineuse du Snack du Marché" width="1020" height="1020" loading="lazy" decoding="async" />
             </figure>
             <div class="chapitre__texte">
-              <p class="chapitre__annee">1998</p>
+              <p class="chapitre__annee"><span class="chapitre__chiffres" aria-hidden="true">1998</span><span class="visuellement-cache">1998</span></p>
               <h3 class="chapitre__titre">L'ouverture</h3>
               <p class="chapitre__recit">Hüseyin Celik ouvre le Snack du Marché, rue Pré-du-Marché, à deux pas de la place de la Riponne. La broche est montée à la main dès le premier jour&nbsp;: veau et agneau entiers, jamais reconstitués.</p>
             </div>
@@ -219,7 +225,7 @@
               <img src="assets/photos/equipe-comptoir.webp" alt="L'équipe du Snack du Marché au comptoir" width="765" height="1020" loading="lazy" decoding="async" />
             </figure>
             <div class="chapitre__texte">
-              <p class="chapitre__annee">2018</p>
+              <p class="chapitre__annee"><span class="chapitre__chiffres" aria-hidden="true">2018</span><span class="visuellement-cache">2018</span></p>
               <h3 class="chapitre__titre">La presse</h3>
               <blockquote class="chapitre__citation">«&nbsp;Vingt ans que le Snack du Marché régale de ses broches épicées&nbsp;»<cite>24 heures, mai 2018</cite></blockquote>
               <p class="chapitre__recit">Le Temps parle de «&nbsp;haute gastronomie&nbsp;». Le comptoir de quartier devient une adresse.</p>
@@ -230,7 +236,7 @@
               <img src="assets/photos/deux-generations.webp" alt="Hüseyin et Sertaç Celik derrière le comptoir du Snack du Marché" width="530" height="353" loading="lazy" decoding="async" />
             </figure>
             <div class="chapitre__texte">
-              <p class="chapitre__annee">2026</p>
+              <p class="chapitre__annee"><span class="chapitre__chiffres" aria-hidden="true">2026</span><span class="visuellement-cache">2026</span></p>
               <h3 class="chapitre__titre">Deux générations</h3>
               <p class="chapitre__recit">Sertaç, le fils, tranche aujourd'hui la broche aux côtés de son père. Les étudiants d'hier amènent leurs enfants. Les recettes des grands-mères, elles, n'ont pas bougé.</p>
             </div>
@@ -307,6 +313,8 @@
       </section>
     </div>
 
+    <div class="espace"></div>
+
     <!-- La carte -------------------------------------------------------------- -->
     <section class="carte plaque" id="carte" aria-labelledby="titre-carte">
       <h2 class="carte__titre" id="titre-carte">
@@ -351,17 +359,37 @@
         <h2 class="prix__titre" id="titre-prix">Les prix</h2>
         <p class="prix__note">Francs suisses · Service compris · Ceux du tableau noir font foi</p>
       </div>
-      <div class="prix__tableau">
-        <table class="tableau">
-          <caption class="visuellement-cache">Prix par viande et par format</caption>
-          <thead><tr><th scope="col">Format</th><th scope="col">Poulet</th><th scope="col">Veau &amp; agneau</th><th scope="col">Köfte</th><th scope="col">Falafel</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">Sandwich</th><td>12.–</td><td>14.–</td><td>14.–</td><td>12.–</td></tr>
-            <tr><th scope="row">Petit</th><td>9.–</td><td>9.–</td><td>9.–</td><td>9.–</td></tr>
-            <tr><th scope="row">Dürüm</th><td>14.–</td><td>15.–</td><td>15.–</td><td>14.–</td></tr>
-            <tr><th scope="row">Assiette</th><td>22.–</td><td>22.–</td><td>22.–</td><td>20.–</td></tr>
-          </tbody>
-        </table>
+      <!-- Les formats, et pour chacun les prix regroupés : quatre colonnes
+           illisibles sur téléphone, alors que presque tous les prix se
+           répètent. Mêmes prix que le tableau noir. -->
+      <div class="formats">
+        <article class="format">
+          <h3 class="format__nom">Sandwich</h3>
+          <ul class="format__prix-liste">
+            <li><span class="format__viandes">Poulet · Falafel</span><span class="format__prix">12.–</span></li>
+            <li><span class="format__viandes">Veau &amp; agneau · Köfte</span><span class="format__prix">14.–</span></li>
+          </ul>
+        </article>
+        <article class="format">
+          <h3 class="format__nom">Dürüm</h3>
+          <ul class="format__prix-liste">
+            <li><span class="format__viandes">Poulet · Falafel</span><span class="format__prix">14.–</span></li>
+            <li><span class="format__viandes">Veau &amp; agneau · Köfte</span><span class="format__prix">15.–</span></li>
+          </ul>
+        </article>
+        <article class="format">
+          <h3 class="format__nom">Assiette</h3>
+          <ul class="format__prix-liste">
+            <li><span class="format__viandes">Poulet · Veau &amp; agneau · Köfte</span><span class="format__prix">22.–</span></li>
+            <li><span class="format__viandes">Falafel</span><span class="format__prix">20.–</span></li>
+          </ul>
+        </article>
+        <article class="format">
+          <h3 class="format__nom">Petit</h3>
+          <ul class="format__prix-liste">
+            <li><span class="format__viandes">Toutes les viandes</span><span class="format__prix">9.–</span></li>
+          </ul>
+        </article>
       </div>
       <ul class="prix__extras">
         <li><span>Döner box</span><span>14.–</span></li>

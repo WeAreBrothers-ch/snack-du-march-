@@ -22,6 +22,7 @@ import { decouperEnLignes } from "./texte.js";
 /**
  * @param {import("./lib.js").Outils} outils
  * @param {boolean} bureau
+ * @returns {() => void} fonction de nettoyage (changement de mise en page)
  */
 export function initHistoire(outils, bureau) {
   const pauseIntro = element(".histoire__pause--intro");
@@ -30,7 +31,7 @@ export function initHistoire(outils, bureau) {
   // Quand la frise monte par-dessus la devanture, celle-ci recule et
   // s'assombrit.
   reculer(outils, element(".histoire__intro"), element(".histoire__recul"), pauseIntro, bureau);
-  initFrise(outils);
+  return initFrise(outils, bureau);
 }
 
 /**
@@ -185,15 +186,19 @@ function reculer(outils, panneau, voile, pause, bureau) {
 }
 
 /**
- * La frise. L'année du repère est un compteur : entre deux chapitres, ses
- * chiffres roulent jusqu'à la nouvelle année, au rythme du défilement (les
- * unités d'abord, comme un vrai compteur). La table des chapitres suit la
- * lecture. Chaque chapitre se découvre en arrivant : la photo de bas en
- * haut, puis glisse doucement dans son cadre ; le titre et le récit montent
- * ligne par ligne.
+ * La frise. Sur grand écran, l'année du repère est un compteur : entre deux
+ * chapitres, ses chiffres roulent jusqu'à la nouvelle année, au rythme du
+ * défilement (les unités d'abord, comme un vrai compteur), et la table des
+ * chapitres suit la lecture. Sur téléphone, pas de repère (une barre collée
+ * cachait le titre sous le bouton « Menu ») : l'année de chaque chapitre se
+ * compte, une fois, en arrivant à l'écran. Chaque chapitre se découvre en
+ * arrivant : la photo de bas en haut, puis glisse doucement dans son cadre ;
+ * le titre et le récit montent ligne par ligne.
  * @param {import("./lib.js").Outils} outils
+ * @param {boolean} bureau
+ * @returns {() => void} rend leur année aux chapitres (changement de mise en page)
  */
-function initFrise(outils) {
+function initFrise(outils, bureau) {
   const { gsap, ScrollTrigger, SplitText } = outils;
 
   const roues = elements(".roue__bande");
@@ -202,36 +207,55 @@ function initFrise(outils) {
   const chiffres = (/** @type {HTMLElement} */ chapitre) =>
     (chapitre.dataset.annee || "0000").split("").map(Number);
 
-  chiffres(chapitres[0]).forEach((chiffre, index) => {
-    gsap.set(roues[index], { yPercent: -chiffre * 10 });
-  });
+  if (bureau) {
+    chiffres(chapitres[0]).forEach((chiffre, index) => {
+      gsap.set(roues[index], { yPercent: -chiffre * 10 });
+    });
+  }
 
   chapitres.forEach((chapitre, index) => {
-    // Le chapitre en cours, dans la table.
-    ScrollTrigger.create({
-      trigger: chapitre,
-      start: "top 60%",
-      end: "bottom 60%",
-      onToggle: (/** @type {any} */ declencheur) => {
-        if (!declencheur.isActive) return;
-        entrees.forEach((entree, rang) => entree.classList.toggle("est-courante", rang === index));
-      },
-    });
-
-    if (index > 0) {
-      const de = chiffres(chapitres[index - 1]);
-      const vers = chiffres(chapitre);
-      const roulement = gsap.timeline({
-        scrollTrigger: { trigger: chapitre, start: "top 90%", end: "top 45%", scrub: SCRUB },
+    if (bureau) {
+      // Le chapitre en cours, dans la table.
+      ScrollTrigger.create({
+        trigger: chapitre,
+        start: "top 60%",
+        end: "bottom 60%",
+        onToggle: (/** @type {any} */ declencheur) => {
+          if (!declencheur.isActive) return;
+          entrees.forEach((entree, rang) => entree.classList.toggle("est-courante", rang === index));
+        },
       });
-      roues.forEach((roue, rang) => {
-        if (de[rang] === vers[rang]) return;
-        roulement.fromTo(
-          roue,
-          { yPercent: -de[rang] * 10 },
-          { yPercent: -vers[rang] * 10, duration: 1, ease: "power2.inOut", immediateRender: false },
-          (roues.length - 1 - rang) * 0.15,
-        );
+
+      if (index > 0) {
+        const de = chiffres(chapitres[index - 1]);
+        const vers = chiffres(chapitre);
+        const roulement = gsap.timeline({
+          scrollTrigger: { trigger: chapitre, start: "top 90%", end: "top 45%", scrub: SCRUB },
+        });
+        roues.forEach((roue, rang) => {
+          if (de[rang] === vers[rang]) return;
+          roulement.fromTo(
+            roue,
+            { yPercent: -de[rang] * 10 },
+            { yPercent: -vers[rang] * 10, duration: 1, ease: "power2.inOut", immediateRender: false },
+            (roues.length - 1 - rang) * 0.15,
+          );
+        });
+      }
+    } else {
+      // Téléphone : l'année se compte, une fois, quand le chapitre arrive.
+      const chiffresAnnee = element(".chapitre__chiffres", chapitre);
+      const cible = Number(chapitre.dataset.annee);
+      const compteur = { v: cible - 36 };
+      chiffresAnnee.textContent = String(compteur.v);
+      gsap.to(compteur, {
+        v: cible,
+        duration: 1.6,
+        ease: "power3.out",
+        onUpdate: () => {
+          chiffresAnnee.textContent = String(Math.round(compteur.v));
+        },
+        scrollTrigger: { trigger: chiffresAnnee, start: "top 88%", toggleActions: "play none none none" },
       });
     }
 
@@ -264,4 +288,11 @@ function initFrise(outils) {
       },
     );
   });
+
+  return () => {
+    chapitres.forEach((chapitre) => {
+      const annee = chapitre.querySelector(".chapitre__chiffres");
+      if (annee) annee.textContent = chapitre.dataset.annee || "";
+    });
+  };
 }

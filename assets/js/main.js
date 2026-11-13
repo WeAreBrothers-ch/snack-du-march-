@@ -18,7 +18,7 @@ import { chargerLibrairies } from "./lib.js";
 import { initDefilement, rejoindreAncre } from "./defilement.js";
 import { initHoraires } from "./horaires.js";
 import { initMenu, initTitreOnglet } from "./menu.js";
-import { initHeroDefilement, jouerEntree, retablirHero } from "./hero.js";
+import { initHeroDefilement, initHeroPhotos, jouerEntree, retablirHero } from "./hero.js";
 import { initHistoire } from "./histoire.js";
 import { initBroche } from "./broche.js";
 import { initPlanche } from "./planche.js";
@@ -70,7 +70,8 @@ function demarrerAnime(outils) {
     }
 
     initHeroDefilement(outils);
-    initHistoire(outils, bureau);
+    initHeroPhotos(outils);
+    const nettoyerHistoire = initHistoire(outils, bureau);
     const nettoyerBroche = initBroche(outils, bureau, planche);
     const nettoyerCarte = initCarte(outils);
     initPrix(outils);
@@ -78,6 +79,7 @@ function demarrerAnime(outils) {
     initPied(outils);
 
     return () => {
+      nettoyerHistoire();
       nettoyerBroche();
       nettoyerCarte();
       restaurerDecoupes();

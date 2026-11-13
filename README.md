@@ -55,7 +55,7 @@ sitemap.xml         la liste des pages, pour Google
 ### Les textes, les prix, les plats
 
 Tout est écrit **directement dans `index.html`**. Pour changer un prix, on
-cherche le chiffre dans la section « Les prix » (le tableau) et dans le
+cherche le chiffre dans la section « Les prix » (les fiches `.format`) et dans le
 carrousel (les cartes `article.plat`), et on le change aux deux endroits.
 
 ### Les horaires

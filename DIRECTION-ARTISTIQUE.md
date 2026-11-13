@@ -109,9 +109,9 @@ il reste centré, les panneaux cobalt continuent d'aller d'un bord à l'autre.
 
 ## Les gestes du site
 
-1. **Le hero** : le carreau en plein, encadré par ses barres cobalt (en haut l'étiquette et le menu, puis la bordure ornée ; en bas ouvert ou fermé, l'adresse, la carte). Le nom, sur deux plaques de céramique, de part et d'autre de la photo, dans son cadre cobalt. Pas de rideau : la photo se découvre de bas en haut, comme un store qu'on lève, et le nom apparaît.
+1. **Le hero** : le carreau en plein, encadré par ses barres cobalt (en haut l'étiquette et le menu, puis la bordure ornée ; en bas ouvert ou fermé, l'adresse, la carte). Le nom, sur deux plaques de céramique, de part et d'autre de la photo, dans son cadre cobalt. Pas de rideau. **À l'ouverture** : le mur se pose (léger recul, bordures comprises), la photo se découvre de bas en haut comme un store qu'on lève, les deux plaques s'ouvrent depuis leur milieu (« Snack du » puis « Marché »), la barre du bas monte. **Ensuite, le haut de page vit** : le mur s'approche très lentement (une caméra qui avance, transform seul), et la photo du cadre change de plat toutes les quatre secondes (dürüm, comptoir, assiette, sandwich, dürüm), chaque plat se découvrant de bas en haut. Le cycle s'arrête quand le haut de page n'est plus à l'écran ; les plats suivants ne sont chargés qu'une fois la page installée.
    **Au défilement**, la composition reste entière : le hero n'est pas épinglé, rien ne se rassemble. Les deux plaques s'écartent doucement de la photo (la première monte, la seconde traîne) et la photo s'approche un peu dans son cadre. L'ancien geste (le nom rassemblé sur un bandeau cobalt, puis la vitrine à trois photos) est abandonné : les mots séparés sont plus harmonieux que réunis.
-2. **L'histoire : on entre dans la maison, puis on lit la frise.** Le titre, et sous lui une vitrine où la devanture se découvre ; pendant une courte pause, elle s'ouvre jusqu'aux bords de l'écran. Puis la frise monte par-dessus : une page de journal sur sa plaque de céramique, trois chapitres (1998, 2018, 2026). Sur le côté (en haut sur téléphone), l'année reste en place et **ses chiffres roulent comme un compteur** d'un chapitre à l'autre, les unités d'abord ; la table des chapitres suit la lecture. La presse est citée en grand, comme une coupure. Le titre de l'intro et son sous-titre sont sur des plaques, sur le mur. Référence : les frises éditoriales de Freitag, Büro, Mews (Mobbin).
+2. **L'histoire : on entre dans la maison, puis on lit la frise.** Le titre, et sous lui une vitrine où la devanture se découvre ; pendant une courte pause, elle s'ouvre jusqu'aux bords de l'écran. Puis la frise monte par-dessus : une page de journal sur sa plaque de céramique, trois chapitres (1998, 2018, 2026). Sur grand écran, l'année reste en place sur le côté et **ses chiffres roulent comme un compteur** d'un chapitre à l'autre, les unités d'abord ; la table des chapitres suit la lecture. **Sur téléphone, pas de repère collé** (il passait sous le bouton « Menu » et montrait des chiffres à moitié roulés) : chaque chapitre porte son année en grand, qui se compte une fois en arrivant à l'écran. La presse est citée en grand, comme une coupure. Le titre de l'intro et son sous-titre sont sur des plaques, sur le mur, petites sur téléphone pour ne pas cacher la devanture. Référence : les frises éditoriales de Freitag, Büro, Mews (Mobbin).
 3. **La broche** : le titre, la photo de la broche dans son format (paysage, jamais agrandie au-delà du fichier), et trois gestes numérotés entre des filets cobalt qui se tracent : la viande entière, la recette du père, tranchée au couteau. Chaque phrase dit un fait vérifié (voir `RECHERCHE-CLIENT.md`).
 4. **L'anatomie** : le panneau cobalt monte comme une carte, en retrait des bords et les coins du haut arrondis, et s'élargit jusqu'aux bords. La vraie photo du veau-agneau, huit repères. **Une ligne lit la planche** de haut en bas au défilement : chaque repère s'allume quand elle le croise, avec son ingrédient. Sur téléphone, la photo passe sous la ligne et une étiquette nomme l'ingrédient. Sur grand écran, la scène reste en place le temps de la lecture : la légende est de part et d'autre, chaque trait se dessine de l'ingrédient au repère quand il est lu, le dernier lu passe au turquoise, la photo recule doucement.
 5. **La carte** : « Tout est fait maison » en grand ; tant qu'il est à l'écran, ses lignes glissent en sens contraires. Puis le carrousel des plats, qu'on feuillette au doigt
@@ -171,3 +171,17 @@ en grand, sur un aplat cobalt, jamais par la photo d'un autre plat.
 - Le petit texte « pour faire joli » : un texte existe parce qu'il sert, et il est lisible.
 - La barre de progression du défilement.
 - Une deuxième page.
+
+
+## Les prix (version 4.3)
+
+Plus de tableau à quatre colonnes (illisible sur téléphone) : quatre fiches
+(Sandwich, Dürüm, Assiette, Petit) où les prix identiques sont regroupés
+(« Poulet · Falafel 12.– », « Veau & agneau · Köfte 14.– »), le prix en rouge
+et en grand, relié à la viande par une ligne de points. Une colonne sur
+téléphone, deux à partir de la tablette. Mêmes prix que le tableau noir.
+
+## Le bouton « Menu »
+
+Le bouton flottant se retire quand on descend et revient dès qu'on remonte :
+il ne cache plus le titre ni la légende de la planche.

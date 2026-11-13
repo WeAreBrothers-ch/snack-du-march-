@@ -29,10 +29,34 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  /* Le carreau est celui de la page (base.css) : il continue sans couture
-     sous le haut de page. */
+  overflow: hidden;
   pointer-events: none;
 }
+
+/* Le carreau du hero : le même que celui de la page (base.css), qui
+   continue sans couture sous la barre du bas. Une fois la page installée, il
+   s'approche très lentement, comme une caméra qui avance sur le mur
+   (transform seul : rien n'est repeint). */
+.hero__tuiles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #f4f4f4 var(--carreau) 50% 0 / var(--maille) auto;
+  transform-origin: 50% 40%;
+}
+
+html.anime.pret .hero__tuiles {
+  animation: mur-avance 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes mur-avance {
+  to { transform: scale(1.1); }
+}
+
+/* Les bordures du carreau passent devant le mur qui avance. */
+.hero__mur::before,
+.hero__mur::after { z-index: 1; }
 
 .hero__mur::before,
 .hero__mur::after {
@@ -143,6 +167,7 @@
 .hero__cadre { --photo: clamp(12rem, calc(var(--ecran-visible) - 27rem), 30rem); }
 
 .hero__image {
+  position: relative;
   display: block;
   width: calc(var(--photo) * 0.75);
   height: var(--photo);
@@ -152,6 +177,16 @@
 }
 
 .hero__photo { object-position: center 45%; }
+
+/* Les plats suivants, empilés sur le premier et découpés à zéro : hero.js
+   les découvre de bas en haut, l'un après l'autre. */
+.hero__photo--suite {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(100% 0% 0% 0%);
+}
+
+html:not(.anime) .hero__photo--suite { display: none; }
 
 /* Bas : une barre cobalt — ouvert ou fermé, l'adresse, la carte ----------- */
 

@@ -49,6 +49,10 @@
 
 .menu-flottant.est-visible { transform: none; }
 
+/* En descendant, le bouton se retire : il ne cache plus ce qu'on lit. Il
+   revient dès qu'on remonte. */
+.menu-flottant.est-visible.est-retire { transform: translateY(-160%); }
+
 /* Le panneau ------------------------------------------------------------- */
 
 .panneau {
