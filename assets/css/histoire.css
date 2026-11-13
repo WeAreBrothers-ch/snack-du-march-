@@ -343,6 +343,11 @@ html.anime .histoire__mur {
 
 .chapitre__carte {
   position: relative;
+  /* Les trois cartes ont la même hauteur (histoire.js : celle de la plus
+     haute) : la dernière recouvre entièrement les autres. Le corps s'étire
+     pour remplir. */
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border: 3px solid var(--cobalt);
   border-radius: calc(var(--rayon) * 1.5);
@@ -379,6 +384,8 @@ html.anime .histoire__mur {
 }
 
 .chapitre__corps {
+  flex: 1;
+  align-content: start;
   display: grid;
   gap: clamp(0.9rem, 3.5vw, 1.4rem);
   padding: clamp(1rem, 4vw, 1.5rem) clamp(1rem, 4vw, 1.75rem) clamp(1.1rem, 4.5vw, 1.75rem);
@@ -464,6 +471,7 @@ html.anime .histoire__mur {
 @media (min-width: 992px) {
   .chapitre__corps {
     grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    align-content: center;
     align-items: center;
     gap: clamp(1.5rem, 3vw, 3rem);
     padding: clamp(1.5rem, 3svh, 2.25rem) clamp(1.75rem, 3vw, 2.75rem) clamp(1.75rem, 3.5svh, 2.5rem);

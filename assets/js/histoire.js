@@ -227,6 +227,18 @@ function initPile(outils) {
   const { gsap, SplitText } = outils;
   const chapitres = elements(".chapitre");
 
+  // Les trois cartes à la même hauteur, celle de la plus haute : sinon la
+  // carte du dessous dépasse sous la dernière. Remesuré à chaque calcul des
+  // animations (une photo ou une police qui arrive change les hauteurs).
+  const cartes = chapitres.map((chapitre) => element(".chapitre__carte", chapitre));
+  const egaliser = () => {
+    cartes.forEach((carte) => (carte.style.minHeight = ""));
+    const hauteur = Math.max(...cartes.map((carte) => carte.offsetHeight));
+    cartes.forEach((carte) => (carte.style.minHeight = `${hauteur}px`));
+  };
+  egaliser();
+  outils.ScrollTrigger.addEventListener("refreshInit", egaliser);
+
   chapitres.forEach((chapitre, index) => {
     const annee = element(".chapitre__annee", chapitre);
     const cible = Number(annee.dataset.annee);
@@ -280,6 +292,8 @@ function initPile(outils) {
   });
 
   return () => {
+    outils.ScrollTrigger.removeEventListener("refreshInit", egaliser);
+    cartes.forEach((carte) => (carte.style.minHeight = ""));
     chapitres.forEach((chapitre) => {
       const annee = element(".chapitre__annee", chapitre);
       annee.textContent = annee.dataset.annee || "";
