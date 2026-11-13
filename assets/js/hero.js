@@ -69,8 +69,9 @@ export function retablirHero(outils) {
 /**
  * Le nom qui se rassemble, lié au défilement : les deux plaques de céramique
  * glissent l'une vers l'autre et se posent côte à côte, sur une seule ligne,
- * sous la frise, et la seconde se fond dans la première (--jointure) : une
- * seule plaque, sans joint, sans remplacement d'élément, sans bandeau. La
+ * sous la frise, et la seconde se fond dans la première (--jointure, calculée
+ * sur leur position réelle) : une seule plaque, sans joint, sans remplacement
+ * d'élément, sans bandeau. La
  * photo remonte sous elle et grandit un peu vers le bas.
  * @param {import("./lib.js").Outils} outils
  * @param {boolean} bureau
@@ -83,6 +84,7 @@ export function initNom(outils, bureau) {
   const gauche = element(".hero__mot--gauche");
   const droite = element(".hero__mot--droite");
 
+  const nom = element(".hero__nom");
   const bordure = element(".hero__bande");
   const titre = element(".hero__titre");
   const bas = element(".hero__bas");
@@ -111,8 +113,24 @@ export function initNom(outils, bureau) {
     const ecart = Math.max(12, hauteur * 0.02);
 
     const posCadre = positionDans(cadre, hero);
-    const posGauche = positionDans(gauche, hero);
-    const posDroite = positionDans(droite, hero);
+
+    // Les deux plaques sont mesurées à la fraction de pixel (et non à l'entier
+    // d'offsetTop / offsetHeight) : arrondies, leurs positions finales
+    // différaient de quelques dixièmes de pixel, et leurs filets du haut et du
+    // bas ne tombaient plus sur les mêmes lignes de l'écran (un cran d'un pixel
+    // à la jonction). Transformations retirées le temps de la mesure.
+    const ancien = [gauche.style.transform, droite.style.transform];
+    gauche.style.transform = "none";
+    droite.style.transform = "none";
+    const rh = hero.getBoundingClientRect();
+    const rg = gauche.getBoundingClientRect();
+    const rd = droite.getBoundingClientRect();
+    [gauche.style.transform, droite.style.transform] = ancien;
+    const posGauche = { x: rg.left - rh.left, y: rg.top - rh.top };
+    const posDroite = { x: rd.left - rh.left, y: rd.top - rh.top };
+    const larG = rg.width;
+    const larD = rd.width;
+    const hauPlaque = rg.height;
 
     // Les plaques se posent sous la frise, après son double filet (6 px).
     const dessus = positionDans(bordure, hero).y + bordure.offsetHeight + 6 + ecart;
@@ -124,10 +142,11 @@ export function initNom(outils, bureau) {
     // photo.
     const styleMot = getComputedStyle(gauche);
     const taille = parseFloat(styleMot.fontSize);
+    const taille0 = taille;
     const joint = -0.23 * taille;
-    const longueur = gauche.offsetWidth + joint + droite.offsetWidth;
-    const echelle = Math.max(0.2, Math.min(1, (largeur - 2 * marge) / longueur, place / gauche.offsetHeight));
-    const hautPlaque = gauche.offsetHeight * echelle;
+    const longueur = larG + joint + larD;
+    const echelle = Math.max(0.2, Math.min(1, (largeur - 2 * marge) / longueur, place / hauPlaque));
+    const hautPlaque = hauPlaque * echelle;
     const centre = dessus + hautPlaque / 2;
     const debutLigne = (largeur - longueur * echelle) / 2;
 
@@ -139,21 +158,32 @@ export function initNom(outils, bureau) {
     const limite = Math.min(positionDans(bas, hero).y, hauteur * (1 - RECOUVREMENT)) - ecart;
     const croissance = Math.max(1, Math.min(bureau ? 1.12 : 1.3, (limite - haut) / cadre.offsetHeight));
 
+    // La plaque unique, au même endroit que les deux plaques une fois jointes.
+    // L'espace entre ses deux mots est réglé pour que chaque lettre tombe où
+    // elle était sur sa plaque.
+    nom.style.setProperty("--nom-taille", `${taille0}px`);
+    nom.style.setProperty("--nom-espace", "0px");
+    const naturel = nom.offsetWidth;
+    nom.style.setProperty("--nom-espace", `${longueur - naturel}px`);
+    nom.style.setProperty("--nom-echelle", String(echelle));
+    nom.style.setProperty("--nom-x", `${debutLigne}px`);
+    nom.style.setProperty("--nom-y", `${centre - hautPlaque / 2}px`);
+
     return {
       echelle,
       monte,
       croissance,
       gauche: {
-        x: debutLigne + (gauche.offsetWidth * echelle) / 2 - (posGauche.x + gauche.offsetWidth / 2),
-        y: centre - (posGauche.y + gauche.offsetHeight / 2),
+        x: debutLigne + (larG * echelle) / 2 - (posGauche.x + larG / 2),
+        y: centre - (posGauche.y + hauPlaque / 2),
       },
       droite: {
         x:
           debutLigne +
-          (gauche.offsetWidth + joint) * echelle +
-          (droite.offsetWidth * echelle) / 2 -
-          (posDroite.x + droite.offsetWidth / 2),
-        y: centre - (posDroite.y + droite.offsetHeight / 2),
+          (larG + joint) * echelle +
+          (larD * echelle) / 2 -
+          (posDroite.x + larD / 2),
+        y: centre - (posDroite.y + hauPlaque / 2),
       },
     };
   }
@@ -204,11 +234,43 @@ export function initNom(outils, bureau) {
       0.04,
     );
 
-  // La jonction : pendant la dernière partie du trajet, le bord gauche de
-  // « Marché » se fond dans la plaque (voir hero.css). Le trait ne disparaît
-  // pas d'un coup : il s'amincit avec le rapprochement, et les deux plaques
-  // n'en forment plus qu'une sans changer d'élément.
-  scene.fromTo(droite, { "--jointure": 0 }, { "--jointure": 1, duration: 0.2, ease: "power1.inOut", immediateRender: false }, 0.62);
+  // La jonction. Le bord gauche de « Marché » (filet et coins) s'efface au
+  // moment précis où il arrive sur le bord droit de « Snack du » : on mesure la
+  // position réelle des deux plaques, à chaque image, et non un minutage
+  // approximatif. --jointure va de 0 à 1 sur les 0,05 premiers em de
+  // chevauchement (le filet de « Marché » s'amincit pendant qu'il glisse sur
+  // celui de « Snack du » : le trait ne se voit jamais seul), et seulement quand
+  // les deux plaques sont à la même hauteur (sinon « Marché » n'est qu'une plaque
+  // qui passe devant l'autre). À l'arrivée, la valeur est exactement 1.
+  const taille = parseFloat(getComputedStyle(gauche).fontSize);
+  let precedent = -1;
+
+  const raccorder = () => {
+    const a = gauche.getBoundingClientRect();
+    const b = droite.getBoundingClientRect();
+    const em = (a.width / gauche.offsetWidth) * taille;
+    const chevauche = (a.right - b.left) / em;
+    const decalage = Math.abs((a.top + a.bottom) / 2 - (b.top + b.bottom) / 2) / em;
+    const jx = Math.min(1, Math.max(0, chevauche / 0.05));
+    // Une tolérance de 0,06 em : un écart d'un demi-pixel entre les deux plaques
+    // (arrondis) ne doit pas empêcher la fusion complète à l'arrivée.
+    const jy = Math.min(1, Math.max(0, 1 - (decalage - 0.06) / 0.14));
+    const j = Math.round(Math.min(jx, jy) * 100) / 100;
+    if (j !== precedent) {
+      precedent = j;
+      droite.style.setProperty("--jointure", String(j));
+      // Fusion complète : la plaque unique prend la place des deux, d'un seul
+      // bloc. Les deux plaques sont alors déjà fondues l'une dans l'autre (même
+      // aspect) : l'échange ne se voit pas, et il n'y a plus qu'un seul élément,
+      // donc plus aucun filet décalé d'un pixel.
+      const fusionnee = j >= 1;
+      nom.style.visibility = fusionnee ? "visible" : "hidden";
+      gauche.style.visibility = fusionnee ? "hidden" : "";
+      droite.style.visibility = fusionnee ? "hidden" : "";
+    }
+  };
+  scene.eventCallback("onUpdate", raccorder);
+  raccorder();
 
   // La photo reste entière : elle remonte sous les plaques et prend la place
   // qu'elles lui laissent.

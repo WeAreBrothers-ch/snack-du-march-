@@ -137,6 +137,13 @@
 
         <div class="hero__bande bande-h" aria-hidden="true"></div>
 
+        <!-- La plaque unique : à l'arrivée, quand les deux plaques sont fondues
+             l'une dans l'autre, elle prend leur place d'un seul bloc (sans
+             fondu) : un seul élément, donc plus aucune marge d'erreur de rendu
+             entre deux plaques. Les deux mots restent dans le h1 pour les
+             lecteurs d'écran (hero.js). -->
+        <span class="hero__nom" aria-hidden="true"><span class="hero__nom-a">Snack du</span><span class="hero__nom-b">Marché</span></span>
+
         <h1 class="hero__titre">
           <span class="hero__mot hero__mot--gauche">Snack du</span>
           <span class="hero__cadre" aria-hidden="true">

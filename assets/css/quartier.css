@@ -263,7 +263,7 @@
     grid-template-columns: repeat(24, minmax(0, 1fr));
     gap: clamp(0.9rem, 1.4vw, 1.5rem);
     width: 100%;
-    max-width: 74rem;
+    max-width: min(88rem, 100%);
     margin-inline: auto;
     padding: 0 var(--marge-q);
     overflow: visible;
@@ -285,18 +285,26 @@
   .ruban__carte:nth-child(3) { grid-column: 10 / 16; grid-row: 1; }
   .ruban__carte:nth-child(4) { grid-column: 16 / 25; grid-row: 1; }
 
-  /* Rangée 2 : les deux avis et l'adresse, trois tiers égaux. */
-  .ruban__carte:nth-child(2) { grid-column: 1 / 9; grid-row: 2; }
-  .ruban__carte:nth-child(5) { grid-column: 9 / 17; grid-row: 2; }
-  .ruban__carte:nth-child(6) { grid-column: 17 / 25; grid-row: 2; }
+  /* Rangée 2 : les deux avis (7 colonnes chacun) et l'adresse (10 colonnes :
+     « Rue Pré-du-Marché 3 » tient en entier sur une ligne). */
+  .ruban__carte:nth-child(2) { grid-column: 1 / 8; grid-row: 2; }
+  .ruban__carte:nth-child(5) { grid-column: 8 / 15; grid-row: 2; }
+  .ruban__carte:nth-child(6) { grid-column: 15 / 25; grid-row: 2; }
 
   .ruban__carte--avis,
   .ruban__carte--adresse {
     width: auto;
-    min-height: 15rem;
+    min-height: 0;
     padding: clamp(1.25rem, 1.6vw, 1.75rem);
-    gap: 1rem;
+    gap: 1.1rem;
   }
+
+  /* L'adresse tient à sa taille dans sa carte, quelle que soit la largeur de
+     l'écran : la taille des lettres suit celle de la carte (container query). */
+  .ruban__carte--adresse { container-type: inline-size; overflow: hidden; }
+  .ruban__rue { font-size: 6.3cqi; line-height: 1.08; }
+  .ruban__actions { flex-wrap: nowrap; }
+  .ruban__bouton { padding: 0.65rem 1rem; white-space: nowrap; }
 
   .ruban__carte--avis blockquote {
     font-size: clamp(1.3rem, 1.55vw, 1.85rem);
@@ -306,7 +314,6 @@
   .ruban__guillemet { font-size: clamp(3rem, 3.4vw, 4.25rem); }
   .ruban__source { margin-top: auto; }
 
-  .ruban__rue { font-size: clamp(1.15rem, 1.5vw, 1.7rem); }
   .ruban__ligne { display: block; white-space: nowrap; }
   .ruban__repere { font-size: var(--t-petit); }
 
