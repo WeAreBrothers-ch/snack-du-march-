@@ -232,6 +232,11 @@ html.anime .histoire__pause--intro {
 /* Grand écran ------------------------------------------------------------ */
 
 @media (min-width: 992px) {
+  /* La plaque du titre est assez large pour que « L'HISTOIRE » tienne : le
+     titre ne déborde plus du cadre. */
+  .histoire__plaque { width: min(100%, 54rem); }
+  .histoire__titre { max-width: none; font-size: clamp(2.75rem, 4.6vw, 5.25rem); }
+
   /* L'intro occupe l'écran : le titre au centre, les six photos posées
      autour. */
   .histoire__intro {
@@ -313,21 +318,28 @@ html.anime .histoire__mur {
 .pile {
   --onglet: clamp(3.25rem, 2.6rem + 2.8vw, 4.75rem);
   --haut: clamp(0.6rem, 0.3rem + 1.4vw, 1.5rem);
+  /* L'espace entre deux cartes est un « gap » et non une marge : une marge
+     compte dans la hauteur de la carte collée, et les deux premières cartes
+     repartaient avant l'arrivée de la troisième, qui se posait sur un mur
+     vide au lieu de se poser sur elles. */
+  display: flex;
+  flex-direction: column;
+  gap: clamp(34svh, 40svh, 50svh);
   width: 100%;
   max-width: 64rem;
   margin-inline: auto;
-  padding-bottom: clamp(10svh, 14svh, 18svh);
+  padding-bottom: clamp(4svh, 6svh, 8svh);
 }
+
+/* La pause finale : après la dernière carte, le même espace qu'entre deux
+   cartes (le gap ci-dessus) : elle reste collée, par-dessus les autres, le
+   temps d'être lue, avant que la pile ne s'en aille. */
+.pile::after { content: ""; flex: none; height: 0; }
 
 .chapitre {
   position: sticky;
   top: calc(var(--haut) + var(--rang) * var(--onglet));
-  /* La carte reste seule à l'écran le temps de la lire, avant que la
-     suivante ne monte. */
-  margin-bottom: clamp(34svh, 40svh, 50svh);
 }
-
-.chapitre:last-child { margin-bottom: 0; }
 
 .chapitre__carte {
   position: relative;

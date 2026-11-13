@@ -104,7 +104,7 @@
   font-weight: 700;
   font-size: clamp(1.45rem, 1.1rem + 1.5vw, 2.1rem);
   line-height: 1.12;
-  hyphens: auto;
+  hyphens: manual;
   overflow-wrap: break-word;
 }
 
@@ -246,34 +246,24 @@
 }
 
 @media (min-width: 992px) {
-  .quartier { --marge-q: clamp(2rem, 5vw, 6rem); padding-top: clamp(3rem, 6vw, 5rem); }
-  .ruban { --h: min(56svh, 30rem); --ecart: 1.25rem; }
-  .ruban__carte--avis { width: 22rem; }
-  .ruban__carte--adresse { width: 25rem; }
+  .quartier { --marge-q: clamp(2rem, 5vw, 6rem); padding-top: clamp(2.5rem, 5vw, 4rem); }
 
-  /* Mode animé : le ruban reste collé en haut de l'écran pendant que le
-     défilement le fait glisser de côté (quartier.js règle la hauteur de la
-     scène). */
-  html.anime .ruban { display: block; }
+  /* Une section calme : le titre à sa taille (pas de dévoilement), le ruban
+     en deux rangées au besoin, sans défilement détourné ni compteur. */
+  .quartier__titre { font-size: clamp(2.1rem, 3.9vw, 4.75rem); }
+  .quartier__titre--fantome { display: none; }
+  .quartier__titre[data-quartier-devant] { position: static; transform: none; }
 
-  html.anime .ruban__cadre {
-    position: sticky;
-    top: 0;
-    display: flex;
-    align-items: center;
-    height: 100svh;
-    overflow: hidden;
-  }
+  .ruban { --h: 17rem; --ecart: 1.25rem; }
 
-  html.anime .ruban__piste {
-    flex: none;
+  .ruban__piste {
+    flex-wrap: wrap;
+    justify-content: center;
     overflow: visible;
-    will-change: transform;
+    scroll-snap-type: none;
   }
 
-  html.anime .ruban__rail {
-    position: absolute;
-    inset: auto 0 clamp(1.5rem, 5svh, 3rem);
-    z-index: 2;
-  }
+  .ruban__carte--avis { width: 19rem; }
+  .ruban__carte--adresse { width: 22rem; }
+  .ruban__rail { display: none; }
 }

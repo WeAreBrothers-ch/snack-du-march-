@@ -216,7 +216,8 @@ function reculer(outils, panneau, voile, pause, bureau) {
 /**
  * Les cartes. Chacune se découvre en arrivant : l'année se compte (les 36
  * ans qui précèdent défilent, comme un compteur), la photo se découvre de
- * bas en haut, le texte monte ligne par ligne. Quand la suivante la
+ * bas en haut, le titre monte ; le récit apparaît d'un bloc (découpé en
+ * lignes, il se cassait mal quand la police arrivait après la découpe). Quand la suivante la
  * recouvre, une carte s'assombrit : son voile prend de l'opacité au rythme
  * du défilement. L'empilement lui-même est en CSS (position: sticky).
  * @param {import("./lib.js").Outils} outils
@@ -235,7 +236,7 @@ function initPile(outils) {
     const photo = element(".chapitre__photo", chapitre);
     const image = element("img", photo);
     const titre = decouperEnLignes(SplitText, element(".chapitre__titre", chapitre));
-    const recit = decouperEnLignes(SplitText, element(".chapitre__recit", chapitre));
+    const recit = element(".chapitre__recit", chapitre);
     const citation = chapitre.querySelector(".chapitre__citation");
 
     const entree = gsap
@@ -261,7 +262,7 @@ function initPile(outils) {
     if (citation) {
       entree.fromTo(citation, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.4);
     }
-    entree.fromTo(recit.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.05 }, 0.45);
+    entree.fromTo(recit, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.45);
 
     // Recouverte par la suivante : le voile s'assombrit.
     const suivante = chapitres[index + 1];

@@ -422,7 +422,7 @@
   }
 
   .planche--lue .planche__traits path.est-vu { stroke-dashoffset: 0; }
-  .planche--lue .planche__traits path.est-courant { opacity: 1; stroke: var(--panneau-accent); stroke-width: 2; }
+  .planche--lue .planche__traits path.est-courant { opacity: 1; stroke: var(--craie); stroke-width: 2; }
 
   .planche--lue .planche__ingredient {
     opacity: 0.3;
@@ -430,11 +430,11 @@
   }
 
   .planche--lue .planche__nom { transition: color 0.4s var(--sortie); }
-  .planche--lue .planche__ingredient.est-courant .planche__nom { color: var(--panneau-accent); }
+  .planche--lue .planche__ingredient.est-courant .planche__nom { color: var(--craie); }
   .planche--lue .planche__ingredient.est-courant[data-cote="gauche"] { translate: -0.6rem 0; }
   .planche--lue .planche__ingredient.est-courant[data-cote="droite"] { translate: 0.6rem 0; }
 
   .planche--lue .planche__point.est-courant {
-    box-shadow: 0 0 0 3px var(--cobalt), 0 0 0 6px var(--panneau-accent);
+    box-shadow: 0 0 0 3px var(--cobalt), 0 0 0 6px var(--craie);
   }
 }

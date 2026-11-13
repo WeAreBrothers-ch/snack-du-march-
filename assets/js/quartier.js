@@ -1,10 +1,10 @@
 /**
  * Le quartier et les prix : le grand texte cobalt se dévoile de haut en bas
- * par-dessus sa copie pâle, au rythme du défilement. Dessous, le ruban :
- * photos, avis et adresse sur une rangée. Au doigt, on le balaie (défilement
- * natif, scroll-snap) ; sur grand écran, il reste collé en haut de l'écran
- * et glisse de côté pendant qu'on descend. Un compteur et une barre disent
- * où l'on en est.
+ * par-dessus sa copie pâle, au rythme du défilement (téléphone seulement :
+ * sur grand écran, la section est calme). Dessous, le ruban : photos, avis et
+ * adresse. Au doigt, on le balaie (défilement natif, scroll-snap), avec un
+ * compteur et une barre ; sur grand écran, les cartes sont à plat, sur une ou
+ * deux rangées.
  */
 
 import { element, elements, SCRUB } from "./lib.js";
@@ -59,20 +59,24 @@ export function initRubanStatique() {
 export function initQuartier(outils, bureau) {
   const { gsap, ScrollTrigger } = outils;
 
-  gsap.fromTo(
-    "[data-quartier-devant]",
-    { clipPath: "inset(0% 0% 100% 0%)" },
-    {
-      clipPath: "inset(0% 0% 0% 0%)",
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".quartier__typo",
-        start: "top 70%",
-        end: "bottom 35%",
-        scrub: SCRUB,
+  // Sur téléphone, le grand texte se dévoile de haut en bas. Sur grand écran,
+  // la section est calme : le titre est simplement là.
+  if (!bureau) {
+    gsap.fromTo(
+      "[data-quartier-devant]",
+      { clipPath: "inset(0% 0% 100% 0%)" },
+      {
+        clipPath: "inset(0% 0% 0% 0%)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".quartier__typo",
+          start: "top 70%",
+          end: "bottom 35%",
+          scrub: SCRUB,
+        },
       },
-    },
-  );
+    );
+  }
 
   const ruban = element(".ruban");
   const piste = element(".ruban__piste");
@@ -92,9 +96,10 @@ export function initQuartier(outils, bureau) {
     },
   );
 
-  if (!bureau) {
-    // Téléphone : défilement natif. La carte au centre est à sa taille, les
-    // autres reculent un peu, comme un jeu de cartes qu'on feuillette.
+  {
+    // Défilement natif au doigt. La carte au centre est à sa taille, les autres
+    // reculent un peu, comme un jeu de cartes qu'on feuillette (sur grand écran,
+    // les cartes sont à plat : l'effet n'a lieu qu'en dessous de 992 px).
     const cartes = elements(".ruban__carte");
     let attente = false;
     const suivre = () => {
@@ -123,34 +128,6 @@ export function initQuartier(outils, bureau) {
       cartes.forEach((carte) => carte.style.removeProperty("--recul"));
     };
   }
-
-  // Grand écran : la scène fait la hauteur de l'écran plus la course du
-  // ruban ; il glisse de côté pendant qu'on la traverse.
-  const cadre = element(".ruban__cadre");
-  const course = () =>
-    Math.max(0, piste.scrollWidth + parseFloat(getComputedStyle(piste).paddingRight) - cadre.clientWidth);
-  const regler = () => ruban.style.setProperty("height", `${window.innerHeight + course()}px`);
-  regler();
-  const glisse = gsap.to(piste, {
-    x: () => -course(),
-    ease: "none",
-    scrollTrigger: {
-      trigger: ruban,
-      start: "top top",
-      end: "bottom bottom",
-      scrub: true,
-      invalidateOnRefresh: true,
-      onRefreshInit: regler,
-      onUpdate: (/** @type {any} */ d) => rail.maj(d.progress),
-    },
-  });
-
-  return () => {
-    glisse.kill();
-    ruban.style.removeProperty("height");
-    gsap.set(piste, { clearProps: "transform" });
-    ScrollTrigger.refresh();
-  };
 }
 
 /** @param {import("./lib.js").Outils} outils */
