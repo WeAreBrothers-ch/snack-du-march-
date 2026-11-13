@@ -5,6 +5,9 @@
    ========================================================================== */
 
 .quartier {
+  /* Le mur de carreaux entre la dernière plaque et le pied de page (le pied de
+     page, lui, reste collé aux bords de l'écran). */
+  margin-bottom: clamp(3rem, 1.5rem + 7vw, 9rem);
   --marge-q: clamp(1.25rem, 5vw, 3rem);
   display: grid;
   /* La colonne a la largeur de l'écran, pas celle du ruban : sans cela, la
