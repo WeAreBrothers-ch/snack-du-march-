@@ -187,23 +187,39 @@ export function initNom(outils, bureau) {
   // Les deux plaques glissent jusqu'à leur place sur la ligne. Sur
   // téléphone, « Marché » monte de sous la photo et passe devant elle pour
   // rejoindre « Snack du ».
+  // Les deux plaques partent et arrivent ensemble, en ralentissant : elles se
+  // posent l'une contre l'autre sans choc.
   scene
     .to(
       gauche,
-      { x: () => mesurer().gauche.x, y: () => mesurer().gauche.y, scale: () => mesurer().echelle, duration: 0.75 },
+      {
+        x: () => mesurer().gauche.x,
+        y: () => mesurer().gauche.y,
+        scale: () => mesurer().echelle,
+        duration: 0.75,
+        ease: "power3.out",
+      },
       0.05,
     )
     .to(
       droite,
-      { x: () => mesurer().droite.x, y: () => mesurer().droite.y, scale: () => mesurer().echelle, duration: 0.75 },
-      0.1,
+      {
+        x: () => mesurer().droite.x,
+        y: () => mesurer().droite.y,
+        scale: () => mesurer().echelle,
+        duration: 0.75,
+        ease: "power3.out",
+      },
+      0.05,
     );
 
-  // Les plaques se touchent : la plaque unique prend leur place, d'un seul
-  // bloc, sans que rien ne bouge.
+  // Une fois posées, la plaque unique apparaît par-dessus en fondu, à la même
+  // place : le trait qui séparait les deux mots s'efface doucement, sans
+  // saut. Quand elle est opaque, les deux plaques d'origine, dessous, sont
+  // retirées (on ne voit rien changer).
   scene
-    .fromTo(nom, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, ease: "none" }, 0.86)
-    .to([gauche, droite], { autoAlpha: 0, duration: 0.01, ease: "none" }, 0.86);
+    .fromTo(nom, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.14, ease: "power1.inOut" }, 0.8)
+    .to([gauche, droite], { autoAlpha: 0, duration: 0.01, ease: "none" }, 0.94);
 
   // La photo reste entière : elle remonte sous les plaques et prend la place
   // qu'elles lui laissent.
