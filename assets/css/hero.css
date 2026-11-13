@@ -60,37 +60,23 @@ html.anime .hero {
 
 .hero__titre { position: relative; }
 
-/* La plaque unique : les deux mots côte à côte sur un seul fond, avec un seul
-   filet. Même police, même rembourrage, même filet que .hero__mot ; le script
-   la place, la dimensionne et règle l'espace entre les deux mots pour que les
-   lettres tombent exactement où elles étaient sur les deux plaques. */
-.hero__nom {
-  position: absolute;
-  left: var(--nom-x, 0);
-  top: var(--nom-y, 0);
-  z-index: 4;
-  display: block;
-  padding: 0.06em 0.2em 0.02em;
-  font-family: var(--f-titre);
-  font-weight: 900;
-  font-size: var(--nom-taille, 2rem);
-  line-height: 0.96;
-  letter-spacing: 0;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--cobalt);
-  background-color: var(--craie);
-  border: 0.045em solid var(--cobalt);
-  border-radius: 0.14em;
-  transform: scale(var(--nom-echelle, 1));
-  transform-origin: 0 0;
-  visibility: hidden;
-  pointer-events: none;
+/* La jonction : quand « Marché » arrive sur « Snack du », son bord gauche
+   (filet et coins arrondis) se fond dans la plaque : --jointure va de 0 à 1
+   (hero.js). La taille de la plaque ne change pas (le filet qui disparaît
+   devient du rembourrage), donc rien ne bouge ; les deux plaques ne font plus
+   qu'une seule, sans trait de séparation, sans remplacement ni fondu. */
+.hero__mot.hero__mot--droite {
+  border-left-width: calc(0.045em * (1 - var(--jointure, 0)));
+  padding-left: calc(0.2em + 0.045em * var(--jointure, 0));
+  border-top-left-radius: calc(0.14em * (1 - var(--jointure, 0)));
+  border-bottom-left-radius: calc(0.14em * (1 - var(--jointure, 0)));
 }
 
-.hero__nom-a,
-.hero__nom-b { display: inline-block; }
-.hero__nom-b { margin-left: var(--nom-espace, 0px); }
+/* Les deux plaques et la photo sont déplacées par des transformations : on
+   les promeut sur leur propre calque, pour que le défilement ne les repeigne
+   pas à chaque image. */
+html.anime .hero__mot,
+html.anime .hero__cadre { will-change: transform; }
 
 /* Haut : une barre cobalt, avec l'étiquette et le menu (téléphone) ou la
    navigation (grand écran), puis la bordure ornée du carreau. ------------- */

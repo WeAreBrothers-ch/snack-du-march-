@@ -69,9 +69,9 @@ export function retablirHero(outils) {
 /**
  * Le nom qui se rassemble, lié au défilement : les deux plaques de céramique
  * glissent l'une vers l'autre et se posent côte à côte, sur une seule ligne,
- * sous la frise, puis une plaque unique prend leur place d'un seul bloc :
- * aucun joint entre les deux mots, aucun bandeau. La photo remonte sous elle
- * et grandit un peu vers le bas.
+ * sous la frise, et la seconde se fond dans la première (--jointure) : une
+ * seule plaque, sans joint, sans remplacement d'élément, sans bandeau. La
+ * photo remonte sous elle et grandit un peu vers le bas.
  * @param {import("./lib.js").Outils} outils
  * @param {boolean} bureau
  */
@@ -83,7 +83,6 @@ export function initNom(outils, bureau) {
   const gauche = element(".hero__mot--gauche");
   const droite = element(".hero__mot--droite");
 
-  const nom = element(".hero__nom");
   const bordure = element(".hero__bande");
   const titre = element(".hero__titre");
   const bas = element(".hero__bas");
@@ -140,17 +139,6 @@ export function initNom(outils, bureau) {
     const limite = Math.min(positionDans(bas, hero).y, hauteur * (1 - RECOUVREMENT)) - ecart;
     const croissance = Math.max(1, Math.min(bureau ? 1.12 : 1.3, (limite - haut) / cadre.offsetHeight));
 
-    // La plaque unique, au même endroit que les deux plaques une fois jointes.
-    // L'espace entre ses deux mots est réglé pour que chaque lettre tombe où
-    // elle était sur sa plaque.
-    nom.style.setProperty("--nom-taille", `${taille}px`);
-    nom.style.setProperty("--nom-espace", "0px");
-    const naturel = nom.offsetWidth;
-    nom.style.setProperty("--nom-espace", `${longueur - naturel}px`);
-    nom.style.setProperty("--nom-echelle", String(echelle));
-    nom.style.setProperty("--nom-x", `${debutLigne}px`);
-    nom.style.setProperty("--nom-y", `${centre - hautPlaque / 2}px`);
-
     return {
       echelle,
       monte,
@@ -188,7 +176,10 @@ export function initNom(outils, bureau) {
   // téléphone, « Marché » monte de sous la photo et passe devant elle pour
   // rejoindre « Snack du ».
   // Les deux plaques partent et arrivent ensemble, en ralentissant : elles se
-  // posent l'une contre l'autre sans choc.
+  // posent l'une sur l'autre sans choc. À l'arrivée, « Marché » recouvre d'un
+  // rien (0,23 em : le rembourrage et le filet de « Snack du », où il n'y a
+  // pas de lettres) ; leurs lettres sont alors à un espace de mot l'une de
+  // l'autre.
   scene
     .to(
       gauche,
@@ -196,10 +187,10 @@ export function initNom(outils, bureau) {
         x: () => mesurer().gauche.x,
         y: () => mesurer().gauche.y,
         scale: () => mesurer().echelle,
-        duration: 0.75,
-        ease: "power3.out",
+        duration: 0.8,
+        ease: "power2.inOut",
       },
-      0.05,
+      0.04,
     )
     .to(
       droite,
@@ -207,19 +198,17 @@ export function initNom(outils, bureau) {
         x: () => mesurer().droite.x,
         y: () => mesurer().droite.y,
         scale: () => mesurer().echelle,
-        duration: 0.75,
-        ease: "power3.out",
+        duration: 0.8,
+        ease: "power2.inOut",
       },
-      0.05,
+      0.04,
     );
 
-  // Une fois posées, la plaque unique apparaît par-dessus en fondu, à la même
-  // place : le trait qui séparait les deux mots s'efface doucement, sans
-  // saut. Quand elle est opaque, les deux plaques d'origine, dessous, sont
-  // retirées (on ne voit rien changer).
-  scene
-    .fromTo(nom, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.14, ease: "power1.inOut" }, 0.8)
-    .to([gauche, droite], { autoAlpha: 0, duration: 0.01, ease: "none" }, 0.94);
+  // La jonction : pendant la dernière partie du trajet, le bord gauche de
+  // « Marché » se fond dans la plaque (voir hero.css). Le trait ne disparaît
+  // pas d'un coup : il s'amincit avec le rapprochement, et les deux plaques
+  // n'en forment plus qu'une sans changer d'élément.
+  scene.fromTo(droite, { "--jointure": 0 }, { "--jointure": 1, duration: 0.2, ease: "power1.inOut", immediateRender: false }, 0.62);
 
   // La photo reste entière : elle remonte sous les plaques et prend la place
   // qu'elles lui laissent.
