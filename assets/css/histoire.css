@@ -65,7 +65,6 @@
   overflow: hidden;
   border: 0.3rem solid var(--craie);
   border-radius: calc(var(--rayon) + 0.3rem);
-  box-shadow: 0 0 0 2px var(--cobalt);
 }
 
 /* Les photos de droite descendent d'un cran : l'album se lit en quinconce. */
@@ -188,7 +187,6 @@ html.anime .histoire__pause--intro {
     overflow: hidden;
     border: 0.2rem solid var(--craie);
     border-radius: calc(var(--rayon) + 0.2rem);
-    box-shadow: 0 0 0 2px var(--cobalt);
   }
 
   html.anime .histoire__voisin--gauche { right: calc(100% + 4vw); top: 16%; width: 15vw; aspect-ratio: 2 / 3; }

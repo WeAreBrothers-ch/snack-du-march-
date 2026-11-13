@@ -140,7 +140,7 @@ Le site se pense sur un téléphone, puis s'élargit.
 ## Photographies
 
 Toujours en rectangle à coins doux (`--rayon`), jamais en rond. En couleur,
-jamais de noir et blanc. Les étapes ont un cadre ivoire, comme un tirage ; les photos du quartier un filet cobalt ; celle du haut de page a un cadre cobalt.
+jamais de noir et blanc. **Jamais de contour bleu autour d'une photo** : seulement des coins doux et, au plus, un filet d'ivoire (haut de page, album de l'histoire).
 
 Une photo montre ce qu'elle dit : un plat sans photo est présenté par son nom,
 en grand, sur un aplat cobalt, jamais par la photo d'un autre plat.
