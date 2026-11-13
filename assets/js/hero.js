@@ -69,9 +69,9 @@ export function retablirHero(outils) {
 /**
  * Le nom qui se rassemble, lié au défilement : les deux plaques de céramique
  * glissent l'une vers l'autre et se posent côte à côte, sur une seule ligne,
- * sous la frise, et fusionnent en une seule plaque : aucun joint entre les
- * deux mots (un « pont » efface leur bord commun), aucun bandeau. La photo
- * remonte sous elles et grandit un peu vers le bas.
+ * sous la frise, puis une plaque unique prend leur place d'un seul bloc :
+ * aucun joint entre les deux mots, aucun bandeau. La photo remonte sous elle
+ * et grandit un peu vers le bas.
  * @param {import("./lib.js").Outils} outils
  * @param {boolean} bureau
  */
@@ -83,6 +83,7 @@ export function initNom(outils, bureau) {
   const gauche = element(".hero__mot--gauche");
   const droite = element(".hero__mot--droite");
 
+  const nom = element(".hero__nom");
   const bordure = element(".hero__bande");
   const titre = element(".hero__titre");
   const bas = element(".hero__bas");
@@ -139,16 +140,16 @@ export function initNom(outils, bureau) {
     const limite = Math.min(positionDans(bas, hero).y, hauteur * (1 - RECOUVREMENT)) - ecart;
     const croissance = Math.max(1, Math.min(bureau ? 1.12 : 1.3, (limite - haut) / cadre.offsetHeight));
 
-    // Le pont : de la gauche de la seconde plaque à la droite de la première.
-    const droiteGauche = debutLigne + gauche.offsetWidth * echelle;
-    // Un peu plus large que l'espace à couvrir (0,8 px de chaque côté) : sans
-    // cela, le bord de la seconde plaque, flou à la fraction de pixel près,
-    // laissait un fil entre les deux mots.
-    hero.style.setProperty("--pont-x", `${droiteGauche + joint * echelle - 0.8}px`);
-    hero.style.setProperty("--pont-y", `${centre - hautPlaque / 2}px`);
-    hero.style.setProperty("--pont-l", `${-joint * echelle + 1.6}px`);
-    hero.style.setProperty("--pont-h", `${hautPlaque}px`);
-    hero.style.setProperty("--pont-bord", `${parseFloat(styleMot.borderTopWidth) * echelle}px`);
+    // La plaque unique, au même endroit que les deux plaques une fois jointes.
+    // L'espace entre ses deux mots est réglé pour que chaque lettre tombe où
+    // elle était sur sa plaque.
+    nom.style.setProperty("--nom-taille", `${taille}px`);
+    nom.style.setProperty("--nom-espace", "0px");
+    const naturel = nom.offsetWidth;
+    nom.style.setProperty("--nom-espace", `${longueur - naturel}px`);
+    nom.style.setProperty("--nom-echelle", String(echelle));
+    nom.style.setProperty("--nom-x", `${debutLigne}px`);
+    nom.style.setProperty("--nom-y", `${centre - hautPlaque / 2}px`);
 
     return {
       echelle,
@@ -198,8 +199,11 @@ export function initNom(outils, bureau) {
       0.1,
     );
 
-  // Les plaques se touchent : le pont efface leur bord commun.
-  scene.fromTo(".hero__pont", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.03, ease: "none" }, 0.84);
+  // Les plaques se touchent : la plaque unique prend leur place, d'un seul
+  // bloc, sans que rien ne bouge.
+  scene
+    .fromTo(nom, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, ease: "none" }, 0.86)
+    .to([gauche, droite], { autoAlpha: 0, duration: 0.01, ease: "none" }, 0.86);
 
   // La photo reste entière : elle remonte sous les plaques et prend la place
   // qu'elles lui laissent.

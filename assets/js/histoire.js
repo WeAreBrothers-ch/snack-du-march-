@@ -4,11 +4,12 @@
  * L'intro est une scène plein écran : le titre, et entre ses deux lignes une
  * vitrine où la devanture se découvre en arrivant. Pendant une courte pause,
  * la vitrine s'ouvre en grand, jusqu'aux bords de l'écran, et la photo
- * recule comme si l'on passait la porte. Sur grand écran, les photos de
- * l'album s'écartent pour lui faire place.
+ * recule comme si l'on passait la porte. Les photos posées autour (l'album sur
+ * grand écran, les photos de côté sur téléphone) s'écartent pour lui faire
+ * place.
  *
- * Sur téléphone, un ruban de photos glisse de côté sous la vitrine, puis
- * s'efface quand elle s'ouvre.
+ * Sur téléphone, deux photos de chaque côté de la vitrine tiennent la place de
+ * l'album : elles s'écartent et s'effacent quand elle s'ouvre.
  *
  * Puis trois cartes s'empilent par-dessus la devanture, qui recule et
  * s'assombrit : chacune se colle en haut de l'écran et laisse dépasser son
@@ -75,8 +76,9 @@ function initIntro(outils, bureau, pauseIntro) {
   const vitrine = element(".histoire__vitrine");
   const titre = decouperEnLignes(SplitText, element(".histoire__titre"));
   const sousTitre = decouperEnLignes(SplitText, element(".histoire__sous"));
-  const photos = elements(".histoire__cadre");
-  const ruban = element(".histoire__photos");
+  // Les photos autour du titre : l'album (grand écran) ou les deux photos de
+  // chaque côté de la vitrine (téléphone).
+  const photos = elements(bureau ? ".histoire__cadre" : ".histoire__flanc-photo");
 
   gsap
     .timeline({
@@ -86,8 +88,8 @@ function initIntro(outils, bureau, pauseIntro) {
     .fromTo(titre.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.9, stagger: 0.08 })
     .fromTo(sousTitre.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.06 }, "<0.3");
 
-  if (bureau) {
-    // L'album entoure le titre : ses photos se découvrent avec lui.
+  {
+    // Les photos se découvrent avec le titre.
     gsap.fromTo(
       photos,
       { clipPath: "inset(100% 0% 0% 0%)" },
@@ -96,7 +98,7 @@ function initIntro(outils, bureau, pauseIntro) {
         duration: 0.9,
         stagger: 0.07,
         ease: "power3.inOut",
-        scrollTrigger: { trigger: ".histoire", start: "top 55%", toggleActions: "play none none reverse" },
+        scrollTrigger: { trigger: ".histoire", start: bureau ? "top 55%" : "top 65%", toggleActions: "play none none reverse" },
       },
     );
   }
@@ -171,8 +173,8 @@ function initIntro(outils, bureau, pauseIntro) {
     .fromTo(element(".histoire__fenetre-voile"), { opacity: 0.3 }, { opacity: 0.5, duration: 0.8 }, 0.85);
 
 
-  if (bureau) {
-    // Les photos de l'album s'écartent du centre et s'effacent.
+  {
+    // Les photos s'écartent du centre et s'effacent quand la vitrine s'ouvre.
     photos.forEach((photo) => {
       const ecart = () => {
         const position = positionDans(photo, intro);
@@ -187,16 +189,6 @@ function initIntro(outils, bureau, pauseIntro) {
         0.85,
       );
     });
-  }
-
-  if (!bureau) {
-    // Téléphone : le ruban de photos arrive, glisse de côté pendant que la
-    // vitrine se découvre, puis s'efface quand elle s'ouvre.
-    const course = () => Math.max(0, ruban.offsetWidth + 2 * parseFloat(getComputedStyle(ruban).marginLeft) - intro.offsetWidth);
-    scene
-      .fromTo(ruban, { autoAlpha: 0, x: 0 }, { autoAlpha: 1, duration: 0.3, ease: "power2.out" }, 0)
-      .fromTo(ruban, { x: 0 }, { x: () => -course(), duration: 1.0, ease: "none", immediateRender: false }, 0)
-      .to(ruban, { autoAlpha: 0, duration: 0.3, ease: "power1.in" }, 0.85);
   }
 
   // Le temps de lire, sur la devanture ouverte.

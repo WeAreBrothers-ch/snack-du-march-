@@ -23,26 +23,34 @@
   text-align: center;
 }
 
-/* Le titre et le sous-titre, chacun sur sa plaque de céramique, comme le
-   nom dans le haut de page : lisibles sur le carreau plein. */
-.histoire__titre,
-.histoire__sous {
+/* Le titre et sa phrase sur une seule plaque de céramique, comme le nom dans
+   le haut de page : lisibles sur le carreau plein, sans séparation. */
+.histoire__plaque {
+  display: grid;
+  justify-items: center;
+  gap: 0.55em;
+  width: min(100%, 36rem);
+  padding: 0.35em 0.7em 0.55em;
   background: var(--craie);
   border: 3px solid var(--cobalt);
-  border-radius: var(--rayon);
+  border-radius: calc(var(--rayon) * 1.25);
+  box-shadow: inset 0 0 0 3px var(--craie), inset 0 0 0 5px var(--cobalt);
+  text-align: center;
 }
 
 .histoire__titre {
-  padding: 0.18em 0.3em 0.12em;
+  padding-top: 0.12em;
   color: var(--cobalt);
 }
 
 .histoire__sous {
-  max-width: 24ch;
-  padding: 0.45em 0.8em;
+  width: 100%;
+  padding-top: 0.5em;
+  border-top: 2px solid rgba(18, 38, 160, 0.25);
   font-size: var(--t-lead);
-  line-height: 1.3;
+  line-height: 1.25;
   color: var(--encre);
+  text-wrap: balance;
 }
 
 .histoire__photos {
@@ -138,16 +146,25 @@ html.anime .histoire__vitrine {
   height: min(38svh, 26rem);
 }
 
+html.anime .histoire__texte {
+  gap: clamp(0.75rem, 2.4svh, 1.25rem);
+}
+
 html.anime .histoire__pause--intro {
   display: block;
   height: calc(var(--ecran-visible) * 0.9);
 }
 
-/* Sur téléphone, mode animé : le titre, la vitrine, le sous-titre, et sous
-   eux un ruban de photos qui glisse de côté au défilement (histoire.js),
-   puis s'efface quand la vitrine s'ouvre. Les plaques sont petites : plus
-   grandes, elles cachaient la devanture. */
+/* Sur téléphone, mode animé : la plaque (titre et phrase), puis la vitrine
+   avec deux photos de chaque côté, comme l'album autour du titre sur grand
+   écran. Au défilement, les photos s'écartent et s'effacent quand la vitrine
+   s'ouvre (histoire.js). */
+.histoire__rangee { display: flex; justify-content: center; }
+.histoire__flanc { display: none; }
+
 @media (max-width: 991px) {
+  .histoire__plaque { width: min(100%, 26rem); }
+
   .histoire__titre {
     max-width: 13ch;
     font-size: clamp(1.4rem, 6vw, 2.25rem);
@@ -155,49 +172,39 @@ html.anime .histoire__pause--intro {
   }
 
   .histoire__sous {
-    max-width: none;
-    width: 100%;
-    padding: 0.35em 0.8em;
-    font-size: clamp(0.9375rem, 3.9vw, 1.25rem);
-    text-wrap: balance;
+    font-size: clamp(0.9375rem, 3.8vw, 1.15rem);
   }
 
-  html.anime .histoire__intro {
-    flex-direction: column;
-    gap: clamp(0.75rem, 2.4svh, 1.25rem);
-  }
+  html.anime .histoire__photos { display: none; }
 
   html.anime .histoire__texte { width: 100%; }
 
+  html.anime .histoire__rangee {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: stretch;
+    gap: clamp(0.45rem, 2.4vw, 0.9rem);
+    width: 100%;
+  }
+
   html.anime .histoire__vitrine {
-    width: min(58vw, 20rem);
-    height: min(27svh, 20rem);
+    width: min(46vw, 17rem);
+    height: min(34svh, 23rem);
   }
 
-  html.anime .histoire__photos {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex: none;
-    align-self: flex-start;
-    gap: 0.6rem;
-    width: max-content;
-    padding: 0;
-    margin-left: var(--marge);
+  html.anime .histoire__flanc {
+    display: grid;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.4rem, 2vw, 0.7rem);
   }
 
-  html.anime .histoire__cadre,
-  html.anime .histoire__cadre:nth-child(even),
-  html.anime .histoire__cadre:nth-child(n + 5) {
-    display: block;
-    flex: none;
-    height: clamp(3.75rem, 9.5svh, 6rem);
-    aspect-ratio: 4 / 5;
-    margin: 0;
+  html.anime .histoire__flanc-photo {
+    min-height: 0;
+    overflow: hidden;
+    border: 0.22rem solid var(--craie);
+    border-radius: calc(var(--rayon) + 0.22rem);
+    box-shadow: 0 0 0 2px var(--cobalt);
   }
-
-  /* La devanture est déjà dans la vitrine. */
-  html.anime .histoire__cadre:nth-child(2) { display: none; }
 }
 
 /* Tablette : l'album sur une ligne. */
@@ -254,9 +261,6 @@ html.anime .histoire__pause--intro {
     .histoire__cadre:nth-child(3) { grid-column: 1 / 3; justify-self: start; }
     .histoire__cadre:nth-child(4) { grid-column: 11 / 13; justify-self: end; }
   }
-
-  /* Les deux photos de plus ne servent qu'au ruban du téléphone. */
-  .histoire__cadre:nth-child(n + 7) { display: none; }
 
   /* En mode animé, la devanture est la vitrine elle-même : pas de doublon. */
   html.anime .histoire__cadre:nth-child(2) { display: none; }
@@ -351,14 +355,21 @@ html.anime .histoire__mur {
   padding: clamp(1rem, 4vw, 1.5rem) clamp(1rem, 4vw, 1.75rem) clamp(1.1rem, 4.5vw, 1.75rem);
 }
 
+/* La photo garde son format (--r, largeur / hauteur) : jamais rognée. Sa
+   hauteur est plafonnée (--hmax), sa largeur suit ; elle est posée au centre
+   de la carte, comme un tirage. */
 .chapitre__photo {
-  height: clamp(8rem, 24svh, 14rem);
+  --hmax: clamp(8.5rem, 31svh, 16rem);
+  justify-self: center;
+  width: min(100%, calc(var(--hmax) * var(--r, 1.5)));
+  aspect-ratio: var(--r, 1.5);
   overflow: hidden;
   border-radius: var(--rayon);
   background: var(--craie);
 }
 
-.chapitre:nth-child(2) .chapitre__photo img { object-position: center 30%; }
+.chapitre--cobalt .chapitre__photo { box-shadow: 0 0 0 0.3rem var(--craie); margin-block: 0.3rem; }
+.chapitre--craie .chapitre__photo { box-shadow: 0 0 0 2px var(--cobalt); margin-block: 2px; }
 
 .chapitre__texte {
   display: grid;
@@ -430,7 +441,7 @@ html.anime .histoire__mur {
     padding: clamp(1.5rem, 3svh, 2.25rem) clamp(1.75rem, 3vw, 2.75rem) clamp(1.75rem, 3.5svh, 2.5rem);
   }
 
-  .chapitre__photo { height: clamp(15rem, 40svh, 24rem); }
+  .chapitre__photo { --hmax: clamp(15rem, 42svh, 25rem); }
   .chapitre__recit { font-size: var(--t-lead); line-height: 1.35; }
   .chapitre__citation { font-size: clamp(1.4rem, 1.7vw, 2.1rem); }
 }

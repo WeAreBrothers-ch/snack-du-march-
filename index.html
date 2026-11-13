@@ -137,10 +137,10 @@
 
         <div class="hero__bande bande-h" aria-hidden="true"></div>
 
-        <!-- Le pont : quand les deux plaques se touchent, il efface leur
-             bord commun et prolonge les filets du haut et du bas : une seule
-             plaque, sans joint (hero.js). -->
-        <span class="hero__pont" aria-hidden="true"></span>
+        <!-- La plaque unique : quand les deux plaques se touchent, elle prend leur
+             place d'un seul bloc (un seul fond, un seul filet, aucun joint). Les
+             deux mots restent dans le h1 pour les lecteurs d'écran (hero.js). -->
+        <span class="hero__nom" aria-hidden="true"><span class="hero__nom-a">Snack du</span><span class="hero__nom-b">Marché</span></span>
 
         <h1 class="hero__titre">
           <span class="hero__mot hero__mot--gauche">Snack du</span>
@@ -177,9 +177,25 @@
       <div class="histoire__intro">
         <div class="histoire__fenetre" aria-hidden="true"><img src="assets/photos/devanture-nuit.webp" alt="" loading="lazy" decoding="async" /><span class="histoire__fenetre-voile"></span></div>
         <div class="histoire__texte">
-          <h2 class="histoire__titre" id="titre-histoire">L'histoire de la maison</h2>
-          <div class="histoire__vitrine" aria-hidden="true"></div>
-          <p class="histoire__sous">D'un comptoir de quartier à la presse romande</p>
+          <!-- Le titre et sa phrase sur une seule plaque, au-dessus de la
+               vitrine. -->
+          <div class="histoire__plaque">
+            <h2 class="histoire__titre" id="titre-histoire">L'histoire de la maison</h2>
+            <p class="histoire__sous">D'un comptoir de quartier à la presse romande</p>
+          </div>
+          <!-- La vitrine, et sur téléphone deux photos de chaque côté (sur
+               grand écran, l'album est posé autour du titre). -->
+          <div class="histoire__rangee" aria-hidden="true">
+            <div class="histoire__flanc">
+              <div class="histoire__flanc-photo"><img src="assets/photos/enseigne.webp" alt="" loading="lazy" decoding="async" /></div>
+              <div class="histoire__flanc-photo"><img src="assets/photos/frites-terrasse.webp" alt="" loading="lazy" decoding="async" /></div>
+            </div>
+            <div class="histoire__vitrine"></div>
+            <div class="histoire__flanc">
+              <div class="histoire__flanc-photo"><img src="assets/photos/assiette-frites.webp" alt="" loading="lazy" decoding="async" /></div>
+              <div class="histoire__flanc-photo"><img src="assets/photos/sandwich-veau-agneau.webp" alt="" loading="lazy" decoding="async" /></div>
+            </div>
+          </div>
         </div>
         <div class="histoire__photos" aria-hidden="true">
           <div class="histoire__cadre"><img src="assets/photos/enseigne.webp" alt="" loading="lazy" decoding="async" /></div>
@@ -188,8 +204,6 @@
           <div class="histoire__cadre"><img src="assets/photos/comptoir-vitrine.webp" alt="" loading="lazy" decoding="async" /></div>
           <div class="histoire__cadre"><img src="assets/photos/assiette-frites.webp" alt="" loading="lazy" decoding="async" /></div>
           <div class="histoire__cadre"><img src="assets/photos/sandwich-veau-agneau.webp" alt="" loading="lazy" decoding="async" /></div>
-          <div class="histoire__cadre"><img src="assets/photos/durum-main.webp" alt="" loading="lazy" decoding="async" /></div>
-          <div class="histoire__cadre"><img src="assets/photos/comptoir-decoupe.webp" alt="" loading="lazy" decoding="async" /></div>
         </div>
         <span class="histoire__recul" aria-hidden="true"></span>
       </div>
@@ -212,7 +226,7 @@
                 <h3 class="chapitre__titre" id="titre-chapitre-1">L'ouverture</h3>
               </header>
               <div class="chapitre__corps">
-                <figure class="chapitre__photo"><img src="assets/photos/enseigne.webp" alt="L'enseigne lumineuse du Snack du Marché" width="1020" height="1020" loading="lazy" decoding="async" /></figure>
+                <figure class="chapitre__photo" style="--r: 1"><img src="assets/photos/enseigne.webp" alt="L'enseigne lumineuse du Snack du Marché" width="1020" height="1020" loading="lazy" decoding="async" /></figure>
                 <div class="chapitre__texte">
                   <p class="chapitre__recit">Hüseyin Celik ouvre le Snack du Marché, rue Pré-du-Marché, à deux pas de la place de la Riponne. La broche est montée à la main dès le premier jour&nbsp;: veau et agneau entiers, jamais reconstitués.</p>
                 </div>
@@ -227,7 +241,7 @@
                 <h3 class="chapitre__titre" id="titre-chapitre-2">La presse</h3>
               </header>
               <div class="chapitre__corps">
-                <figure class="chapitre__photo"><img src="assets/photos/equipe-comptoir.webp" alt="L'équipe du Snack du Marché au comptoir" width="765" height="1020" loading="lazy" decoding="async" /></figure>
+                <figure class="chapitre__photo" style="--r: 0.75"><img src="assets/photos/equipe-comptoir.webp" alt="L'équipe du Snack du Marché au comptoir" width="765" height="1020" loading="lazy" decoding="async" /></figure>
                 <div class="chapitre__texte">
                   <blockquote class="chapitre__citation">«&nbsp;Vingt ans que le Snack du Marché régale de ses broches épicées&nbsp;»<cite>24 heures, mai 2018</cite></blockquote>
                   <p class="chapitre__recit">Le Temps parle de «&nbsp;haute gastronomie&nbsp;». Le comptoir de quartier devient une adresse.</p>
@@ -243,7 +257,7 @@
                 <h3 class="chapitre__titre" id="titre-chapitre-3">Deux générations</h3>
               </header>
               <div class="chapitre__corps">
-                <figure class="chapitre__photo"><img src="assets/photos/deux-generations.webp" alt="Hüseyin et Sertaç Celik derrière le comptoir du Snack du Marché" width="530" height="353" loading="lazy" decoding="async" /></figure>
+                <figure class="chapitre__photo" style="--r: 1.5"><img src="assets/photos/deux-generations.webp" alt="Hüseyin et Sertaç Celik derrière le comptoir du Snack du Marché" width="530" height="353" loading="lazy" decoding="async" /></figure>
                 <div class="chapitre__texte">
                   <p class="chapitre__recit">Sertaç, le fils, tranche aujourd'hui la broche aux côtés de son père. Les étudiants d'hier amènent leurs enfants. Les recettes des grands-mères, elles, n'ont pas bougé.</p>
                 </div>

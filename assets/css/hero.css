@@ -60,35 +60,37 @@ html.anime .hero {
 
 .hero__titre { position: relative; }
 
-/* Le pont entre les deux plaques une fois jointes : un fond de céramique et
-   les deux filets cobalt, qui recouvrent leurs coins arrondis et leur bord
-   commun. Le script le place et le dimensionne en pixels (hero.js). */
-.hero__pont {
+/* La plaque unique : les deux mots côte à côte sur un seul fond, avec un seul
+   filet. Même police, même rembourrage, même filet que .hero__mot ; le script
+   la place, la dimensionne et règle l'espace entre les deux mots pour que les
+   lettres tombent exactement où elles étaient sur les deux plaques. */
+.hero__nom {
   position: absolute;
-  left: var(--pont-x, 0);
-  top: var(--pont-y, 0);
+  left: var(--nom-x, 0);
+  top: var(--nom-y, 0);
   z-index: 4;
-  box-sizing: border-box;
-  width: var(--pont-l, 0);
-  height: var(--pont-h, 0);
-  background: var(--craie);
-  border-block: var(--pont-bord, 3px) solid var(--cobalt);
+  display: block;
+  padding: 0.06em 0.2em 0.02em;
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-size: var(--nom-taille, 2rem);
+  line-height: 0.96;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--cobalt);
+  background-color: var(--craie);
+  border: 0.045em solid var(--cobalt);
+  border-radius: 0.14em;
+  transform: scale(var(--nom-echelle, 1));
+  transform-origin: 0 0;
   visibility: hidden;
   pointer-events: none;
 }
 
-.hero__cadre {
-  position: relative;
-  z-index: 1;
-}
-
-.hero__haut,
-.hero__bande,
-.hero__bas,
-.hero__mot {
-  position: relative;
-  z-index: 3;
-}
+.hero__nom-a,
+.hero__nom-b { display: inline-block; }
+.hero__nom-b { margin-left: var(--nom-espace, 0px); }
 
 /* Haut : une barre cobalt, avec l'étiquette et le menu (téléphone) ou la
    navigation (grand écran), puis la bordure ornée du carreau. ------------- */
