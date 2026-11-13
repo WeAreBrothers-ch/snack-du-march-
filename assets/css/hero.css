@@ -2,7 +2,7 @@
    Hero — le mur de faïence d'Iznik, encadré par sa bordure cobalt.
    Le nom de la maison, sur deux plaques de céramique, de part et d'autre de
    la photo. Au défilement, les deux plaques se
-   rassemblent sur une ligne, sur le bandeau cobalt de l'enseigne.
+   rassemblent sur une ligne, côte à côte.
    ========================================================================== */
 
 /* En mode animé, le bloc d'accueil fait deux écrans de haut : le hero reste
@@ -18,7 +18,7 @@ html.anime .hero {
 .hero {
   --gauche: max(var(--marge), (100% - var(--largeur-max)) / 2);
   position: relative;
-  /* Les étages ci-dessous (mur, photo, enseigne, nom) restent entre eux : rien
+  /* Les étages ci-dessous (mur, photo, nom) restent entre eux : rien
      ne passe au-dessus de la section qui monte ensuite. */
   isolation: isolate;
   display: grid;
@@ -56,25 +56,6 @@ html.anime .hero {
   left: auto;
   right: 0;
   transform: scaleX(-1);
-}
-
-/* L'enseigne : un bandeau cobalt accroché juste sous la frise, comme le
-   fronton au-dessus de la vitrine. Le filet ivoire de la frise le borde en
-   haut ; en bas, il reprend le double filet ivoire et cobalt des autres
-   barres. Le script le place, le dimensionne et le déroule depuis le milieu
-   (clip-path) ; le nom vient s'y poser. Les mots passent devant tout le
-   reste. */
-.hero__enseigne {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: var(--enseigne-haut, 0);
-  height: var(--enseigne-hauteur, 0);
-  z-index: 0;
-  background: var(--cobalt);
-  box-shadow: 0 3px 0 var(--craie), 0 6px 0 var(--cobalt);
-  visibility: hidden;
-  pointer-events: none;
 }
 
 .hero__titre { position: relative; }
@@ -135,7 +116,7 @@ html.anime .hero {
 }
 
 /* Le nom, sur deux plaques de céramique : lisible sur le motif le plus
-   chargé. Le script les fond dans l'enseigne (hero.js). Interligne à peine
+   chargé. Au défilement, le script les rapproche (hero.js). Interligne à peine
    plus haut que la taille : le masque qui fait monter chaque mot ne doit
    pas couper l'accent de « Marché ». */
 .hero__mot {

@@ -27,11 +27,35 @@ import { decouperEnLignes } from "./texte.js";
 export function initHistoire(outils, bureau) {
   const pauseIntro = element(".histoire__pause--intro");
 
+  const nettoyerMur = alignerMur(outils);
   initIntro(outils, bureau, pauseIntro);
   // Quand la frise monte par-dessus la devanture, celle-ci recule et
   // s'assombrit.
   reculer(outils, element(".histoire__intro"), element(".histoire__recul"), pauseIntro, bureau);
-  return initFrise(outils, bureau);
+  const nettoyerFrise = initFrise(outils, bureau);
+  return () => {
+    nettoyerFrise();
+    nettoyerMur();
+  };
+}
+
+/**
+ * Le mur derrière la frise est le même carreau que celui de la page, mais il
+ * est peint par un autre élément : il faut le décaler de la hauteur qui
+ * sépare le haut de la page du haut de ce mur, pour que les deux se
+ * raccordent. Remesuré à chaque calcul des animations (une photo qui arrive
+ * déplace tout).
+ * @param {import("./lib.js").Outils} outils
+ * @returns {() => void}
+ */
+function alignerMur(outils) {
+  const mur = element(".histoire__mur");
+  const aligner = () => {
+    mur.style.setProperty("--mur-y", `${-Math.round(mur.getBoundingClientRect().top + window.scrollY)}px`);
+  };
+  aligner();
+  outils.ScrollTrigger.addEventListener("refreshInit", aligner);
+  return () => outils.ScrollTrigger.removeEventListener("refreshInit", aligner);
 }
 
 /**

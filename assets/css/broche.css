@@ -33,10 +33,13 @@
 .geste {
   position: relative;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  column-gap: clamp(1rem, 4vw, 1.75rem);
-  row-gap: 0.4rem;
-  padding-block: clamp(1.1rem, 4vw, 1.6rem);
+  /* Une colonne de numéros de largeur fixe : tous les titres et tous les
+     textes partent du même bord, quel que soit le numéro. */
+  grid-template-columns: clamp(2.9rem, 13vw, 3.75rem) minmax(0, 1fr);
+  column-gap: 0.25rem;
+  row-gap: 0.45rem;
+  align-items: baseline;
+  padding-block: clamp(1.1rem, 4.5vw, 1.6rem);
 }
 
 /* Le filet : le script le trace de gauche à droite (scaleX). */
@@ -51,22 +54,28 @@
 }
 
 .geste__num {
-  grid-row: span 2;
+  grid-column: 1;
+  grid-row: 1;
   font-family: var(--f-titre);
   font-weight: 900;
-  font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
-  line-height: 0.9;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
+  line-height: 1;
   font-variant-numeric: tabular-nums;
   color: var(--cobalt);
 }
 
 .geste__titre {
-  font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2.25rem);
+  grid-column: 2;
+  grid-row: 1;
+  font-size: clamp(1.4rem, 1rem + 1.6vw, 2.1rem);
+  line-height: 1.05;
   color: var(--cobalt);
 }
 
 .geste__texte {
-  max-width: 34ch;
+  grid-column: 2;
+  grid-row: 2;
+  font-size: var(--t-corps);
   line-height: 1.45;
   color: var(--texte-doux);
 }

@@ -18,7 +18,7 @@ import { chargerLibrairies } from "./lib.js";
 import { initDefilement, rejoindreAncre } from "./defilement.js";
 import { initHoraires } from "./horaires.js";
 import { initMenu, initTitreOnglet } from "./menu.js";
-import { initEnseigne, jouerEntree, retablirHero } from "./hero.js";
+import { initNom, jouerEntree, retablirHero } from "./hero.js";
 import { initHistoire } from "./histoire.js";
 import { initBroche } from "./broche.js";
 import { initPlanche } from "./planche.js";
@@ -69,7 +69,7 @@ function demarrerAnime(outils) {
       entreeJouee = true;
     }
 
-    initEnseigne(outils, bureau);
+    initNom(outils, bureau);
     const nettoyerHistoire = initHistoire(outils, bureau);
     const nettoyerBroche = initBroche(outils, bureau, planche);
     const nettoyerCarte = initCarte(outils);

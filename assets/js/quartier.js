@@ -1,7 +1,6 @@
 /**
  * Le quartier et les prix : le grand texte cobalt se dévoile de haut en bas
- * par-dessus sa copie pâle, au rythme du défilement. La devanture se découvre
- * de bas en haut, comme un store qu'on lève ; les clichés, les avis et
+ * par-dessus sa copie pâle, au rythme du défilement. Les clichés, les avis et
  * l'adresse montent doucement en arrivant. Rien d'autre ne bouge.
  */
 
@@ -30,18 +29,8 @@ export function initQuartier(outils, bureau) {
     },
   );
 
-  // La devanture se découvre de bas en haut, en reculant un peu.
-  const devanture = element(".tourne");
-  gsap
-    .timeline({
-      defaults: { ease: "power3.inOut" },
-      scrollTrigger: { trigger: devanture, start: "top 85%", toggleActions: "play none none reverse" },
-    })
-    .fromTo(devanture, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1 }, 0)
-    .fromTo(element("img", devanture), { scale: 1.2 }, { scale: 1, duration: 1.4, ease: "power2.out" }, 0);
-
   // Le reste monte doucement, chacun en arrivant.
-  elements(".cliche, .papier, .quartier__acces").forEach((bloc) => {
+  elements(".cliche, .avis, .quartier__acces").forEach((bloc) => {
     gsap.fromTo(
       bloc,
       { autoAlpha: 0, y: 32 },

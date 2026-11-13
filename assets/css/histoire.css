@@ -225,6 +225,17 @@ html.anime .histoire__pause--intro {
    passent jamais devant la frise qui monte par-dessus. */
 html.anime .histoire__intro { z-index: 0; }
 
+/* Le mur derrière la frise : la devanture de l'intro reste collée derrière
+   toute la frise ; sans ce mur, on la verrait entre les cartes et sur les
+   côtés. Le carreau est celui de la page, décalé (--mur-y, histoire.js) pour
+   que les deux se raccordent sans couture, au-dessus comme au-dessous. */
+html.anime .histoire__mur {
+  position: relative;
+  z-index: 1;
+  padding-top: var(--retrait);
+  background: #f4f4f4 var(--carreau) 50% var(--mur-y, 0px) / var(--maille) auto;
+}
+
 /* La frise ----------------------------------------------------------------- */
 
 /* Une page de journal sur une plaque de céramique (.plaque) : elle monte

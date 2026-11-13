@@ -67,15 +67,18 @@ export function retablirHero(outils) {
 }
 
 /**
- * Le nom qui se rassemble sur le bandeau, lié au défilement.
+ * Le nom qui se rassemble, lié au défilement : les deux plaques de céramique
+ * glissent l'une vers l'autre et se posent côte à côte, sur une seule ligne,
+ * sous la frise, comme deux carreaux séparés par un joint. Elles gardent
+ * leur couleur et leur filet cobalt : rien ne s'efface, aucun bandeau. La
+ * photo remonte sous elles et grandit un peu vers le bas.
  * @param {import("./lib.js").Outils} outils
  * @param {boolean} bureau
  */
-export function initEnseigne(outils, bureau) {
+export function initNom(outils, bureau) {
   const { gsap } = outils;
 
   const hero = element(".hero");
-  const enseigne = element(".hero__enseigne");
   const cadre = element(".hero__cadre");
   const gauche = element(".hero__mot--gauche");
   const droite = element(".hero__mot--droite");
@@ -86,9 +89,8 @@ export function initEnseigne(outils, bureau) {
 
   /**
    * Les positions de départ et d'arrivée, mesurées sur la mise en page (les
-   * transformations en cours n'y entrent pas). Chaque animation les demande
-   * (une dizaine de fois par calcul) : on ne mesure qu'une fois par état de
-   * la page, sinon chaque demande force une remise en page complète.
+   * transformations en cours n'y entrent pas), une seule fois par état de la
+   * page : chaque demande forcerait sinon une remise en page complète.
    * @type {ReturnType<typeof calculer> | null}
    */
   let mesure = null;
@@ -112,33 +114,22 @@ export function initEnseigne(outils, bureau) {
     const posGauche = positionDans(gauche, hero);
     const posDroite = positionDans(droite, hero);
 
-    // L'enseigne s'accroche sous la frise, après son filet ivoire (3 px) ;
-    // elle a pour hauteur ce que la photo lui laisse, double filet du bas
-    // (6 px) et respiration compris.
-    const dessus = positionDans(bordure, hero).y + bordure.offsetHeight + 3;
-    const place = posCadre.y - ecart - 6 - dessus;
+    // Les plaques se posent sous la frise, après son double filet (6 px).
+    const dessus = positionDans(bordure, hero).y + bordure.offsetHeight + 6 + ecart;
+    const place = posCadre.y - ecart - dessus;
 
-    // La ligne « Snack du Marché » : les deux mots séparés d'une espace de la
-    // police (0,22 em), réduits pour tenir entre les marges et dans la place
-    // au-dessus de la photo.
-    // Chaque plaque déborde du mot de son rembourrage et de son filet : une
-    // fois la céramique effacée, il ne reste que les lettres, qu'on
-    // rapproche d'autant.
-    const styleMot = getComputedStyle(gauche);
-    const bord = parseFloat(styleMot.paddingLeft) + parseFloat(styleMot.borderLeftWidth);
-    const espace = parseFloat(styleMot.fontSize) * 0.22 - 2 * bord;
-    const longueur = gauche.offsetWidth + espace + droite.offsetWidth;
-    const echelle = Math.max(0.2, Math.min(1, (largeur - 2 * marge) / longueur, place / (gauche.offsetHeight * 1.4)));
-    const bande = gauche.offsetHeight * echelle * 1.4;
-    enseigne.style.setProperty("--enseigne-haut", `${dessus}px`);
-    enseigne.style.setProperty("--enseigne-hauteur", `${bande}px`);
-    const centre = dessus + bande / 2;
+    // La ligne : les deux plaques séparées d'un joint, réduites pour tenir
+    // entre les marges et dans la place au-dessus de la photo.
+    const joint = Math.max(8, parseFloat(getComputedStyle(gauche).fontSize) * 0.22);
+    const longueur = gauche.offsetWidth + joint + droite.offsetWidth;
+    const echelle = Math.max(0.2, Math.min(1, (largeur - 2 * marge) / longueur, place / gauche.offsetHeight));
+    const hautPlaque = gauche.offsetHeight * echelle;
+    const centre = dessus + hautPlaque / 2;
     const debutLigne = (largeur - longueur * echelle) / 2;
 
-    // La photo remonte sous l'enseigne, comme la vitrine sous son fronton,
-    // puis grandit vers le bas, sans toucher le bandeau du bas ni la section
-    // qui monte ensuite.
-    const cible = dessus + bande + 6 + Math.max(16, hauteur * 0.03);
+    // La photo remonte sous les plaques, puis grandit vers le bas, sans
+    // toucher la barre du bas.
+    const cible = dessus + hautPlaque + Math.max(16, hauteur * 0.03);
     const monte = Math.min(0, cible - posCadre.y);
     const haut = posCadre.y + monte;
     const limite = Math.min(positionDans(bas, hero).y, hauteur * (1 - RECOUVREMENT)) - ecart;
@@ -155,16 +146,11 @@ export function initEnseigne(outils, bureau) {
       droite: {
         x:
           debutLigne +
-          (gauche.offsetWidth + espace) * echelle +
+          (gauche.offsetWidth + joint) * echelle +
           (droite.offsetWidth * echelle) / 2 -
           (posDroite.x + droite.offsetWidth / 2),
         y: centre - (posDroite.y + droite.offsetHeight / 2),
       },
-      // Découpes de l'enseigne : un point au milieu de l'écran, qui s'ouvre
-      // en bandeau jusqu'aux bords. À l'arrivée, la découpe descend sous le
-      // bandeau pour laisser voir son double filet.
-      depart: `inset(${bande / 2}px ${largeur / 2}px ${bande / 2}px ${largeur / 2}px)`,
-      arrivee: "inset(0px 0px -6px 0px)",
     };
   }
 
@@ -182,8 +168,6 @@ export function initEnseigne(outils, bureau) {
     },
   });
 
-  scene.fromTo(enseigne, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, ease: "none" }, 0);
-
   // Les deux plaques glissent jusqu'à leur place sur la ligne. Sur
   // téléphone, « Marché » monte de sous la photo et passe devant elle pour
   // rejoindre « Snack du ».
@@ -196,21 +180,11 @@ export function initEnseigne(outils, bureau) {
     .to(
       droite,
       { x: () => mesurer().droite.x, y: () => mesurer().droite.y, scale: () => mesurer().echelle, duration: 0.75 },
-      0.05,
+      0.1,
     );
 
-  // L'enseigne se déroule depuis le milieu. Sur téléphone, elle est en
-  // place plus tôt : « Marché » arrive par en dessous et doit trouver le
-  // bandeau déjà là.
-  scene.fromTo(
-    enseigne,
-    { clipPath: () => mesurer().depart },
-    { clipPath: () => mesurer().arrivee, duration: bureau ? 0.6 : 0.45 },
-    bureau ? 0.3 : 0.15,
-  );
-
-  // La photo reste entière : elle remonte sous l'enseigne et prend la place
-  // que les mots lui laissent.
+  // La photo reste entière : elle remonte sous les plaques et prend la place
+  // qu'elles lui laissent.
   scene.fromTo(
     cadre,
     { y: 0, scale: 1, transformOrigin: "50% 0%" },
@@ -218,23 +192,6 @@ export function initEnseigne(outils, bureau) {
     bureau ? 0.05 : 0.15,
   );
 
-  // La céramique des plaques s'efface, les lettres passent à l'ivoire : le
-  // nom est désormais écrit sur l'enseigne. Chaque plaque s'efface quand
-  // elle arrive sur le bandeau, pas avant (des lettres ivoire sur le mur ne
-  // se lisent pas) : sur téléphone, « Snack du », tout proche, d'abord ;
-  // « Marché », qui monte de sous la photo, ensuite.
-  const effacer = {
-    backgroundColor: "rgba(251, 249, 242, 0)",
-    borderColor: "rgba(18, 38, 160, 0)",
-    color: "#fbf9f2",
-    ease: "power1.inOut",
-  };
-  if (bureau) {
-    scene.to([gauche, droite], { ...effacer, duration: 0.35 }, 0.4);
-  } else {
-    scene.to(gauche, { ...effacer, duration: 0.25 }, 0.42).to(droite, { ...effacer, duration: 0.25 }, 0.55);
-  }
-
-  // Un temps d'arrêt sur l'enseigne complète avant que la page ne reparte.
+  // Un temps d'arrêt sur le nom rassemblé avant que la page ne reparte.
   scene.to({}, { duration: 0.15 });
 }

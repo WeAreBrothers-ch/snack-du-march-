@@ -1,103 +1,62 @@
 /* ==========================================================================
-   Le quartier — le grand texte qui se dévoile, entouré de photos et d'avis
-   ========================================================================== */
-
-/* ==========================================================================
-   Le quartier — le grand texte, la devanture, deux
-   clichés à leur format (jamais rognés), les avis, l'adresse
+   Le quartier — le grand texte, trois clichés à leur format sur une grille
+   droite, deux avis, l'adresse. Rien de penché, rien qui se chevauche.
    ========================================================================== */
 
 .quartier {
-  position: relative;
   display: grid;
-  gap: clamp(1.75rem, 7vw, 3.5rem);
+  gap: clamp(1.75rem, 7vw, 3rem);
   padding: clamp(1.75rem, 7vw, 4rem) clamp(1.25rem, 5vw, 3rem) clamp(2rem, 8vw, 4rem);
 }
 
-/* La devanture : un carré, jamais rognée. */
-.quartier__scene {
-  position: relative;
-  width: min(86%, 32rem);
-  margin-inline: auto;
-}
-
-.tourne {
-  overflow: hidden;
-  aspect-ratio: 1;
-  border-radius: var(--rayon);
-  box-shadow: 0 0 0 2px var(--cobalt);
-}
-
-/* Les deux clichés, à leur format : le portrait et le carré, décalés. */
-.quartier__duo {
+/* Les clichés : la devanture sur toute la largeur, puis la terrasse
+   (portrait) et l'enseigne (carré) côte à côte, alignées par le haut. */
+.quartier__photos {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: start;
-  gap: clamp(0.9rem, 4vw, 2rem);
-  width: min(100%, 44rem);
-  margin-inline: auto;
+  gap: clamp(1rem, 4vw, 1.5rem) clamp(0.75rem, 3.5vw, 1.25rem);
 }
 
-.cliche {
-  display: grid;
-  gap: 0.6rem;
-  padding: 0.35rem 0.35rem 0.6rem;
-  border-radius: calc(var(--rayon) + 0.35rem);
-  box-shadow: 0 0 0 2px var(--cobalt);
-}
+.cliche { display: grid; gap: 0.6rem; }
+.cliche--devanture { grid-column: 1 / -1; }
 
 .cliche img {
-  border-radius: var(--rayon);
   height: auto;
-}
-
-.cliche figcaption {
-  padding-inline: 0.3rem;
-  font-size: clamp(0.75rem, 0.65rem + 0.5vw, 0.9375rem);
-  color: var(--cobalt);
-}
-
-.cliche--bas { margin-top: clamp(2rem, 9vw, 4.5rem); }
-
-/* Les avis, comme des carreaux posés de travers : céramique ivoire, double
-   filet cobalt. Le premier chevauche la devanture, le second est posé seul. */
-.papier {
-  width: min(78%, 20rem);
-  padding: clamp(0.9rem, 0.6rem + 1.2vw, 1.5rem);
-  background: var(--craie);
-  color: var(--cobalt);
+  padding: 0.3rem;
   border: 2px solid var(--cobalt);
-  border-radius: 0.5rem;
-  box-shadow: inset 0 0 0 4px var(--craie), inset 0 0 0 6px var(--cobalt), 0 0.6rem 0 -0.1rem rgba(18, 38, 160, 0.14);
-  rotate: -3deg;
+  border-radius: calc(var(--rayon) + 0.3rem);
+  background: var(--craie);
 }
 
-.papier--haut {
-  position: absolute;
-  right: -6%;
-  bottom: -9%;
-  width: min(62%, 17rem);
+.cliche figcaption { color: var(--cobalt); }
+
+/* Les avis : une citation, filet rouge à gauche, comme celle de la presse
+   dans l'histoire. */
+.quartier__avis {
+  display: grid;
+  gap: clamp(1.25rem, 5vw, 1.75rem);
 }
 
-.papier--bas {
-  justify-self: start;
-  margin-left: 4%;
-  rotate: 2deg;
+.avis {
+  padding-left: clamp(0.9rem, 3vw, 1.5rem);
+  border-left: 3px solid var(--rouge);
 }
 
-.papier blockquote {
+.avis blockquote {
   font-family: var(--f-titre);
   font-weight: 700;
-  font-size: clamp(1rem, 0.8rem + 0.9vw, 1.5rem);
-  line-height: 1.2;
-  /* Un mot trop long pour la carte se coupe à la française, avec un trait
+  font-size: clamp(1.3rem, 1rem + 1.5vw, 2.25rem);
+  line-height: 1.12;
+  color: var(--encre);
+  /* Un mot trop long pour la ligne se coupe à la française, avec un trait
      d'union (« Littérale-ment »), jamais au milieu sans rien. */
   hyphens: auto;
   overflow-wrap: break-word;
 }
 
-.papier figcaption {
-  margin-top: 0.75em;
+.avis figcaption {
+  margin-top: 0.6em;
   font-size: var(--t-petit);
   color: var(--texte-doux);
 }
@@ -175,17 +134,19 @@
 }
 
 @media (min-width: 992px) {
-  .quartier {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: var(--gouttiere);
-    align-items: start;
-    padding-inline: clamp(2rem, 5vw, 6rem);
+  .quartier { padding-inline: clamp(2rem, 5vw, 6rem); }
+
+  /* Les trois clichés sur une ligne, alignés par le haut. */
+  .quartier__photos { grid-template-columns: 5fr 3.4fr 3.6fr; }
+  .cliche--devanture { grid-column: auto; }
+
+  .quartier__avis { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(2rem, 5vw, 5rem); }
+
+  .quartier__acces {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: clamp(2rem, 5vw, 5rem);
   }
 
-  .quartier__typo { grid-column: 1 / -1; }
-
-  .quartier__scene { grid-column: 1 / 7; width: 82%; max-width: 36rem; margin: 0 0 0 9%; justify-self: start; }
-  .quartier__duo { grid-column: 7 / -1; width: 100%; margin-top: clamp(2rem, 8vw, 6rem); }
-  .papier--bas { grid-column: 7 / -1; justify-self: end; margin: 0 6% 0 0; }
-  .quartier__acces { grid-column: 1 / 7; grid-row: 4; align-self: center; }
+  .quartier__itineraire { margin-top: 0; }
 }
