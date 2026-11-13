@@ -65,6 +65,7 @@
 .ruban__carte--photo {
   aspect-ratio: var(--r, 1);
   background: var(--craie);
+  box-shadow: 0 0 0 2px var(--cobalt);
 }
 
 .ruban__carte--photo img { height: 100%; }

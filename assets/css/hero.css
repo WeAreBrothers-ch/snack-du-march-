@@ -149,11 +149,14 @@ html.anime .hero {
   border-radius: 0.14em;
 }
 
-/* La photo : pas de cadre bleu, seulement un filet d'ivoire (sur .hero__image)
-   et des coins doux. */
+/* La photo, dans un cadre cobalt aux coins doux, avec un filet d'ivoire
+   autour d'elle, comme un carreau encadré. */
 .hero__cadre {
+  --cadre: clamp(0.5rem, 0.3rem + 0.6vw, 0.9rem);
   display: block;
-  border-radius: var(--rayon);
+  padding: var(--cadre);
+  background: var(--cobalt);
+  border-radius: calc(var(--rayon) + var(--cadre) * 0.5);
 }
 
 /* La photo prend la hauteur que le nom et les barres laissent libre. Sa
