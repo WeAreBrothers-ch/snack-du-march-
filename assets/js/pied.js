@@ -1,6 +1,6 @@
 /**
- * Le pied de page : le panneau cobalt monte comme une carte qui s'élargit
- * jusqu'aux bords, comme celui de l'anatomie. Les trois blocs (adresse,
+ * Le pied de page : un panneau cobalt de bord à bord, collé aux côtés de
+ * l'écran (pas de carte en retrait, pas de mur visible sur les côtés). Les trois blocs (adresse,
  * horaires, téléphone) arrivent l'un après l'autre ; le nom monte lettre à
  * lettre depuis sa ligne, au rythme du défilement, jusqu'au bas de la page.
  */
@@ -11,30 +11,6 @@ import { decouperEnLettres } from "./texte.js";
 /** @param {import("./lib.js").Outils} outils */
 export function initPied(outils) {
   const { gsap, SplitText } = outils;
-
-  // La découpe est animée telle quelle (et non par des variables CSS, qui
-  // recalculeraient le style de tout le panneau à chaque image).
-  const carteDe = () => {
-    const retrait = Math.round(Math.min(window.innerWidth * 0.06, 48));
-    const arrondi = window.innerWidth >= 992 ? 32 : 20;
-    return `inset(0px ${retrait}px 0px ${retrait}px round ${arrondi}px ${arrondi}px 0px 0px)`;
-  };
-  gsap.fromTo(
-    ".pied",
-    { clipPath: carteDe },
-    {
-      clipPath: "inset(0px 0px 0px 0px round 0px 0px 0px 0px)",
-      ease: "power1.inOut",
-      immediateRender: true,
-      scrollTrigger: {
-        trigger: ".pied",
-        start: "top bottom",
-        end: "top 40%",
-        scrub: true,
-        invalidateOnRefresh: true,
-      },
-    },
-  );
 
   gsap.fromTo(
     elements(".pied__voeu, .pied__bloc"),

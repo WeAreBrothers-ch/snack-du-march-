@@ -171,6 +171,8 @@ function lirePlanche(outils, photo, points, ingredients, traits, bureau) {
   }
   const lecture = ligne;
   const etiquette = element(".planche__lecture-nom", lecture);
+  const compteurNum = document.querySelector("[data-planche-num]");
+  const compteurNom = document.querySelector("[data-planche-nom]");
 
   // Les repères sont rangés de haut en bas, comme la légende.
   const hauteurs = points.map((point) => parseFloat(point.style.getPropertyValue("--y")));
@@ -195,6 +197,10 @@ function lirePlanche(outils, photo, points, ingredients, traits, bureau) {
     ingredients.forEach((ingredient, index) => ingredient.classList.toggle("est-courant", index === dernier));
     traits.forEach((trait, index) => trait.classList.toggle("est-courant", index === dernier));
     if (dernier >= 0) etiquette.textContent = `${dernier + 1} · ${noms[dernier]}`;
+    if (compteurNum) {
+      compteurNum.textContent = String(dernier + 1).padStart(2, "0");
+      if (compteurNom) compteurNom.textContent = dernier >= 0 ? noms[dernier] : "La lecture commence";
+    }
   };
 
   planche.classList.add("planche--lue");

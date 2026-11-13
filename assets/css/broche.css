@@ -121,6 +121,8 @@
   text-align: center;
 }
 
+.anatomie__compteur { display: none; }
+
 .anatomie__note {
   max-width: 28ch;
   margin: clamp(1.5rem, 6vw, 2.5rem) auto 0;
@@ -386,7 +388,23 @@
     border: 0;
   }
 
-  .planche__ingredient::before { display: none; }
+  /* Le numéro, avant le nom, comme sur téléphone (en ivoire atténué). */
+  .planche__ingredient,
+  .planche__ingredient:nth-child(4n) { display: flex; align-items: center; gap: 0.75rem; }
+  .planche__ingredient[data-cote="gauche"] { flex-direction: row-reverse; }
+  .planche__ingredient::before {
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex: none;
+    border: 1.5px solid var(--panneau-trait);
+    border-radius: 50%;
+    background: none;
+    color: var(--panneau-texte-doux);
+    font-size: 0.8125rem;
+    line-height: 1.5rem;
+    text-align: center;
+  }
 
   .planche__ingredient[data-cote="gauche"] { grid-column: 1; justify-self: end; text-align: right; }
   .planche__ingredient[data-cote="droite"] { grid-column: 3; justify-self: start; }
@@ -399,21 +417,42 @@
     text-transform: none;
   }
 
+  /* Les repères : des pastilles numérotées, comme sur téléphone. */
   .planche__point {
-    width: 0.875rem;
-    height: 0.875rem;
-    margin: -0.4375rem 0 0 -0.4375rem;
-    font-size: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: -0.75rem 0 0 -0.75rem;
+    font-size: 0.8125rem;
     box-shadow: 0 0 0 3px var(--cobalt);
   }
 
   .planche__traits { display: block; }
 
+  /* Le compteur : le numéro lu, en grand, et son nom. */
+  .anatomie__compteur {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    font-family: var(--f-titre);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--craie);
+  }
+
+  .anatomie__compteur-num { font-size: clamp(2.5rem, 4.5vw, 4.5rem); font-variant-numeric: tabular-nums; }
+  .anatomie__compteur-total { font-size: 1.1rem; font-weight: 700; opacity: 0.6; }
+  .anatomie__compteur-nom {
+    margin-left: 1rem;
+    font-family: var(--f-texte);
+    font-weight: 500;
+    font-size: var(--t-lead);
+    text-transform: none;
+  }
+
   /* La lecture : la ligne passe sur la photo, un peu plus large qu'elle ;
      chaque ingrédient croisé s'allume, son trait se dessine depuis la
      légende jusqu'au repère. Le dernier croisé passe au turquoise. */
   .planche__lecture { left: -1.25rem; right: -1.25rem; }
-  .planche__lecture-nom { display: none; }
 
   .planche--lue .planche__traits path {
     stroke-dashoffset: 1;
