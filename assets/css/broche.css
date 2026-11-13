@@ -454,6 +454,10 @@
      légende jusqu'au repère. Le dernier croisé passe au turquoise. */
   .planche__lecture { left: -1.25rem; right: -1.25rem; }
 
+  /* Le nom du dernier ingrédient lu est déjà dans le compteur, sous la photo :
+     pas d'étiquette en doublon sur la photo. */
+  .planche__lecture-nom { display: none; }
+
   .planche--lue .planche__traits path {
     stroke-dashoffset: 1;
     opacity: 0.5;
