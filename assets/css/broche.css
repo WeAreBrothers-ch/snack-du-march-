@@ -144,6 +144,9 @@
 .planche__photo {
   position: relative;
   aspect-ratio: 1;
+  /* Rien ne sort du cadre : la photo, légèrement agrandie par l'animation, et
+     la ligne de lecture restent dans ses bords. */
+  overflow: hidden;
   border-radius: var(--rayon);
 }
 
@@ -219,8 +222,8 @@
    retrait (broche.js). */
 .planche__lecture {
   position: absolute;
-  left: -0.375rem;
-  right: -0.375rem;
+  left: 0;
+  right: 0;
   top: 0;
   z-index: 3;
   height: 2px;
@@ -452,7 +455,6 @@
   /* La lecture : la ligne passe sur la photo, un peu plus large qu'elle ;
      chaque ingrédient croisé s'allume, son trait se dessine depuis la
      légende jusqu'au repère. Le dernier croisé passe au turquoise. */
-  .planche__lecture { left: -1.25rem; right: -1.25rem; }
 
   /* Le nom du dernier ingrédient lu est déjà dans le compteur, sous la photo :
      pas d'étiquette en doublon sur la photo. */
