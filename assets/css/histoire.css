@@ -1,5 +1,5 @@
 /* ==========================================================================
-   L'histoire — une intro et son album, puis la frise des trois chapitres
+   L'histoire — une intro et son album, puis trois cartes qui s'empilent
    ========================================================================== */
 
 .histoire {
@@ -143,12 +143,11 @@ html.anime .histoire__pause--intro {
   height: calc(var(--ecran-visible) * 0.9);
 }
 
-/* Sur téléphone, la vitrine suffit : l'album ne sert qu'au mode statique.
-   Les deux plaques sont petites : elles étaient si grandes qu'elles
-   cachaient la devanture une fois ouverte. */
+/* Sur téléphone, mode animé : le titre, la vitrine, le sous-titre, et sous
+   eux un ruban de photos qui glisse de côté au défilement (histoire.js),
+   puis s'efface quand la vitrine s'ouvre. Les plaques sont petites : plus
+   grandes, elles cachaient la devanture. */
 @media (max-width: 991px) {
-  html.anime .histoire__photos { display: none; }
-
   .histoire__titre {
     max-width: 13ch;
     font-size: clamp(1.4rem, 6vw, 2.25rem);
@@ -156,10 +155,49 @@ html.anime .histoire__pause--intro {
   }
 
   .histoire__sous {
-    max-width: 22ch;
-    padding: 0.35em 0.7em;
+    max-width: none;
+    width: 100%;
+    padding: 0.35em 0.8em;
     font-size: clamp(0.9375rem, 3.9vw, 1.25rem);
+    text-wrap: balance;
   }
+
+  html.anime .histoire__intro {
+    flex-direction: column;
+    gap: clamp(0.75rem, 2.4svh, 1.25rem);
+  }
+
+  html.anime .histoire__texte { width: 100%; }
+
+  html.anime .histoire__vitrine {
+    width: min(58vw, 20rem);
+    height: min(27svh, 20rem);
+  }
+
+  html.anime .histoire__photos {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex: none;
+    align-self: flex-start;
+    gap: 0.6rem;
+    width: max-content;
+    padding: 0;
+    margin-left: var(--marge);
+  }
+
+  html.anime .histoire__cadre,
+  html.anime .histoire__cadre:nth-child(even),
+  html.anime .histoire__cadre:nth-child(n + 5) {
+    display: block;
+    flex: none;
+    height: clamp(3.75rem, 9.5svh, 6rem);
+    aspect-ratio: 4 / 5;
+    margin: 0;
+  }
+
+  /* La devanture est déjà dans la vitrine. */
+  html.anime .histoire__cadre:nth-child(2) { display: none; }
 }
 
 /* Tablette : l'album sur une ligne. */
@@ -217,185 +255,137 @@ html.anime .histoire__pause--intro {
     .histoire__cadre:nth-child(4) { grid-column: 11 / 13; justify-self: end; }
   }
 
+  /* Les deux photos de plus ne servent qu'au ruban du téléphone. */
+  .histoire__cadre:nth-child(n + 7) { display: none; }
+
   /* En mode animé, la devanture est la vitrine elle-même : pas de doublon. */
   html.anime .histoire__cadre:nth-child(2) { display: none; }
 }
 
 /* L'intro forme sa propre pile : ses calques (devanture, voile, recul) ne
-   passent jamais devant la frise qui monte par-dessus. */
+   passent jamais devant les cartes qui montent par-dessus. */
 html.anime .histoire__intro { z-index: 0; }
 
-/* Le mur derrière la frise : la devanture de l'intro reste collée derrière
-   toute la frise ; sans ce mur, on la verrait entre les cartes et sur les
-   côtés. Le carreau est celui de la page, décalé (--mur-y, histoire.js) pour
-   que les deux se raccordent sans couture, au-dessus comme au-dessous. */
+/* Le mur derrière les cartes ------------------------------------------------ */
+
+/* La devanture de l'intro reste collée derrière toute la suite : sans ce
+   mur, on la verrait entre les cartes et sur les côtés. Le carreau est celui
+   de la page, décalé (--mur-y, histoire.js) pour que les deux se raccordent
+   sans couture, au-dessus comme au-dessous. */
 html.anime .histoire__mur {
   position: relative;
   z-index: 1;
-  padding-top: var(--retrait);
   background: #f4f4f4 var(--carreau) 50% var(--mur-y, 0px) / var(--maille) auto;
 }
 
-/* La frise ----------------------------------------------------------------- */
-
-/* Une page de journal sur une plaque de céramique (.plaque) : elle monte
-   par-dessus la devanture. Sur le côté (en haut, sur téléphone),
-   le repère : l'année, dont les chiffres roulent d'un chapitre à l'autre, et
-   la table des chapitres. */
-.frise {
-  position: relative;
-  z-index: 1;
-  padding: clamp(1.5rem, 6vw, 5rem) var(--marge) clamp(4rem, 12vw, 9rem);
+.histoire__mur {
+  padding: var(--retrait) var(--retrait) 0;
 }
 
-/* Le repère (grand écran seulement) : l'année qui roule et la table des
-   chapitres. Sur téléphone, une barre collée en haut cachait le titre sous le
-   bouton « Menu » et montrait des chiffres à moitié roulés : chaque chapitre
-   porte son année en grand, qui se compte une fois en arrivant. */
-.frise__repere {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  display: none;
-  align-items: center;
-  gap: 1rem;
-  margin: 0 calc(6px - var(--marge)) clamp(1.5rem, 6vw, 2.5rem);
-  padding: 0.6rem calc(var(--marge) + 6rem) 0.6rem calc(var(--marge) - 6px);
-  background: var(--craie);
-  box-shadow: 0 2px 0 var(--cobalt);
-}
+/* Les cartes ----------------------------------------------------------------- */
 
-.frise__annee {
-  display: flex;
-  font-family: var(--f-titre);
-  font-weight: 900;
-  font-size: clamp(2.75rem, 13vw, 4.25rem);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--cobalt);
-}
-
-/* Un chiffre du compteur : une fenêtre d'un chiffre de haut, et derrière,
-   la bande de 0 à 9 que le script fait rouler. */
-.roue {
-  display: block;
-  height: 1em;
-  overflow: hidden;
-}
-
-.roue__bande {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  will-change: transform;
-}
-
-.roue__bande > span {
-  display: block;
-  height: 1em;
-}
-
-.frise__table {
-  display: grid;
-  min-width: 0;
-}
-
-.frise__entree {
-  display: none;
-  justify-content: space-between;
-  gap: 1rem;
-  font-family: var(--f-titre);
-  font-weight: 700;
-  font-size: var(--t-label);
-  line-height: 1.15;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--cobalt);
-}
-
-/* Sur téléphone, seul le chapitre en cours, sans son année (elle est déjà
-   en grand). */
-.frise__entree.est-courante { display: flex; }
-.frise__entree > span + span { display: none; }
-
-/* Les chapitres ------------------------------------------------------------ */
-
-.frise__chapitres {
-  display: grid;
-  gap: clamp(4rem, 16vw, 7rem);
+/* Trois cartes qui s'empilent. Chacune se colle en haut de l'écran, un cran
+   plus bas que la précédente (--rang x --onglet) : quand la suivante la
+   recouvre, il reste visible son onglet, l'année et le titre, comme un jeu de
+   cartes dont on ne verrait que le bord. Du CSS seul (position: sticky). Le
+   bas de la dernière laisse le temps de la lire avant que la pile ne parte. */
+.pile {
+  --onglet: clamp(3.25rem, 2.6rem + 2.8vw, 4.75rem);
+  --haut: clamp(0.6rem, 0.3rem + 1.4vw, 1.5rem);
+  width: 100%;
+  max-width: 64rem;
+  margin-inline: auto;
+  padding-bottom: clamp(10svh, 14svh, 18svh);
 }
 
 .chapitre {
-  display: grid;
-  gap: clamp(1.25rem, 5vw, 2rem);
+  position: sticky;
+  top: calc(var(--haut) + var(--rang) * var(--onglet));
+  /* La carte reste seule à l'écran le temps de la lire, avant que la
+     suivante ne monte. */
+  margin-bottom: clamp(34svh, 40svh, 50svh);
 }
 
-.chapitre__photo {
+.chapitre:last-child { margin-bottom: 0; }
+
+.chapitre__carte {
+  position: relative;
   overflow: hidden;
-  aspect-ratio: 4 / 5;
-  border-radius: var(--rayon);
+  border: 3px solid var(--cobalt);
+  border-radius: calc(var(--rayon) * 1.5);
   background: var(--craie);
+  color: var(--encre);
 }
 
-.chapitre:nth-child(1) .chapitre__photo { aspect-ratio: 1; }
-.chapitre:nth-child(3) .chapitre__photo { aspect-ratio: 3 / 2; }
-.chapitre:nth-child(3) .chapitre__photo img { object-position: center 30%; }
-
-.chapitre__texte {
-  display: grid;
-  gap: clamp(0.75rem, 3vw, 1.25rem);
-  max-width: 38rem;
+/* L'onglet : l'année en grand, le titre. C'est lui qui dépasse. */
+.chapitre__onglet {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: var(--onglet);
+  padding-inline: clamp(1rem, 4vw, 1.75rem);
+  border-bottom: 1.5px solid rgba(18, 38, 160, 0.25);
 }
 
-/* L'année de chaque chapitre, en grand (téléphone). Sur grand écran en mode
-   animé, c'est le compteur du repère qui la dit : elle reste, cachée, pour les
-   lecteurs d'écran. */
 .chapitre__annee {
   font-family: var(--f-titre);
   font-weight: 900;
-  font-size: clamp(4rem, 22vw, 6.5rem);
-  line-height: 0.85;
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+  line-height: 1;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
   color: var(--cobalt);
 }
 
-@media (min-width: 992px) {
-  html.anime .chapitre__annee {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-  }
-}
-
 .chapitre__titre {
-  font-size: var(--t-h3);
+  font-size: clamp(1.15rem, 0.95rem + 1vw, 1.9rem);
+  line-height: 1;
+  text-align: right;
   color: var(--cobalt);
 }
 
+.chapitre__corps {
+  display: grid;
+  gap: clamp(0.9rem, 3.5vw, 1.4rem);
+  padding: clamp(1rem, 4vw, 1.5rem) clamp(1rem, 4vw, 1.75rem) clamp(1.1rem, 4.5vw, 1.75rem);
+}
+
+.chapitre__photo {
+  height: clamp(8rem, 24svh, 14rem);
+  overflow: hidden;
+  border-radius: var(--rayon);
+  background: var(--craie);
+}
+
+.chapitre:nth-child(2) .chapitre__photo img { object-position: center 30%; }
+
+.chapitre__texte {
+  display: grid;
+  align-content: start;
+  gap: 0.9rem;
+}
+
 .chapitre__recit {
-  font-size: var(--t-lead);
-  line-height: 1.38;
+  font-size: var(--t-corps);
+  line-height: 1.42;
   color: var(--texte-doux);
 }
 
-/* La citation de la presse : en grand, comme une coupure de journal. */
+/* La citation de la presse : en grand, un filet rouge à gauche. */
 .chapitre__citation {
-  padding-left: clamp(0.9rem, 3vw, 1.5rem);
+  padding-left: clamp(0.8rem, 3vw, 1.25rem);
   border-left: 3px solid var(--rouge);
   font-family: var(--f-titre);
   font-weight: 700;
-  font-size: clamp(1.4rem, 1rem + 1.6vw, 2.5rem);
-  line-height: 1.12;
+  font-size: clamp(1.15rem, 1rem + 0.9vw, 1.7rem);
+  line-height: 1.15;
   color: var(--encre);
 }
 
 .chapitre__citation cite {
   display: block;
-  margin-top: 0.6rem;
+  margin-top: 0.5rem;
   font-family: var(--f-texte);
   font-weight: 400;
   font-size: var(--t-petit);
@@ -403,119 +393,44 @@ html.anime .histoire__mur {
   color: var(--texte-doux);
 }
 
-/* Grand écran : le repère sur la gauche, les chapitres à droite ----------- */
-
-@media (min-width: 992px) {
-  .frise {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    column-gap: calc(var(--gouttiere) * 2);
-    padding-inline: clamp(2rem, 5vw, 6rem);
-  }
-
-  .frise__repere {
-    top: calc(var(--sous-menu) + 1rem);
-    align-self: start;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: clamp(1.5rem, 4svh, 3rem);
-    margin: 0;
-    padding: 0;
-    background: none;
-    box-shadow: none;
-  }
-
-  .frise__annee { font-size: clamp(7rem, 12.5vw, 15rem); line-height: 0.95; }
-  .roue, .roue__bande > span { height: 0.95em; }
-
-  /* La table des chapitres : les trois, entre des filets ; celui qu'on lit
-     en cobalt plein. */
-  .frise__entree,
-  .frise__entree.est-courante {
-    display: flex;
-    padding-block: 0.9rem;
-    border-top: 1px solid var(--trait);
-    color: rgba(18, 38, 160, 0.4);
-    transition: color 0.4s var(--sortie);
-  }
-
-  .frise__entree:last-child { border-bottom: 1px solid var(--trait); }
-  .frise__entree.est-courante { color: var(--cobalt); }
-  .frise__entree > span + span { display: inline; }
-
-  .frise__chapitres { gap: clamp(8rem, 22svh, 16rem); }
-
-  /* Sans animation, pas de repère : les chapitres prennent la largeur. */
-  html:not(.anime) .frise { display: block; }
-  html:not(.anime) .frise__repere { display: none; }
-
-  .chapitre { gap: clamp(1.5rem, 3svh, 2.5rem); }
-
-  .chapitre__photo { width: min(100%, 34rem); max-height: 68svh; }
-  .chapitre:nth-child(1) .chapitre__photo { width: min(100%, 36rem); }
-  .chapitre:nth-child(3) .chapitre__photo { width: min(100%, 42rem); }
+/* Cartes cobalt : texte ivoire, l'année en turquoise clair, un filet ivoire
+   discret à l'intérieur du bord. */
+.chapitre--cobalt .chapitre__carte {
+  background: var(--cobalt);
+  color: var(--craie);
+  box-shadow: inset 0 0 0 3px var(--cobalt), inset 0 0 0 4.5px rgba(251, 249, 242, 0.5);
 }
 
-/* Téléphone : des cartes compactes, pas une grande plaque ----------------- */
+.chapitre--cobalt .chapitre__onglet { border-bottom-color: var(--panneau-trait); }
+.chapitre--cobalt .chapitre__annee { color: var(--panneau-accent); }
+.chapitre--cobalt .chapitre__titre { color: var(--craie); }
+.chapitre--cobalt .chapitre__recit { color: var(--panneau-texte-doux); }
 
-/* Une seule grande plaque avec trois chapitres très hauts, c'était trop :
-   sur téléphone, chaque chapitre est sa propre petite carte, le mur de
-   carreaux se voit entre elles ; la photo est basse, l'année et le titre
-   tiennent sur une ligne, le récit est au corps du texte courant. */
-@media (max-width: 991px) {
-  .frise.plaque {
-    margin-inline: var(--retrait);
-    padding: clamp(0.75rem, 3vw, 1.25rem) 0 clamp(2rem, 8vw, 3rem);
-    background: none;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
+/* Cartes ivoire : un double filet cobalt, comme les plaques du site. */
+.chapitre--craie .chapitre__carte {
+  box-shadow: inset 0 0 0 3px var(--craie), inset 0 0 0 5px var(--cobalt);
+}
+
+/* Le voile : la carte qui se fait recouvrir s'assombrit (histoire.js). */
+.chapitre__voile {
+  position: absolute;
+  inset: 0;
+  background: var(--nuit);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Grand écran : la photo à côté du texte ------------------------------------ */
+
+@media (min-width: 992px) {
+  .chapitre__corps {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    align-items: center;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    padding: clamp(1.5rem, 3svh, 2.25rem) clamp(1.75rem, 3vw, 2.75rem) clamp(1.75rem, 3.5svh, 2.5rem);
   }
 
-  .frise__chapitres { gap: clamp(1.25rem, 5vw, 2rem); }
-
-  .chapitre {
-    gap: clamp(0.7rem, 3vw, 1rem);
-    padding: clamp(0.9rem, 3.5vw, 1.25rem);
-    background: var(--craie);
-    border: 3px solid var(--cobalt);
-    border-radius: calc(var(--rayon) * 1.5);
-    box-shadow: inset 0 0 0 3px var(--craie), inset 0 0 0 5px var(--cobalt);
-  }
-
-  .chapitre__photo,
-  .chapitre:nth-child(1) .chapitre__photo,
-  .chapitre:nth-child(3) .chapitre__photo { aspect-ratio: 4 / 3; }
-
-  .chapitre:nth-child(2) .chapitre__photo img { object-position: center 55%; }
-
-  .chapitre__texte {
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: baseline;
-    column-gap: clamp(0.6rem, 3vw, 1rem);
-    row-gap: clamp(0.4rem, 2vw, 0.7rem);
-  }
-
-  .chapitre__texte > * { grid-column: 1 / -1; }
-
-  .chapitre__annee {
-    grid-column: 1;
-    font-size: clamp(2.5rem, 12.5vw, 3.6rem);
-  }
-
-  .chapitre__titre {
-    grid-column: 2;
-    font-size: clamp(1.25rem, 5.6vw, 1.8rem);
-  }
-
-  .chapitre__recit {
-    font-size: var(--t-corps);
-    line-height: 1.4;
-  }
-
-  .chapitre__citation { font-size: clamp(1.1rem, 4.8vw, 1.5rem); }
-
-  /* L'ouverture de la devanture demande moins de défilement. */
-  html.anime .histoire__pause--intro { height: calc(var(--ecran-visible) * 0.55); }
+  .chapitre__photo { height: clamp(15rem, 40svh, 24rem); }
+  .chapitre__recit { font-size: var(--t-lead); line-height: 1.35; }
+  .chapitre__citation { font-size: clamp(1.4rem, 1.7vw, 2.1rem); }
 }

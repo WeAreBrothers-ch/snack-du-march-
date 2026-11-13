@@ -121,7 +121,7 @@
     <!-- Hero ----------------------------------------------------------------
          En mode animé, le bloc d'accueil fait deux écrans de haut : le hero
          reste épinglé pendant que les deux plaques du nom se rejoignent sur une
-         ligne, côte à côte, sous la frise. -->
+         ligne, côte à côte, sous la frise, en une seule plaque. -->
     <div class="accueil" id="accueil">
       <section class="hero">
         <div class="hero__mur" aria-hidden="true"></div>
@@ -136,6 +136,11 @@
         </div>
 
         <div class="hero__bande bande-h" aria-hidden="true"></div>
+
+        <!-- Le pont : quand les deux plaques se touchent, il efface leur
+             bord commun et prolonge les filets du haut et du bas : une seule
+             plaque, sans joint (hero.js). -->
+        <span class="hero__pont" aria-hidden="true"></span>
 
         <h1 class="hero__titre">
           <span class="hero__mot hero__mot--gauche">Snack du</span>
@@ -183,6 +188,8 @@
           <div class="histoire__cadre"><img src="assets/photos/comptoir-vitrine.webp" alt="" loading="lazy" decoding="async" /></div>
           <div class="histoire__cadre"><img src="assets/photos/assiette-frites.webp" alt="" loading="lazy" decoding="async" /></div>
           <div class="histoire__cadre"><img src="assets/photos/sandwich-veau-agneau.webp" alt="" loading="lazy" decoding="async" /></div>
+          <div class="histoire__cadre"><img src="assets/photos/durum-main.webp" alt="" loading="lazy" decoding="async" /></div>
+          <div class="histoire__cadre"><img src="assets/photos/comptoir-decoupe.webp" alt="" loading="lazy" decoding="async" /></div>
         </div>
         <span class="histoire__recul" aria-hidden="true"></span>
       </div>
@@ -190,57 +197,61 @@
       <!-- Le temps que la vitrine s'ouvre, l'intro reste en place. -->
       <div class="histoire__pause histoire__pause--intro" aria-hidden="true"></div>
 
-      <!-- La frise : trois chapitres. Sur le côté (en haut, sur téléphone),
-           l'année reste en place et ses chiffres roulent, comme un compteur,
-           d'un chapitre à l'autre ; la table des chapitres suit la lecture. -->
-      <!-- Le mur de carreaux derrière la frise : il couvre la devanture de
+      <!-- Le mur de carreaux derrière les cartes : il couvre la devanture de
            l'intro (qui reste collée derrière) et se raccorde au mur de la page
            (histoire.js aligne les deux). -->
       <div class="histoire__mur">
-        <div class="frise plaque">
-          <div class="frise__repere" aria-hidden="true">
-            <p class="frise__annee" data-frise-annee><span class="roue"><span class="roue__bande"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="roue"><span class="roue__bande"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="roue"><span class="roue__bande"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="roue"><span class="roue__bande"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></p>
-            <ol class="frise__table">
-              <li class="frise__entree est-courante" data-frise-entree><span>L'ouverture</span><span>1998</span></li>
-              <li class="frise__entree" data-frise-entree><span>La presse</span><span>2018</span></li>
-              <li class="frise__entree" data-frise-entree><span>Deux générations</span><span>2026</span></li>
-            </ol>
-          </div>
-
-          <ol class="frise__chapitres">
-            <li class="chapitre" data-annee="1998">
-              <figure class="chapitre__photo">
-                <img src="assets/photos/enseigne.webp" alt="L'enseigne lumineuse du Snack du Marché" width="1020" height="1020" loading="lazy" decoding="async" />
-              </figure>
-              <div class="chapitre__texte">
-                <p class="chapitre__annee"><span class="chapitre__chiffres" aria-hidden="true">1998</span><span class="visuellement-cache">1998</span></p>
-                <h3 class="chapitre__titre">L'ouverture</h3>
-                <p class="chapitre__recit">Hüseyin Celik ouvre le Snack du Marché, rue Pré-du-Marché, à deux pas de la place de la Riponne. La broche est montée à la main dès le premier jour&nbsp;: veau et agneau entiers, jamais reconstitués.</p>
+        <!-- Trois cartes qui s'empilent : chacune se colle en haut de l'écran
+             et laisse dépasser son onglet (l'année et le titre) quand la
+             suivante la recouvre. Du CSS seul (position: sticky). -->
+        <ol class="pile">
+          <li class="chapitre chapitre--cobalt" style="--rang: 0">
+            <article class="chapitre__carte" aria-labelledby="titre-chapitre-1">
+              <header class="chapitre__onglet">
+                <p class="chapitre__annee" data-annee="1998">1998</p>
+                <h3 class="chapitre__titre" id="titre-chapitre-1">L'ouverture</h3>
+              </header>
+              <div class="chapitre__corps">
+                <figure class="chapitre__photo"><img src="assets/photos/enseigne.webp" alt="L'enseigne lumineuse du Snack du Marché" width="1020" height="1020" loading="lazy" decoding="async" /></figure>
+                <div class="chapitre__texte">
+                  <p class="chapitre__recit">Hüseyin Celik ouvre le Snack du Marché, rue Pré-du-Marché, à deux pas de la place de la Riponne. La broche est montée à la main dès le premier jour&nbsp;: veau et agneau entiers, jamais reconstitués.</p>
+                </div>
               </div>
-            </li>
-            <li class="chapitre" data-annee="2018">
-              <figure class="chapitre__photo">
-                <img src="assets/photos/equipe-comptoir.webp" alt="L'équipe du Snack du Marché au comptoir" width="765" height="1020" loading="lazy" decoding="async" />
-              </figure>
-              <div class="chapitre__texte">
-                <p class="chapitre__annee"><span class="chapitre__chiffres" aria-hidden="true">2018</span><span class="visuellement-cache">2018</span></p>
-                <h3 class="chapitre__titre">La presse</h3>
-                <blockquote class="chapitre__citation">«&nbsp;Vingt ans que le Snack du Marché régale de ses broches épicées&nbsp;»<cite>24 heures, mai 2018</cite></blockquote>
-                <p class="chapitre__recit">Le Temps parle de «&nbsp;haute gastronomie&nbsp;». Le comptoir de quartier devient une adresse.</p>
+              <span class="chapitre__voile" aria-hidden="true"></span>
+            </article>
+          </li>
+          <li class="chapitre chapitre--craie" style="--rang: 1">
+            <article class="chapitre__carte" aria-labelledby="titre-chapitre-2">
+              <header class="chapitre__onglet">
+                <p class="chapitre__annee" data-annee="2018">2018</p>
+                <h3 class="chapitre__titre" id="titre-chapitre-2">La presse</h3>
+              </header>
+              <div class="chapitre__corps">
+                <figure class="chapitre__photo"><img src="assets/photos/equipe-comptoir.webp" alt="L'équipe du Snack du Marché au comptoir" width="765" height="1020" loading="lazy" decoding="async" /></figure>
+                <div class="chapitre__texte">
+                  <blockquote class="chapitre__citation">«&nbsp;Vingt ans que le Snack du Marché régale de ses broches épicées&nbsp;»<cite>24 heures, mai 2018</cite></blockquote>
+                  <p class="chapitre__recit">Le Temps parle de «&nbsp;haute gastronomie&nbsp;». Le comptoir de quartier devient une adresse.</p>
+                </div>
               </div>
-            </li>
-            <li class="chapitre" data-annee="2026">
-              <figure class="chapitre__photo">
-                <img src="assets/photos/deux-generations.webp" alt="Hüseyin et Sertaç Celik derrière le comptoir du Snack du Marché" width="530" height="353" loading="lazy" decoding="async" />
-              </figure>
-              <div class="chapitre__texte">
-                <p class="chapitre__annee"><span class="chapitre__chiffres" aria-hidden="true">2026</span><span class="visuellement-cache">2026</span></p>
-                <h3 class="chapitre__titre">Deux générations</h3>
-                <p class="chapitre__recit">Sertaç, le fils, tranche aujourd'hui la broche aux côtés de son père. Les étudiants d'hier amènent leurs enfants. Les recettes des grands-mères, elles, n'ont pas bougé.</p>
+              <span class="chapitre__voile" aria-hidden="true"></span>
+            </article>
+          </li>
+          <li class="chapitre chapitre--cobalt" style="--rang: 2">
+            <article class="chapitre__carte" aria-labelledby="titre-chapitre-3">
+              <header class="chapitre__onglet">
+                <p class="chapitre__annee" data-annee="2026">2026</p>
+                <h3 class="chapitre__titre" id="titre-chapitre-3">Deux générations</h3>
+              </header>
+              <div class="chapitre__corps">
+                <figure class="chapitre__photo"><img src="assets/photos/deux-generations.webp" alt="Hüseyin et Sertaç Celik derrière le comptoir du Snack du Marché" width="530" height="353" loading="lazy" decoding="async" /></figure>
+                <div class="chapitre__texte">
+                  <p class="chapitre__recit">Sertaç, le fils, tranche aujourd'hui la broche aux côtés de son père. Les étudiants d'hier amènent leurs enfants. Les recettes des grands-mères, elles, n'ont pas bougé.</p>
+                </div>
               </div>
-            </li>
-          </ol>
-        </div>
+              <span class="chapitre__voile" aria-hidden="true"></span>
+            </article>
+          </li>
+        </ol>
       </div>
     </section>
 
@@ -409,38 +420,49 @@
         <p class="quartier__titre quartier__titre--fantome" aria-hidden="true">À deux pas de la Riponne, la broche tourne depuis 1998</p>
       </div>
 
-      <!-- Les clichés, à leur format (jamais rognés), sur une grille droite :
-           la devanture en grand, puis la terrasse et l'enseigne côte à côte. -->
-      <div class="quartier__photos">
-        <figure class="cliche cliche--devanture">
-          <img src="assets/photos/devanture-nuit.webp" alt="La devanture éclairée du Snack du Marché, à la nuit tombée" width="1020" height="1020" loading="lazy" decoding="async" />
-          <figcaption class="libelle">La devanture, le soir</figcaption>
-        </figure>
-        <figure class="cliche">
-          <img src="assets/photos/frites-terrasse.webp" alt="Une assiette de frites sur la terrasse, la rue du quartier en arrière-plan" width="765" height="1020" loading="lazy" decoding="async" />
-          <figcaption class="libelle">La terrasse, côté rue</figcaption>
-        </figure>
-        <figure class="cliche">
-          <img src="assets/photos/enseigne.webp" alt="L'enseigne lumineuse du Snack du Marché" width="1020" height="1020" loading="lazy" decoding="async" />
-          <figcaption class="libelle">L'enseigne</figcaption>
-        </figure>
-      </div>
-
-      <div class="quartier__avis">
-        <figure class="avis">
-          <blockquote>«&nbsp;Littérale&shy;ment le meilleur kebab que j'ai jamais mangé.&nbsp;»</blockquote>
-          <figcaption>Avis Google</figcaption>
-        </figure>
-        <figure class="avis">
-          <blockquote>«&nbsp;Accueil chaleureux du patron et de son fils.&nbsp;»</blockquote>
-          <figcaption>Avis Google</figcaption>
-        </figure>
-      </div>
-
-      <div class="quartier__acces">
-        <p class="quartier__adresse">Rue Pré-du-Marché 3<br />1004 Lausanne</p>
-        <p class="quartier__repere">À deux pas de la place de la Riponne. Tous les jours, de 11&nbsp;h à 22&nbsp;h.</p>
-        <a class="quartier__itineraire libelle" href="https://www.google.com/maps/dir/?api=1&amp;destination=Rue+Pr%C3%A9-du-March%C3%A9+3%2C+1004+Lausanne" target="_blank" rel="noopener noreferrer">Itinéraire <span aria-hidden="true">→</span></a>
+      <!-- Le ruban : photos, avis et adresse sur une seule rangée, à balayer du
+           doigt (sur grand écran, il glisse de côté pendant qu'on descend).
+           Les photos gardent leur format : jamais rognées (quartier.js). -->
+      <div class="ruban" data-ruban>
+        <div class="ruban__cadre">
+          <ul class="ruban__piste" tabindex="0" aria-label="La devanture, les avis et l'adresse, à faire défiler">
+            <li class="ruban__carte ruban__carte--photo" style="--r: 1">
+              <img src="assets/photos/devanture-nuit.webp" alt="La devanture éclairée du Snack du Marché, à la nuit tombée" width="1020" height="1020" loading="lazy" decoding="async" />
+              <span class="ruban__legende libelle">La devanture, le soir</span>
+            </li>
+            <li class="ruban__carte ruban__carte--avis ruban__carte--cobalt">
+              <span class="ruban__guillemet" aria-hidden="true">«</span>
+              <blockquote>Littérale&shy;ment le meilleur kebab que j'ai jamais mangé.</blockquote>
+              <p class="ruban__source libelle">Avis Google</p>
+            </li>
+            <li class="ruban__carte ruban__carte--photo" style="--r: 0.75">
+              <img src="assets/photos/frites-terrasse.webp" alt="Une assiette de frites sur la terrasse, la rue du quartier en arrière-plan" width="765" height="1020" loading="lazy" decoding="async" />
+              <span class="ruban__legende libelle">La terrasse, côté rue</span>
+            </li>
+            <li class="ruban__carte ruban__carte--photo" style="--r: 1">
+              <img src="assets/photos/enseigne.webp" alt="L'enseigne lumineuse du Snack du Marché" width="1020" height="1020" loading="lazy" decoding="async" />
+              <span class="ruban__legende libelle">L'enseigne</span>
+            </li>
+            <li class="ruban__carte ruban__carte--avis ruban__carte--craie">
+              <span class="ruban__guillemet" aria-hidden="true">«</span>
+              <blockquote>Accueil chaleureux du patron et de son fils.</blockquote>
+              <p class="ruban__source libelle">Avis Google</p>
+            </li>
+            <li class="ruban__carte ruban__carte--adresse">
+              <p class="ruban__etiquette libelle">Venir</p>
+              <p class="ruban__rue">Rue Pré-du-Marché 3<br />1004 Lausanne</p>
+              <p class="ruban__repere">À deux pas de la place de la Riponne.<br />Tous les jours, de 11&nbsp;h à 22&nbsp;h.</p>
+              <div class="ruban__actions">
+                <a class="ruban__bouton ruban__bouton--plein libelle" href="https://www.google.com/maps/dir/?api=1&amp;destination=Rue+Pr%C3%A9-du-March%C3%A9+3%2C+1004+Lausanne" target="_blank" rel="noopener noreferrer">Itinéraire <span aria-hidden="true">→</span></a>
+                <a class="ruban__bouton libelle" href="tel:+41792431113">Appeler</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="ruban__rail" aria-hidden="true">
+          <span class="ruban__compteur" data-ruban-compteur>01 / 06</span>
+          <span class="ruban__barre"><i data-ruban-barre></i></span>
+        </div>
       </div>
     </section>
 

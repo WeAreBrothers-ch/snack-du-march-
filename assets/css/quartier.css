@@ -1,100 +1,210 @@
 /* ==========================================================================
-   Le quartier — le grand texte, trois clichés à leur format sur une grille
-   droite, deux avis, l'adresse. Rien de penché, rien qui se chevauche.
+   Le quartier — le grand texte, puis un ruban : les photos (à leur format,
+   jamais rognées), les avis et l'adresse sur une seule rangée, à balayer du
+   doigt. La section tient dans un écran de téléphone.
    ========================================================================== */
 
 .quartier {
+  --marge-q: clamp(1.25rem, 5vw, 3rem);
   display: grid;
-  gap: clamp(1.75rem, 7vw, 3rem);
-  padding: clamp(1.75rem, 7vw, 4rem) clamp(1.25rem, 5vw, 3rem) clamp(2rem, 8vw, 4rem);
+  /* La colonne a la largeur de l'écran, pas celle du ruban : sans cela, la
+     rangée de cartes l'élargissait et toute la page avec elle. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.25rem, 5vw, 2.5rem);
+  padding: clamp(1.5rem, 6vw, 3.5rem) 0 clamp(1.25rem, 5vw, 2.5rem);
 }
 
-/* Les clichés : la devanture sur toute la largeur, puis la terrasse
-   (portrait) et l'enseigne (carré) côte à côte, alignées par le haut. */
-.quartier__photos {
+
+/* Le ruban --------------------------------------------------------------- */
+
+.ruban {
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  --h: clamp(15rem, 44svh, 24rem);
+  --ecart: 0.75rem;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
-  gap: clamp(1rem, 4vw, 1.5rem) clamp(0.75rem, 3.5vw, 1.25rem);
+  gap: 1rem;
 }
 
-.cliche { display: grid; gap: 0.6rem; }
-.cliche--devanture { grid-column: 1 / -1; }
+.ruban__piste {
+  display: flex;
+  align-items: stretch;
+  gap: var(--ecart);
+  padding: 0.35rem var(--marge-q);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--marge-q);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
 
-.cliche img {
-  height: auto;
-  padding: 0.3rem;
-  border: 2px solid var(--cobalt);
-  border-radius: calc(var(--rayon) + 0.3rem);
+.ruban__piste::-webkit-scrollbar { display: none; }
+
+/* Toutes les cartes ont la même hauteur : une photo prend la largeur de son
+   format (--r, largeur / hauteur), un avis ou l'adresse une largeur fixe. */
+.ruban__carte {
+  position: relative;
+  flex: none;
+  height: var(--h);
+  overflow: hidden;
+  border-radius: calc(var(--rayon) * 1.25);
+  scroll-snap-align: start;
+}
+
+/* Au doigt : la carte la plus éloignée du centre recule un peu (--recul, de 0
+   à 1, posé par quartier.js). */
+@media (max-width: 991px) {
+  .ruban__carte {
+    transform: scale(calc(1 - var(--recul, 0) * 0.06));
+    opacity: calc(1 - var(--recul, 0) * 0.25);
+    transform-origin: 50% 50%;
+  }
+}
+
+.ruban__carte--photo {
+  aspect-ratio: var(--r, 1);
   background: var(--craie);
+  box-shadow: 0 0 0 2px var(--cobalt);
 }
 
-.cliche figcaption { color: var(--cobalt); }
+.ruban__carte--photo img { height: 100%; }
 
-/* Les avis : une citation, filet rouge à gauche, comme celle de la presse
-   dans l'histoire. */
-.quartier__avis {
-  display: grid;
-  gap: clamp(1.25rem, 5vw, 1.75rem);
+/* La légende, posée sur la photo : une pastille ivoire qui ne cache rien
+   d'important (le bas de la photo). */
+.ruban__legende {
+  position: absolute;
+  left: 0.6rem;
+  bottom: 0.6rem;
+  padding: 0.35em 0.7em 0.3em;
+  border-radius: 10rem;
+  background: var(--craie);
+  color: var(--cobalt);
+  font-size: clamp(0.75rem, 0.7rem + 0.3vw, 0.875rem);
 }
 
-.avis {
-  padding-left: clamp(0.9rem, 3vw, 1.5rem);
-  border-left: 3px solid var(--rouge);
+/* Les avis : une grande guillemet, la citation, la source. */
+.ruban__carte--avis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: min(74vw, 19rem);
+  padding: clamp(1.1rem, 4.5vw, 1.6rem);
 }
 
-.avis blockquote {
+.ruban__guillemet {
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-size: clamp(3.5rem, 3rem + 4vw, 6rem);
+  line-height: 0.7;
+}
+
+.ruban__carte--avis blockquote {
   font-family: var(--f-titre);
   font-weight: 700;
-  font-size: clamp(1.3rem, 1rem + 1.5vw, 2.25rem);
+  font-size: clamp(1.45rem, 1.1rem + 1.5vw, 2.1rem);
   line-height: 1.12;
-  color: var(--encre);
-  /* Un mot trop long pour la ligne se coupe à la française, avec un trait
-     d'union (« Littérale-ment »), jamais au milieu sans rien. */
   hyphens: auto;
   overflow-wrap: break-word;
 }
 
-.avis figcaption {
-  margin-top: 0.6em;
-  font-size: var(--t-petit);
-  color: var(--texte-doux);
+.ruban__source { opacity: 0.8; }
+
+.ruban__carte--cobalt {
+  background: var(--cobalt);
+  color: var(--craie);
 }
 
-/* L'adresse, pour qui vient. */
-.quartier__acces {
-  display: grid;
-  justify-items: start;
-  gap: 0.6rem;
-  padding-top: clamp(1rem, 4vw, 1.75rem);
-  border-top: 2px solid var(--cobalt);
-}
+.ruban__carte--cobalt .ruban__guillemet { color: var(--panneau-accent); }
 
-.quartier__adresse {
-  font-family: var(--f-titre);
-  font-weight: 900;
-  font-size: clamp(1.6rem, 1.2rem + 2vw, 3rem);
-  line-height: 1.05;
-  text-transform: uppercase;
+.ruban__carte--craie {
+  border: 2px solid var(--cobalt);
+  background: var(--craie);
   color: var(--cobalt);
 }
 
-.quartier__repere {
-  max-width: 34ch;
-  color: var(--texte-doux);
-}
+.ruban__carte--craie .ruban__guillemet { color: var(--rouge); }
 
-.quartier__itineraire {
-  margin-top: 0.4rem;
-  padding: 0.75rem 1.25rem;
-  border-radius: 10rem;
+/* L'adresse : une carte d'action, pour qui vient. */
+.ruban__carte--adresse {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: min(80vw, 21rem);
+  padding: clamp(1.1rem, 4.5vw, 1.6rem);
   background: var(--cobalt);
   color: var(--craie);
-  transition: background-color 0.25s var(--sortie);
 }
 
+.ruban__etiquette { color: var(--panneau-accent); }
+
+.ruban__rue {
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-size: clamp(1.45rem, 1.1rem + 1.6vw, 2.3rem);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.ruban__repere {
+  font-size: var(--t-petit);
+  line-height: 1.35;
+  color: var(--panneau-texte-doux);
+}
+
+.ruban__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ruban__bouton {
+  padding: 0.7rem 1.1rem;
+  border: 2px solid var(--craie);
+  border-radius: 10rem;
+  color: var(--craie);
+  transition: background-color 0.25s var(--sortie), color 0.25s var(--sortie);
+}
+
+.ruban__bouton--plein { background: var(--craie); color: var(--cobalt); }
+
 @media (hover: hover) {
-  .quartier__itineraire:hover { background: var(--rouge); color: var(--craie); }
+  .ruban__bouton:hover { background: var(--turquoise); border-color: var(--turquoise); color: var(--nuit); }
+}
+
+/* Le compteur et la barre de progression, sous le ruban. */
+.ruban__rail {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-inline: var(--marge-q);
+}
+
+.ruban__compteur {
+  font-family: var(--f-titre);
+  font-weight: 700;
+  font-size: var(--t-label);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  color: var(--cobalt);
+}
+
+.ruban__barre {
+  position: relative;
+  flex: 1;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--trait);
+}
+
+.ruban__barre i {
+  position: absolute;
+  inset: 0;
+  background: var(--cobalt);
+  transform: scaleX(var(--progres, 0.16));
+  transform-origin: 0 50%;
 }
 
 .quartier__typo {
@@ -106,7 +216,9 @@
 }
 
 .quartier__titre {
-  width: 100%;
+  /* Les deux copies ont exactement la même largeur (la marge du ruban en
+     moins), donc coupent leurs lignes au même endroit. */
+  width: calc(100% - 2 * var(--marge-q));
   max-width: 100rem;
   font-family: var(--f-titre);
   font-weight: 900;
@@ -134,19 +246,34 @@
 }
 
 @media (min-width: 992px) {
-  .quartier { padding-inline: clamp(2rem, 5vw, 6rem); }
+  .quartier { --marge-q: clamp(2rem, 5vw, 6rem); padding-top: clamp(3rem, 6vw, 5rem); }
+  .ruban { --h: min(56svh, 30rem); --ecart: 1.25rem; }
+  .ruban__carte--avis { width: 22rem; }
+  .ruban__carte--adresse { width: 25rem; }
 
-  /* Les trois clichés sur une ligne, alignés par le haut. */
-  .quartier__photos { grid-template-columns: 5fr 3.4fr 3.6fr; }
-  .cliche--devanture { grid-column: auto; }
+  /* Mode animé : le ruban reste collé en haut de l'écran pendant que le
+     défilement le fait glisser de côté (quartier.js règle la hauteur de la
+     scène). */
+  html.anime .ruban { display: block; }
 
-  .quartier__avis { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(2rem, 5vw, 5rem); }
-
-  .quartier__acces {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  html.anime .ruban__cadre {
+    position: sticky;
+    top: 0;
+    display: flex;
     align-items: center;
-    column-gap: clamp(2rem, 5vw, 5rem);
+    height: 100svh;
+    overflow: hidden;
   }
 
-  .quartier__itineraire { margin-top: 0; }
+  html.anime .ruban__piste {
+    flex: none;
+    overflow: visible;
+    will-change: transform;
+  }
+
+  html.anime .ruban__rail {
+    position: absolute;
+    inset: auto 0 clamp(1.5rem, 5svh, 3rem);
+    z-index: 2;
+  }
 }

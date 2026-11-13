@@ -23,7 +23,7 @@ import { initHistoire } from "./histoire.js";
 import { initBroche } from "./broche.js";
 import { initPlanche } from "./planche.js";
 import { initCarte } from "./carte.js";
-import { initQuartier, initPrix } from "./quartier.js";
+import { initQuartier, initPrix, initRubanStatique } from "./quartier.js";
 import { initPied } from "./pied.js";
 import { restaurerDecoupes } from "./texte.js";
 
@@ -39,6 +39,7 @@ function passerEnStatique() {
   racine.classList.add("statique");
   initMenu(null);
   initPlanche();
+  initRubanStatique();
 }
 
 /**
@@ -74,10 +75,11 @@ function demarrerAnime(outils) {
     const nettoyerBroche = initBroche(outils, bureau, planche);
     const nettoyerCarte = initCarte(outils);
     initPrix(outils);
-    initQuartier(outils, bureau);
+    const nettoyerQuartier = initQuartier(outils, bureau);
     initPied(outils);
 
     return () => {
+      nettoyerQuartier();
       nettoyerHistoire();
       nettoyerBroche();
       nettoyerCarte();

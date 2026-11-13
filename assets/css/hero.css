@@ -60,6 +60,23 @@ html.anime .hero {
 
 .hero__titre { position: relative; }
 
+/* Le pont entre les deux plaques une fois jointes : un fond de céramique et
+   les deux filets cobalt, qui recouvrent leurs coins arrondis et leur bord
+   commun. Le script le place et le dimensionne en pixels (hero.js). */
+.hero__pont {
+  position: absolute;
+  left: var(--pont-x, 0);
+  top: var(--pont-y, 0);
+  z-index: 4;
+  box-sizing: border-box;
+  width: var(--pont-l, 0);
+  height: var(--pont-h, 0);
+  background: var(--craie);
+  border-block: var(--pont-bord, 3px) solid var(--cobalt);
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .hero__cadre {
   position: relative;
   z-index: 1;

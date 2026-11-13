@@ -69,9 +69,9 @@ export function retablirHero(outils) {
 /**
  * Le nom qui se rassemble, lié au défilement : les deux plaques de céramique
  * glissent l'une vers l'autre et se posent côte à côte, sur une seule ligne,
- * sous la frise, comme deux carreaux séparés par un joint. Elles gardent
- * leur couleur et leur filet cobalt : rien ne s'efface, aucun bandeau. La
- * photo remonte sous elles et grandit un peu vers le bas.
+ * sous la frise, et fusionnent en une seule plaque : aucun joint entre les
+ * deux mots (un « pont » efface leur bord commun), aucun bandeau. La photo
+ * remonte sous elles et grandit un peu vers le bas.
  * @param {import("./lib.js").Outils} outils
  * @param {boolean} bureau
  */
@@ -118,9 +118,13 @@ export function initNom(outils, bureau) {
     const dessus = positionDans(bordure, hero).y + bordure.offsetHeight + 6 + ecart;
     const place = posCadre.y - ecart - dessus;
 
-    // La ligne : les deux plaques séparées d'un joint, réduites pour tenir
-    // entre les marges et dans la place au-dessus de la photo.
-    const joint = Math.max(8, parseFloat(getComputedStyle(gauche).fontSize) * 0.22);
+    // La ligne : les deux plaques se chevauchent de 0,23 em (leur rembourrage
+    // et leur filet), ce qui laisse entre les lettres l'espace d'un mot.
+    // Réduites pour tenir entre les marges et dans la place au-dessus de la
+    // photo.
+    const styleMot = getComputedStyle(gauche);
+    const taille = parseFloat(styleMot.fontSize);
+    const joint = -0.23 * taille;
     const longueur = gauche.offsetWidth + joint + droite.offsetWidth;
     const echelle = Math.max(0.2, Math.min(1, (largeur - 2 * marge) / longueur, place / gauche.offsetHeight));
     const hautPlaque = gauche.offsetHeight * echelle;
@@ -134,6 +138,17 @@ export function initNom(outils, bureau) {
     const haut = posCadre.y + monte;
     const limite = Math.min(positionDans(bas, hero).y, hauteur * (1 - RECOUVREMENT)) - ecart;
     const croissance = Math.max(1, Math.min(bureau ? 1.12 : 1.3, (limite - haut) / cadre.offsetHeight));
+
+    // Le pont : de la gauche de la seconde plaque à la droite de la première.
+    const droiteGauche = debutLigne + gauche.offsetWidth * echelle;
+    // Un peu plus large que l'espace à couvrir (0,8 px de chaque côté) : sans
+    // cela, le bord de la seconde plaque, flou à la fraction de pixel près,
+    // laissait un fil entre les deux mots.
+    hero.style.setProperty("--pont-x", `${droiteGauche + joint * echelle - 0.8}px`);
+    hero.style.setProperty("--pont-y", `${centre - hautPlaque / 2}px`);
+    hero.style.setProperty("--pont-l", `${-joint * echelle + 1.6}px`);
+    hero.style.setProperty("--pont-h", `${hautPlaque}px`);
+    hero.style.setProperty("--pont-bord", `${parseFloat(styleMot.borderTopWidth) * echelle}px`);
 
     return {
       echelle,
@@ -182,6 +197,9 @@ export function initNom(outils, bureau) {
       { x: () => mesurer().droite.x, y: () => mesurer().droite.y, scale: () => mesurer().echelle, duration: 0.75 },
       0.1,
     );
+
+  // Les plaques se touchent : le pont efface leur bord commun.
+  scene.fromTo(".hero__pont", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.03, ease: "none" }, 0.84);
 
   // La photo reste entière : elle remonte sous les plaques et prend la place
   // qu'elles lui laissent.

@@ -7,13 +7,15 @@
  * recule comme si l'on passait la porte. Sur grand écran, les photos de
  * l'album s'écartent pour lui faire place.
  *
- * Puis la frise monte par-dessus la devanture, qui recule et s'assombrit :
- * trois chapitres, et sur le côté l'année, dont les chiffres roulent d'un
- * chapitre à l'autre, comme un compteur.
+ * Sur téléphone, un ruban de photos glisse de côté sous la vitrine, puis
+ * s'efface quand elle s'ouvre.
  *
- * Les déclencheurs sont posés sur la section, la pause et les chapitres,
- * jamais sur l'intro ni sur le repère : un élément collé fausserait les
- * mesures.
+ * Puis trois cartes s'empilent par-dessus la devanture, qui recule et
+ * s'assombrit : chacune se colle en haut de l'écran et laisse dépasser son
+ * onglet (l'année, le titre) quand la suivante la recouvre.
+ *
+ * Les déclencheurs sont posés sur la section, la pause et les cartes, jamais
+ * sur l'intro : un élément collé fausserait les mesures.
  */
 
 import { element, elements, positionDans, SCRUB } from "./lib.js";
@@ -29,18 +31,18 @@ export function initHistoire(outils, bureau) {
 
   const nettoyerMur = alignerMur(outils);
   initIntro(outils, bureau, pauseIntro);
-  // Quand la frise monte par-dessus la devanture, celle-ci recule et
+  // Quand les cartes montent par-dessus la devanture, celle-ci recule et
   // s'assombrit.
   reculer(outils, element(".histoire__intro"), element(".histoire__recul"), pauseIntro, bureau);
-  const nettoyerFrise = initFrise(outils, bureau);
+  const nettoyerPile = initPile(outils);
   return () => {
-    nettoyerFrise();
+    nettoyerPile();
     nettoyerMur();
   };
 }
 
 /**
- * Le mur derrière la frise est le même carreau que celui de la page, mais il
+ * Le mur derrière les cartes est le même carreau que celui de la page, mais il
  * est peint par un autre élément : il faut le décaler de la hauteur qui
  * sépare le haut de la page du haut de ce mur, pour que les deux se
  * raccordent. Remesuré à chaque calcul des animations (une photo qui arrive
@@ -74,6 +76,7 @@ function initIntro(outils, bureau, pauseIntro) {
   const titre = decouperEnLignes(SplitText, element(".histoire__titre"));
   const sousTitre = decouperEnLignes(SplitText, element(".histoire__sous"));
   const photos = elements(".histoire__cadre");
+  const ruban = element(".histoire__photos");
 
   gsap
     .timeline({
@@ -186,6 +189,16 @@ function initIntro(outils, bureau, pauseIntro) {
     });
   }
 
+  if (!bureau) {
+    // Téléphone : le ruban de photos arrive, glisse de côté pendant que la
+    // vitrine se découvre, puis s'efface quand elle s'ouvre.
+    const course = () => Math.max(0, ruban.offsetWidth + 2 * parseFloat(getComputedStyle(ruban).marginLeft) - intro.offsetWidth);
+    scene
+      .fromTo(ruban, { autoAlpha: 0, x: 0 }, { autoAlpha: 1, duration: 0.3, ease: "power2.out" }, 0)
+      .fromTo(ruban, { x: 0 }, { x: () => -course(), duration: 1.0, ease: "none", immediateRender: false }, 0)
+      .to(ruban, { autoAlpha: 0, duration: 0.3, ease: "power1.in" }, 0.85);
+  }
+
   // Le temps de lire, sur la devanture ouverte.
   scene.to({}, { duration: 0.05 });
 }
@@ -210,78 +223,23 @@ function reculer(outils, panneau, voile, pause, bureau) {
 }
 
 /**
- * La frise. Sur grand écran, l'année du repère est un compteur : entre deux
- * chapitres, ses chiffres roulent jusqu'à la nouvelle année, au rythme du
- * défilement (les unités d'abord, comme un vrai compteur), et la table des
- * chapitres suit la lecture. Sur téléphone, pas de repère (une barre collée
- * cachait le titre sous le bouton « Menu ») : l'année de chaque chapitre se
- * compte, une fois, en arrivant à l'écran. Chaque chapitre se découvre en
- * arrivant : la photo de bas en haut, puis glisse doucement dans son cadre ;
- * le titre et le récit montent ligne par ligne.
+ * Les cartes. Chacune se découvre en arrivant : l'année se compte (les 36
+ * ans qui précèdent défilent, comme un compteur), la photo se découvre de
+ * bas en haut, le texte monte ligne par ligne. Quand la suivante la
+ * recouvre, une carte s'assombrit : son voile prend de l'opacité au rythme
+ * du défilement. L'empilement lui-même est en CSS (position: sticky).
  * @param {import("./lib.js").Outils} outils
- * @param {boolean} bureau
- * @returns {() => void} rend leur année aux chapitres (changement de mise en page)
+ * @returns {() => void} rend leur année aux cartes (changement de mise en page)
  */
-function initFrise(outils, bureau) {
-  const { gsap, ScrollTrigger, SplitText } = outils;
-
-  const roues = elements(".roue__bande");
+function initPile(outils) {
+  const { gsap, SplitText } = outils;
   const chapitres = elements(".chapitre");
-  const entrees = elements("[data-frise-entree]");
-  const chiffres = (/** @type {HTMLElement} */ chapitre) =>
-    (chapitre.dataset.annee || "0000").split("").map(Number);
-
-  if (bureau) {
-    chiffres(chapitres[0]).forEach((chiffre, index) => {
-      gsap.set(roues[index], { yPercent: -chiffre * 10 });
-    });
-  }
 
   chapitres.forEach((chapitre, index) => {
-    if (bureau) {
-      // Le chapitre en cours, dans la table.
-      ScrollTrigger.create({
-        trigger: chapitre,
-        start: "top 60%",
-        end: "bottom 60%",
-        onToggle: (/** @type {any} */ declencheur) => {
-          if (!declencheur.isActive) return;
-          entrees.forEach((entree, rang) => entree.classList.toggle("est-courante", rang === index));
-        },
-      });
-
-      if (index > 0) {
-        const de = chiffres(chapitres[index - 1]);
-        const vers = chiffres(chapitre);
-        const roulement = gsap.timeline({
-          scrollTrigger: { trigger: chapitre, start: "top 90%", end: "top 45%", scrub: SCRUB },
-        });
-        roues.forEach((roue, rang) => {
-          if (de[rang] === vers[rang]) return;
-          roulement.fromTo(
-            roue,
-            { yPercent: -de[rang] * 10 },
-            { yPercent: -vers[rang] * 10, duration: 1, ease: "power2.inOut", immediateRender: false },
-            (roues.length - 1 - rang) * 0.15,
-          );
-        });
-      }
-    } else {
-      // Téléphone : l'année se compte, une fois, quand le chapitre arrive.
-      const chiffresAnnee = element(".chapitre__chiffres", chapitre);
-      const cible = Number(chapitre.dataset.annee);
-      const compteur = { v: cible - 36 };
-      chiffresAnnee.textContent = String(compteur.v);
-      gsap.to(compteur, {
-        v: cible,
-        duration: 1.6,
-        ease: "power3.out",
-        onUpdate: () => {
-          chiffresAnnee.textContent = String(Math.round(compteur.v));
-        },
-        scrollTrigger: { trigger: chiffresAnnee, start: "top 88%", toggleActions: "play none none none" },
-      });
-    }
+    const annee = element(".chapitre__annee", chapitre);
+    const cible = Number(annee.dataset.annee);
+    const compteur = { v: cible - 36 };
+    annee.textContent = String(compteur.v);
 
     const photo = element(".chapitre__photo", chapitre);
     const image = element("img", photo);
@@ -292,31 +250,47 @@ function initFrise(outils, bureau) {
     const entree = gsap
       .timeline({
         defaults: { ease: "power3.out" },
-        scrollTrigger: { trigger: chapitre, start: "top 78%", toggleActions: "play none none reverse" },
+        scrollTrigger: { trigger: chapitre, start: "top 82%", toggleActions: "play none none none" },
       })
-      .fromTo(photo, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "power3.inOut" })
-      .fromTo(titre.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.08 }, 0.35);
+      .to(
+        compteur,
+        {
+          v: cible,
+          duration: 1.4,
+          ease: "power3.out",
+          onUpdate: () => {
+            annee.textContent = String(Math.round(compteur.v));
+          },
+        },
+        0,
+      )
+      .fromTo(titre.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8 }, 0.1)
+      .fromTo(photo, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1, ease: "power3.inOut" }, 0.15)
+      .fromTo(image, { scale: 1.25 }, { scale: 1, duration: 1.4, ease: "power2.out" }, 0.15);
     if (citation) {
-      entree.fromTo(citation, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.45);
+      entree.fromTo(citation, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.4);
     }
-    entree.fromTo(recit.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.05 }, 0.5);
+    entree.fromTo(recit.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.05 }, 0.45);
 
-    gsap.fromTo(
-      image,
-      { yPercent: -6, scale: 1.14 },
-      {
-        yPercent: 6,
-        scale: 1.14,
-        ease: "none",
-        scrollTrigger: { trigger: photo, start: "top bottom", end: "bottom top", scrub: true },
-      },
-    );
+    // Recouverte par la suivante : le voile s'assombrit.
+    const suivante = chapitres[index + 1];
+    if (suivante) {
+      gsap.fromTo(
+        element(".chapitre__voile", chapitre),
+        { opacity: 0 },
+        {
+          opacity: 0.45,
+          ease: "none",
+          scrollTrigger: { trigger: suivante, start: "top 85%", end: "top 30%", scrub: true },
+        },
+      );
+    }
   });
 
   return () => {
     chapitres.forEach((chapitre) => {
-      const annee = chapitre.querySelector(".chapitre__chiffres");
-      if (annee) annee.textContent = chapitre.dataset.annee || "";
+      const annee = element(".chapitre__annee", chapitre);
+      annee.textContent = annee.dataset.annee || "";
     });
   };
 }
