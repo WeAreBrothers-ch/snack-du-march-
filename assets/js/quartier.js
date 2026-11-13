@@ -165,7 +165,8 @@ export function initPrix(outils) {
     })
     .fromTo(titre.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.9, stagger: 0.08 })
     .fromTo(".prix__note", { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.8 }, "<0.2")
-    .fromTo(elements(".format"), { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, stagger: 0.1, duration: 0.7 }, "<")
+    .fromTo(".prix__choix", { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.6 }, "<")
+    .fromTo(elements(".tableau tbody tr"), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, stagger: 0.07, duration: 0.6 }, "<0.1")
     .fromTo(elements(".prix__extras li"), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, stagger: 0.04, duration: 0.6 }, "<0.3")
     .fromTo(".prix__allergies", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8 }, "<0.2");
 }

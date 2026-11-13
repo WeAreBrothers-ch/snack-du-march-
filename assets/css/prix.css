@@ -41,95 +41,163 @@
 
 .prix__titre { color: var(--cobalt); }
 
-/* Les formats : quatre fiches, chacune avec ses prix regroupés, le prix en
-   grand à droite, relié à la viande par une ligne de points, comme sur une
-   carte de brasserie. Une colonne sur téléphone, deux à partir de la
-   tablette. */
-.formats {
+/* Le choix de la viande (téléphone) : quatre pastilles, deux par ligne. */
+.prix__choix {
   display: grid;
-  gap: clamp(1rem, 3vw, 1.5rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
 }
 
-.format {
+.prix__choix label {
   display: grid;
-  gap: 0.35rem;
-  padding: clamp(1rem, 0.8rem + 1.2vw, 1.75rem);
+  place-items: center;
+  min-height: 2.9rem;
+  padding: 0.4rem 0.6rem;
   border: 2px solid var(--cobalt);
-  border-radius: var(--rayon);
-  background: var(--craie);
+  border-radius: 10rem;
+  font-family: var(--f-titre);
+  font-weight: 700;
+  font-size: var(--t-label);
+  line-height: 1.1;
+  text-align: center;
+  color: var(--cobalt);
+  cursor: pointer;
+  transition: background-color 0.25s var(--sortie), color 0.25s var(--sortie);
 }
 
-.format__nom {
-  font-size: clamp(1.75rem, 1.3rem + 2vw, 3rem);
+.prix__choix input:checked + label {
+  background: var(--cobalt);
+  color: var(--craie);
+}
+
+.prix__choix input:focus-visible + label {
+  outline: 2px solid var(--turquoise);
+  outline-offset: 3px;
+}
+
+/* Le tableau : les quatre formats en lignes, les viandes en colonnes. */
+.tableau {
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+
+.tableau th,
+.tableau td {
+  padding: clamp(0.8rem, 0.6rem + 0.6vw, 1.25rem) 0;
+  vertical-align: baseline;
+  border-bottom: 1px solid var(--trait);
+}
+
+.tableau thead th {
+  vertical-align: bottom;
+  font-family: var(--f-titre);
+  font-weight: 700;
+  font-size: clamp(0.8125rem, 0.65rem + 0.9vw, 1.2rem);
+  line-height: 1.1;
+  text-align: right;
+  border-bottom: 2px solid var(--cobalt);
   color: var(--cobalt);
 }
 
-.format__prix-liste { display: grid; }
-
-.format__prix-liste li {
-  display: grid;
-  grid-template-columns: minmax(0, auto) minmax(1rem, 1fr) auto;
-  align-items: baseline;
-  column-gap: 0.5rem;
-  padding-block: 0.7rem;
-  border-top: 1px solid var(--trait);
-}
-
-/* La ligne de points qui mène de la viande au prix. */
-.format__prix-liste li::before {
-  content: "";
-  grid-column: 2;
-  grid-row: 1;
-  align-self: baseline;
-  position: relative;
-  top: -0.25em;
-  border-bottom: 2px dotted var(--cobalt);
-  opacity: 0.45;
-}
-
-.format__viandes {
-  grid-column: 1;
-  grid-row: 1;
-  font-size: var(--t-corps);
-  line-height: 1.2;
-}
-
-.format__prix {
-  grid-column: 3;
-  grid-row: 1;
+.tableau tbody th {
   font-family: var(--f-titre);
   font-weight: 900;
-  font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+  font-size: clamp(1.4rem, 1.1rem + 1.3vw, 2.25rem);
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--cobalt);
+}
+
+.tableau thead th:first-child { text-align: left; }
+
+.tableau td {
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
   line-height: 1;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+  text-align: right;
   color: var(--rouge);
 }
 
+/* Téléphone : une seule viande à la fois, en liste de quatre lignes. Le prix
+   en grand, à droite, relié au format par une ligne de points. */
+@media (max-width: 767px) {
+  .prix__tableau { margin-top: -0.25rem; }
+}
+
+@supports selector(:has(*)) {
+  @media (max-width: 767px) {
+    .tableau thead,
+    .tableau td { display: none; }
+
+    .tableau,
+    .tableau tbody,
+    .tableau tr { display: block; }
+
+    .tableau tr {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      padding-block: 0.85rem;
+      border-bottom: 1px solid var(--trait);
+    }
+
+    .tableau tr:first-child { border-top: 2px solid var(--cobalt); }
+    .tableau tr th, .tableau tr td { padding: 0; border: 0; }
+
+    /* La ligne de points entre le format et le prix. */
+    .tableau tbody th::after { content: none; }
+    .tableau tr::after { content: none; }
+
+    .prix:has(#viande-veau:checked) td.c-veau,
+    .prix:has(#viande-poulet:checked) td.c-poulet,
+    .prix:has(#viande-kofte:checked) td.c-kofte,
+    .prix:has(#viande-falafel:checked) td.c-falafel {
+      display: block;
+      margin-left: auto;
+      font-size: clamp(1.9rem, 1.5rem + 2vw, 2.6rem);
+    }
+
+    .tableau tbody th { font-size: clamp(1.4rem, 1.2rem + 1.5vw, 2rem); }
+  }
+}
+
+/* Grand écran : tout le tableau, sans les pastilles. */
+@media (min-width: 768px) {
+  .prix__choix { display: none; }
+}
+
+/* Les extras : des pastilles qui passent à la ligne. */
 .prix__extras {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .prix__extras li {
-  display: flex;
+  display: inline-flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: clamp(0.7rem, 0.55rem + 0.5vw, 1rem) 0;
-  border-bottom: 1px solid var(--trait);
+  gap: 0.6em;
+  padding: 0.5em 0.9em 0.45em;
+  border: 2px solid var(--cobalt);
+  border-radius: 10rem;
+  font-size: var(--t-corps);
+  line-height: 1.1;
+  color: var(--cobalt);
 }
 
 .prix__extras li span:last-child {
   font-family: var(--f-titre);
   font-weight: 900;
-  font-size: clamp(1.125rem, 0.9rem + 0.9vw, 1.75rem);
-  line-height: 1;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  color: var(--rouge);
 }
 
 .prix__allergies {
   max-width: 40ch;
+  font-size: var(--t-petit);
+  line-height: 1.4;
   color: var(--texte-doux);
 }
 
@@ -142,6 +210,4 @@
   }
 
   .prix__note { text-align: right; }
-  .prix__extras { grid-template-columns: repeat(2, 1fr); column-gap: clamp(2rem, 5vw, 5rem); }
-  .formats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

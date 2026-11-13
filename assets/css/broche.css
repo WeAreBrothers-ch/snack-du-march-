@@ -4,42 +4,50 @@
 
 /* L'accroche ------------------------------------------------------------- */
 
-/* Le titre, la broche dans son format (paysage, jamais agrandie au-delà de
-   la photo), puis les trois gestes, numérotés entre des filets cobalt. */
+/* La broche est la signature de la maison : une plaque cobalt, la seule du
+   milieu de page (comme les cartes de l'histoire et l'anatomie), le titre en
+   très grand, la photo en gros, et les trois gestes en gros caractères, un
+   chiffre ton sur ton à gauche de chacun. */
 .broche {
   display: grid;
-  gap: clamp(1.5rem, 6vw, 2.5rem);
+  gap: clamp(1.1rem, 4.5vw, 1.75rem);
   margin-bottom: clamp(3rem, 1.5rem + 7vw, 9rem);
-  padding-block: clamp(1.75rem, 7vw, 3rem) clamp(2rem, 8vw, 3.5rem);
+  padding: clamp(1.5rem, 6vw, 3rem) clamp(1.1rem, 4.5vw, 2.5rem) clamp(1.5rem, 6vw, 2.75rem);
+  background: var(--panneau);
+  color: var(--panneau-texte);
+  box-shadow: inset 0 0 0 3px var(--cobalt), inset 0 0 0 4.5px rgba(251, 249, 242, 0.5);
 }
 
+.broche__etiquette { color: var(--panneau-accent); }
+
 .broche__accroche {
-  max-width: 16ch;
-  font-size: clamp(2rem, 0.9rem + 3.9vw, 5.5rem);
-  color: var(--cobalt);
+  max-width: 14ch;
+  font-size: clamp(2.5rem, 1.3rem + 6.4vw, 6.5rem);
+  line-height: 0.95;
+  color: var(--craie);
 }
 
 .broche__apercu {
   overflow: hidden;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 3;
   border-radius: var(--rayon);
-  background: var(--craie);
+  background: var(--nuit);
 }
 
-.broche__apercu img { object-position: 30% 45%; }
+.broche__apercu img { object-position: 24% 45%; }
 
 .gestes { display: grid; }
 
 .geste {
   position: relative;
   display: grid;
-  /* Une colonne de numéros de largeur fixe : tous les titres et tous les
-     textes partent du même bord, quel que soit le numéro. */
-  grid-template-columns: clamp(2.9rem, 13vw, 3.75rem) minmax(0, 1fr);
+  /* La colonne du chiffre a une largeur fixe : titres et textes partent tous
+     du même bord. */
+  grid-template-columns: clamp(3.6rem, 17vw, 5.5rem) minmax(0, 1fr);
   column-gap: 0.25rem;
-  row-gap: 0.45rem;
-  align-items: baseline;
-  padding-block: clamp(1.1rem, 4.5vw, 1.6rem);
+  row-gap: 0.4rem;
+  align-items: start;
+  padding-block: clamp(1.1rem, 4.5vw, 1.75rem);
 }
 
 /* Le filet : le script le trace de gauche à droite (scaleX). */
@@ -48,36 +56,37 @@
   position: absolute;
   inset: 0 0 auto;
   height: 2px;
-  background: var(--cobalt);
+  background: var(--panneau-trait);
   transform: scaleX(var(--filet, 1));
   transform-origin: 0 50%;
 }
 
+/* Le grand chiffre, ton sur ton (bleu nuit sur le cobalt). */
 .geste__num {
   grid-column: 1;
-  grid-row: 1;
+  grid-row: 1 / span 2;
   font-family: var(--f-titre);
   font-weight: 900;
-  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  color: var(--cobalt);
+  font-size: clamp(4.5rem, 3.2rem + 6vw, 8.5rem);
+  line-height: 0.78;
+  color: var(--panneau-tonsurton);
 }
 
 .geste__titre {
   grid-column: 2;
   grid-row: 1;
-  font-size: clamp(1.4rem, 1rem + 1.6vw, 2.1rem);
-  line-height: 1.05;
-  color: var(--cobalt);
+  font-size: clamp(1.7rem, 1.2rem + 2.4vw, 3rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--craie);
 }
 
 .geste__texte {
   grid-column: 2;
   grid-row: 2;
-  font-size: var(--t-corps);
-  line-height: 1.45;
-  color: var(--texte-doux);
+  font-size: clamp(1.125rem, 1rem + 0.7vw, 1.5rem);
+  line-height: 1.4;
+  color: var(--panneau-texte-doux);
 }
 
 /* L'anatomie ------------------------------------------------------------- */
@@ -288,30 +297,24 @@
 /* Grand écran ------------------------------------------------------------ */
 
 @media (min-width: 992px) {
-  /* Le titre sur toute la largeur ; dessous, la broche à gauche (à sa
-     taille, sans agrandissement) et les trois gestes à droite. */
+  /* Le titre et la broche à gauche (la photo à toute sa hauteur), les trois
+     gestes à droite, l'un sous l'autre. */
   .broche {
     grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: auto auto 1fr;
     column-gap: var(--gouttiere);
-    row-gap: clamp(2.5rem, 6svh, 4.5rem);
-    padding: clamp(3rem, 8svh, 6rem) clamp(2rem, 5vw, 6rem);
+    row-gap: clamp(1rem, 3svh, 1.75rem);
+    padding: clamp(3rem, 8svh, 5.5rem) clamp(2rem, 5vw, 6rem);
   }
 
-  .broche__accroche { grid-column: 1 / -1; max-width: 18ch; }
-
-  .broche__apercu {
-    grid-column: 1 / 8;
-    align-self: start;
-    max-width: 1125px;
-  }
-
-  .gestes {
-    grid-column: 8 / -1;
-    align-self: end;
-    padding-left: clamp(0rem, 2vw, 2rem);
-  }
-
-  .geste:last-child { padding-bottom: 0; }
+  .broche__etiquette { grid-column: 1 / 8; grid-row: 1; }
+  .broche__accroche { grid-column: 1 / 8; grid-row: 2; max-width: 16ch; font-size: clamp(3rem, 1.2rem + 3.4vw, 5.5rem); }
+  .broche__apercu { grid-column: 1 / 8; grid-row: 3; aspect-ratio: 16 / 10; align-self: start; }
+  .gestes { grid-column: 8 / -1; grid-row: 1 / span 3; align-self: center; padding-left: clamp(0rem, 2vw, 2rem); }
+  .geste__titre { font-size: clamp(1.7rem, 0.9rem + 1.8vw, 2.75rem); }
+  .geste__texte { font-size: var(--t-lead); line-height: 1.35; }
+  .geste:first-child { padding-top: 0; }
+  .geste:first-child::before { display: none; }
 
   /* L'anatomie : une planche comme dans un livre de sciences naturelles,
      la légende de part et d'autre de la photo, reliée par des traits. */

@@ -269,6 +269,7 @@
          l'anatomie monte. -->
     <div class="broche-bloc" id="broche">
       <section class="broche plaque" aria-labelledby="titre-broche">
+        <p class="broche__etiquette libelle">La broche</p>
         <h2 class="broche__accroche" id="titre-broche">Une broche montée à la main, tranche après tranche</h2>
         <div class="broche__apercu">
           <img src="assets/photos/broche-decoupe.webp" alt="La broche de veau et d'agneau, tranchée au couteau" width="1125" height="632" loading="lazy" decoding="async" />
@@ -277,17 +278,17 @@
              industrielle. -->
         <ol class="gestes">
           <li class="geste">
-            <span class="geste__num" aria-hidden="true">01</span>
+            <span class="geste__num" aria-hidden="true">1</span>
             <h3 class="geste__titre">La viande entière</h3>
             <p class="geste__texte">Du veau et de l'agneau, empilés tranche par tranche sur la broche. Jamais de viande reconstituée.</p>
           </li>
           <li class="geste">
-            <span class="geste__num" aria-hidden="true">02</span>
+            <span class="geste__num" aria-hidden="true">2</span>
             <h3 class="geste__titre">La recette du père</h3>
             <p class="geste__texte">La famille vient de Gaziantep. Certaines épices de la marinade arrivent de Turquie depuis vingt ans.</p>
           </li>
           <li class="geste">
-            <span class="geste__num" aria-hidden="true">03</span>
+            <span class="geste__num" aria-hidden="true">3</span>
             <h3 class="geste__titre">Tranchée au couteau</h3>
             <p class="geste__texte">Au comptoir, par le père et le fils. Les sauces aussi sont faites par la maison.</p>
           </li>
@@ -376,37 +377,27 @@
         <h2 class="prix__titre" id="titre-prix">Les prix</h2>
         <p class="prix__note">Francs suisses · Service compris · Ceux du tableau noir font foi</p>
       </div>
-      <!-- Les formats, et pour chacun les prix regroupés : quatre colonnes
-           illisibles sur téléphone, alors que presque tous les prix se
-           répètent. Mêmes prix que le tableau noir. -->
-      <div class="formats">
-        <article class="format">
-          <h3 class="format__nom">Sandwich</h3>
-          <ul class="format__prix-liste">
-            <li><span class="format__viandes">Poulet · Falafel</span><span class="format__prix">12.–</span></li>
-            <li><span class="format__viandes">Veau &amp; agneau · Köfte</span><span class="format__prix">14.–</span></li>
-          </ul>
-        </article>
-        <article class="format">
-          <h3 class="format__nom">Dürüm</h3>
-          <ul class="format__prix-liste">
-            <li><span class="format__viandes">Poulet · Falafel</span><span class="format__prix">14.–</span></li>
-            <li><span class="format__viandes">Veau &amp; agneau · Köfte</span><span class="format__prix">15.–</span></li>
-          </ul>
-        </article>
-        <article class="format">
-          <h3 class="format__nom">Assiette</h3>
-          <ul class="format__prix-liste">
-            <li><span class="format__viandes">Poulet · Veau &amp; agneau · Köfte</span><span class="format__prix">22.–</span></li>
-            <li><span class="format__viandes">Falafel</span><span class="format__prix">20.–</span></li>
-          </ul>
-        </article>
-        <article class="format">
-          <h3 class="format__nom">Petit</h3>
-          <ul class="format__prix-liste">
-            <li><span class="format__viandes">Toutes les viandes</span><span class="format__prix">9.–</span></li>
-          </ul>
-        </article>
+      <!-- Sur téléphone, on choisit la viande et les prix des quatre formats
+           s'affichent d'un coup (quatre colonnes ne tiennent pas, quatre
+           fiches font trois écrans). Sur grand écran, tout le tableau. Sans
+           :has() (vieux navigateurs), le tableau s'affiche en entier. -->
+      <div class="prix__choix" role="radiogroup" aria-label="Choisir la viande">
+        <input class="visuellement-cache" type="radio" name="viande" id="viande-veau" checked /><label for="viande-veau">Veau &amp; agneau</label>
+        <input class="visuellement-cache" type="radio" name="viande" id="viande-poulet" /><label for="viande-poulet">Poulet</label>
+        <input class="visuellement-cache" type="radio" name="viande" id="viande-kofte" /><label for="viande-kofte">Köfte</label>
+        <input class="visuellement-cache" type="radio" name="viande" id="viande-falafel" /><label for="viande-falafel">Falafel</label>
+      </div>
+      <div class="prix__tableau">
+        <table class="tableau">
+          <caption class="visuellement-cache">Prix par format et par viande</caption>
+          <thead><tr><th scope="col">Format</th><th scope="col" class="c-poulet">Poulet</th><th scope="col" class="c-veau">Veau &amp; agneau</th><th scope="col" class="c-kofte">Köfte</th><th scope="col" class="c-falafel">Falafel</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Sandwich</th><td class="c-poulet">12.–</td><td class="c-veau">14.–</td><td class="c-kofte">14.–</td><td class="c-falafel">12.–</td></tr>
+            <tr><th scope="row">Dürüm</th><td class="c-poulet">14.–</td><td class="c-veau">15.–</td><td class="c-kofte">15.–</td><td class="c-falafel">14.–</td></tr>
+            <tr><th scope="row">Assiette</th><td class="c-poulet">22.–</td><td class="c-veau">22.–</td><td class="c-kofte">22.–</td><td class="c-falafel">20.–</td></tr>
+            <tr><th scope="row">Petit</th><td class="c-poulet">9.–</td><td class="c-veau">9.–</td><td class="c-kofte">9.–</td><td class="c-falafel">9.–</td></tr>
+          </tbody>
+        </table>
       </div>
       <ul class="prix__extras">
         <li><span>Döner box</span><span>14.–</span></li>
