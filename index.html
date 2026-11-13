@@ -119,13 +119,12 @@
 
   <main>
     <!-- Hero ----------------------------------------------------------------
-         En mode animé, le bloc d'accueil fait deux écrans de haut : le hero
-         reste épinglé pendant que le nom se rassemble sur une ligne, sur le
-         bandeau cobalt de l'enseigne. -->
+         Le mur de faïence, le nom sur ses deux plaques de part et d'autre de
+         la photo. Au défilement, rien ne se rassemble : les plaques et la
+         photo s'en vont chacune à sa vitesse. -->
     <div class="accueil" id="accueil">
       <section class="hero">
         <div class="hero__mur" aria-hidden="true"></div>
-        <div class="hero__enseigne" aria-hidden="true"></div>
 
         <div class="hero__haut">
           <a class="hero__lien libelle" href="#histoire">L'histoire</a>
@@ -147,15 +146,6 @@
           </span>
           <span class="hero__mot hero__mot--droite">Marché</span>
         </h1>
-
-        <!-- Sur grand écran, quand le nom est monté sur l'enseigne, deux
-             photos encadrées montent de part et d'autre : la vitrine. -->
-        <span class="hero__cote hero__cote--gauche" aria-hidden="true">
-          <span class="hero__image"><img src="assets/photos/comptoir-decoupe.webp" alt="" width="765" height="1020" loading="lazy" decoding="async" /></span>
-        </span>
-        <span class="hero__cote hero__cote--droite" aria-hidden="true">
-          <span class="hero__image"><img src="assets/photos/assiette-frites.webp" alt="" width="765" height="1020" loading="lazy" decoding="async" /></span>
-        </span>
 
         <div class="hero__bas">
           <p class="hero__info libelle etat" data-etat data-ouvert="non">
@@ -203,7 +193,7 @@
       <!-- La frise : trois chapitres. Sur le côté (en haut, sur téléphone),
            l'année reste en place et ses chiffres roulent, comme un compteur,
            d'un chapitre à l'autre ; la table des chapitres suit la lecture. -->
-      <div class="frise">
+      <div class="frise plaque">
         <div class="frise__repere" aria-hidden="true">
           <p class="frise__annee" data-frise-annee><span class="roue"><span class="roue__bande"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="roue"><span class="roue__bande"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="roue"><span class="roue__bande"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="roue"><span class="roue__bande"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></p>
           <ol class="frise__table">
@@ -255,7 +245,7 @@
          L'accroche, la broche et ses trois gestes ; puis le panneau cobalt de
          l'anatomie monte. -->
     <div class="broche-bloc" id="broche">
-      <section class="broche" aria-labelledby="titre-broche">
+      <section class="broche plaque" aria-labelledby="titre-broche">
         <h2 class="broche__accroche" id="titre-broche">Une broche montée à la main, tranche après tranche</h2>
         <div class="broche__apercu">
           <img src="assets/photos/broche-decoupe.webp" alt="La broche de veau et d'agneau, tranchée au couteau" width="1125" height="632" loading="lazy" decoding="async" />
@@ -318,7 +308,7 @@
     </div>
 
     <!-- La carte -------------------------------------------------------------- -->
-    <section class="carte" id="carte" aria-labelledby="titre-carte">
+    <section class="carte plaque" id="carte" aria-labelledby="titre-carte">
       <h2 class="carte__titre" id="titre-carte">
         <span class="carte__ligne">
           <span class="carte__mot">Tout est</span>
@@ -386,7 +376,7 @@
     <div class="espace"></div>
 
     <!-- Le quartier ------------------------------------------------------------ -->
-    <section class="quartier" id="quartier">
+    <section class="quartier plaque" id="quartier">
       <div class="quartier__rangee">
         <div class="quartier__photo"><img src="assets/photos/devanture-nuit.webp" alt="La devanture éclairée du Snack du Marché à la nuit tombée" width="1020" height="1020" loading="lazy" decoding="async" /></div>
         <figure class="papier papier--haut">

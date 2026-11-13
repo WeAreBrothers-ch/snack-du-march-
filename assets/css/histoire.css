@@ -2,7 +2,10 @@
    L'histoire — une intro et son album, puis la frise des trois chapitres
    ========================================================================== */
 
-.histoire { position: relative; }
+.histoire {
+  position: relative;
+  padding: 0;
+}
 
 /* L'intro ---------------------------------------------------------------- */
 
@@ -20,14 +23,27 @@
   text-align: center;
 }
 
+/* Le titre et le sous-titre, chacun sur sa plaque de céramique, comme le
+   nom dans le haut de page : lisibles sur le carreau plein. */
+.histoire__titre,
 .histoire__sous {
-  max-width: 22ch;
-  font-size: var(--t-lead);
-  line-height: 1.3;
-  color: var(--texte-doux);
+  background: var(--craie);
+  border: 3px solid var(--cobalt);
+  border-radius: var(--rayon);
 }
 
-.histoire__titre { color: var(--cobalt); }
+.histoire__titre {
+  padding: 0.18em 0.3em 0.12em;
+  color: var(--cobalt);
+}
+
+.histoire__sous {
+  max-width: 24ch;
+  padding: 0.45em 0.8em;
+  font-size: var(--t-lead);
+  line-height: 1.3;
+  color: var(--encre);
+}
 
 .histoire__photos {
   display: grid;
@@ -65,9 +81,7 @@ html.anime .accueil + .espace { display: none; }
 html.anime .histoire__intro {
   position: sticky;
   top: 0;
-  /* D'un bord à l'autre de l'écran, par-dessus la marge de la section. */
-  margin: calc(var(--marge) * -1) calc(var(--marge) * -1) 0;
-  background: var(--fond);
+  /* Pas de fond : la scène se joue sur le mur de faïence. */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -199,25 +213,14 @@ html.anime .histoire__intro { z-index: 0; }
 
 /* La frise ----------------------------------------------------------------- */
 
-/* Une page de journal sur le mur ivoire : coiffée de la bordure du carreau,
-   elle monte par-dessus la devanture. Sur le côté (en haut, sur téléphone),
+/* Une page de journal sur une plaque de céramique (.plaque) : elle monte
+   par-dessus la devanture. Sur le côté (en haut, sur téléphone),
    le repère : l'année, dont les chiffres roulent d'un chapitre à l'autre, et
    la table des chapitres. */
 .frise {
   position: relative;
   z-index: 1;
-  margin: 0 calc(var(--marge) * -1) calc(var(--marge) * -1);
-  padding: calc(var(--bande-h) + clamp(1.5rem, 6vw, 5rem)) var(--marge) clamp(4rem, 12vw, 9rem);
-  background: var(--fond);
-}
-
-.frise::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: var(--bande-h);
-  background: var(--bande-h-url) repeat-x 0 50% / auto 100%;
-  box-shadow: 0 3px 0 var(--craie), 0 6px 0 var(--cobalt);
+  padding: clamp(1.5rem, 6vw, 5rem) var(--marge) clamp(4rem, 12vw, 9rem);
 }
 
 /* Le repère. Sur téléphone, une barre qui reste en haut de l'écran : l'année
@@ -230,9 +233,9 @@ html.anime .histoire__intro { z-index: 0; }
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin: 0 calc(var(--marge) * -1) clamp(1.5rem, 6vw, 2.5rem);
-  padding: 0.6rem calc(var(--marge) + 6rem) 0.6rem var(--marge);
-  background: var(--fond);
+  margin: 0 calc(6px - var(--marge)) clamp(1.5rem, 6vw, 2.5rem);
+  padding: 0.6rem calc(var(--marge) + 6rem) 0.6rem calc(var(--marge) - 6px);
+  background: var(--craie);
   box-shadow: 0 2px 0 var(--cobalt);
 }
 
@@ -378,7 +381,7 @@ html:not(.anime) .frise__repere { display: none; }
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     column-gap: calc(var(--gouttiere) * 2);
-    padding-inline: max(var(--marge), (100% - var(--largeur-max)) / 2);
+    padding-inline: clamp(2rem, 5vw, 6rem);
   }
 
   .frise__repere {

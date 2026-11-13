@@ -9,7 +9,8 @@
 .broche {
   display: grid;
   gap: clamp(1.5rem, 6vw, 2.5rem);
-  padding-bottom: clamp(3.5rem, 14vw, 6rem);
+  margin-bottom: clamp(3rem, 1.5rem + 7vw, 9rem);
+  padding-block: clamp(1.75rem, 7vw, 3rem) clamp(2rem, 8vw, 3.5rem);
 }
 
 .broche__accroche {
@@ -284,8 +285,7 @@
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: var(--gouttiere);
     row-gap: clamp(2.5rem, 6svh, 4.5rem);
-    padding-inline: max(var(--marge), (100% - var(--largeur-max)) / 2);
-    padding-bottom: clamp(6rem, 14svh, 10rem);
+    padding: clamp(3rem, 8svh, 6rem) clamp(2rem, 5vw, 6rem);
   }
 
   .broche__accroche { grid-column: 1 / -1; max-width: 18ch; }

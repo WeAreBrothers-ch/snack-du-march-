@@ -140,11 +140,8 @@ function initIntro(outils, bureau, pauseIntro) {
       0.85,
     )
     .to(devanture, { scale: 1, duration: 0.85, ease: "power2.out" }, 0.85)
-    .fromTo(element(".histoire__fenetre-voile"), { opacity: 0.3 }, { opacity: 0.5, duration: 0.8 }, 0.85)
-    // Le titre, cobalt sur le mur, passe à l'ivoire quand la photo, en
-    // s'ouvrant, arrive derrière lui (et non avant : il resterait pâle sur
-    // le mur).
-    .to([".histoire__titre", ".histoire__sous"], { color: "#fbf9f2", duration: 0.3, ease: "power1.in" }, 1.2);
+    .fromTo(element(".histoire__fenetre-voile"), { opacity: 0.3 }, { opacity: 0.5, duration: 0.8 }, 0.85);
+
 
   if (bureau) {
     // Les photos de l'album s'écartent du centre et s'effacent.

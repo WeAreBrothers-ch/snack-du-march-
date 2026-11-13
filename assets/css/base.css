@@ -30,11 +30,13 @@
   --panneau-accent:     #7fd4e8;   /* turquoise clair : les années, lisibles sur le cobalt */
 
   /* La faïence. --maille : la largeur d'un motif (un carreau en fait deux de
-     haut). Le motif n'est plein que dans le haut de page et dans les frises ;
-     partout ailleurs, le mur est un ivoire uni : le texte s'y lit, et le
-     carreau garde sa force là où il est. */
+     haut). Le carreau est le mur de toute la page, en plein, d'un seul
+     tenant du haut de page au pied de page : pas de jonction. Le texte ne
+     se pose jamais directement dessus, mais sur des plaques de céramique
+     ivoire (.plaque), en retrait des bords pour laisser voir le mur. */
   --maille: clamp(13rem, 11rem + 9vw, 21rem);
   --carreau: url("../img/carreau-iznik.webp");
+  --retrait: clamp(0.75rem, 0.4rem + 1.6vw, 2.5rem);
   --bande-h: clamp(2.25rem, 1.8rem + 2vw, 3.5rem);
   --bande-h-url: url("../img/bande-h.webp");
   --bande-v-url: url("../img/bande-v.webp");
@@ -86,7 +88,7 @@ html {
 }
 
 body {
-  background: var(--fond);
+  background: #f4f4f4 var(--carreau) 50% 0 / var(--maille) auto;
   color: var(--encre);
   font-family: var(--f-texte);
   font-size: var(--t-corps);
@@ -173,25 +175,23 @@ section {
 
 /* --- Utilitaires ---------------------------------------------------------- */
 
+/* Entre deux plaques, le mur, à nu. */
 .espace {
-  position: relative;
   width: 100%;
-  height: clamp(6rem, 15vw, 15rem);
+  height: clamp(3rem, 1.5rem + 7vw, 9rem);
 }
 
-/* Entre deux sections, un filet de faïence : la bordure du carreau. */
-.espace::after {
-  content: "";
-  position: absolute;
-  inset: 50% 0 auto;
-  height: var(--bande-h);
-  transform: translateY(-50%);
-  background: var(--bande-h-url) repeat-x 50% 50% / auto 100%;
-  box-shadow: 0 -3px 0 var(--craie), 0 3px 0 var(--craie);
+/* Une plaque de céramique posée sur le mur : ivoire, en retrait des bords,
+   bordée d'un double filet cobalt (comme les plaques du nom, les avis et le
+   tableau des prix). Au-delà de la largeur maximale, elle reste centrée. */
+.plaque {
+  width: auto;
+  margin-inline: max(var(--retrait), (100% - var(--largeur-max)) / 2);
+  background: var(--craie);
+  border: 3px solid var(--cobalt);
+  border-radius: calc(var(--rayon) * 1.5);
+  box-shadow: inset 0 0 0 3px var(--craie), inset 0 0 0 5px var(--cobalt);
 }
-
-/* Le pied de page a déjà sa propre bordure : pas de filet juste avant. */
-main > .espace:last-child::after { display: none; }
 
 .visuellement-cache {
   position: absolute;

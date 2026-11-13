@@ -1,16 +1,11 @@
 /* ==========================================================================
    Hero — le mur de faïence d'Iznik, encadré par sa bordure cobalt.
    Le nom de la maison, sur deux plaques de céramique, de part et d'autre de
-   la photo. Au défilement, les deux plaques se
-   rassemblent sur une ligne, sur le bandeau cobalt de l'enseigne.
+   la photo. Au défilement, les plaques et la photo s'en vont chacune à sa
+   vitesse (hero.js) : la composition reste entière.
    ========================================================================== */
 
-/* En mode animé, le bloc d'accueil fait deux écrans de haut : le hero reste
-   épinglé pendant tout un écran de défilement, le temps que le nom se
-   rassemble. Sans animation, il retrouve la hauteur du hero. */
-html.anime .accueil { height: calc(var(--ecran) * 2); }
-
-html.anime .hero {
+.hero {
   position: sticky;
   top: 0;
 }
@@ -18,7 +13,7 @@ html.anime .hero {
 .hero {
   --gauche: max(var(--marge), (100% - var(--largeur-max)) / 2);
   position: relative;
-  /* Les étages ci-dessous (mur, photo, enseigne, nom) restent entre eux : rien
+  /* Les étages ci-dessous (mur, photo, nom) restent entre eux : rien
      ne passe au-dessus de la section qui monte ensuite. */
   isolation: isolate;
   display: grid;
@@ -34,7 +29,8 @@ html.anime .hero {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: #f4f4f4 var(--carreau) 50% 0 / var(--maille) auto;
+  /* Le carreau est celui de la page (base.css) : il continue sans couture
+     sous le haut de page. */
   pointer-events: none;
 }
 
@@ -56,25 +52,6 @@ html.anime .hero {
   left: auto;
   right: 0;
   transform: scaleX(-1);
-}
-
-/* L'enseigne : un bandeau cobalt accroché juste sous la frise, comme le
-   fronton au-dessus de la vitrine. Le filet ivoire de la frise le borde en
-   haut ; en bas, il reprend le double filet ivoire et cobalt des autres
-   barres. Le script le place, le dimensionne et le déroule depuis le milieu
-   (clip-path) ; le nom vient s'y poser. Les mots passent devant tout le
-   reste. */
-.hero__enseigne {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: var(--enseigne-haut, 0);
-  height: var(--enseigne-hauteur, 0);
-  z-index: 0;
-  background: var(--cobalt);
-  box-shadow: 0 3px 0 var(--craie), 0 6px 0 var(--cobalt);
-  visibility: hidden;
-  pointer-events: none;
 }
 
 .hero__titre { position: relative; }
@@ -135,7 +112,7 @@ html.anime .hero {
 }
 
 /* Le nom, sur deux plaques de céramique : lisible sur le motif le plus
-   chargé. Le script les fond dans l'enseigne (hero.js). Interligne à peine
+   chargé. Interligne à peine
    plus haut que la taille : le masque qui fait monter chaque mot ne doit
    pas couper l'accent de « Marché ». */
 .hero__mot {
@@ -270,30 +247,3 @@ html.anime .hero {
   .hero__descendre { justify-self: end; }
 }
 
-/* La vitrine : deux photos encadrées qui montent de part et d'autre de la
-   photo quand le nom est sur l'enseigne (grand écran, mode animé). Le script
-   les place (hero.js) ; elles attendent, découpées à zéro, de se découvrir
-   de bas en haut. */
-.hero__cote { display: none; }
-
-@media (min-width: 992px) {
-  html.anime .hero__cote {
-    --cadre: clamp(0.5rem, 0.3rem + 0.6vw, 0.9rem);
-    position: absolute;
-    top: var(--cote-haut, 0);
-    z-index: 1;
-    display: block;
-    padding: var(--cadre);
-    background: var(--cobalt);
-    border-radius: calc(var(--rayon) + var(--cadre) * 0.5);
-    clip-path: inset(100% 0% 0% 0%);
-  }
-
-  html.anime .hero__cote--gauche { left: var(--cote-gauche, 0); }
-  html.anime .hero__cote--droite { left: var(--cote-droite, 0); }
-
-  .hero__cote .hero__image {
-    width: var(--cote-largeur, 10rem);
-    height: var(--cote-hauteur, 13rem);
-  }
-}

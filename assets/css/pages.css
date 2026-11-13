@@ -9,7 +9,9 @@
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  min-height: var(--ecran-visible);
+  /* Une plaque de céramique sur le mur de faïence (.plaque, base.css). */
+  min-height: calc(var(--ecran-visible) - 2 * var(--retrait));
+  margin-block: var(--retrait);
   padding: var(--marge);
   text-align: center;
 }

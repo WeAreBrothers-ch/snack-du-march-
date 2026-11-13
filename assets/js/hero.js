@@ -6,17 +6,11 @@
  * deux plaques du nom apparaissent. Une seconde, et le défilement reste libre
  * dès le premier instant.
  *
- * L'enseigne : au défilement, le hero reste épinglé. Les deux plaques se
- * rejoignent au-dessus de la photo pour former « Snack du Marché » sur une
- * seule ligne, sur un bandeau cobalt qui se déroule depuis le milieu, comme
- * l'enseigne au-dessus de la vitrine : la céramique s'efface, les lettres
- * passent à l'ivoire. Sur téléphone, « Marché », posé sous la photo, monte
- * devant elle pour rejoindre « Snack du ». La photo reste entière : elle
- * remonte sous l'enseigne et grandit un peu vers le bas, dans la place que
- * les mots lui laissent.
+ * Au défilement, la composition reste entière : les plaques et la photo
+ * s'en vont chacune à sa vitesse (initHeroDefilement).
  */
 
-import { element, elements, positionDans, SCRUB } from "./lib.js";
+import { element, elements, SCRUB } from "./lib.js";
 
 /**
  * Crée et lance l'entrée. Les états de départ sont posés immédiatement, avant
@@ -60,216 +54,22 @@ export function retablirHero(outils) {
 }
 
 /**
- * Le nom qui se rassemble sur le bandeau, lié au défilement.
+ * Au défilement, le haut de page s'en va comme une composition en
+ * profondeur : les deux plaques s'écartent doucement de la photo (la
+ * première monte, la seconde traîne), et la photo s'approche un peu dans
+ * son cadre.
+ * Rien ne se rassemble, rien ne change de couleur : le nom reste sur ses
+ * plaques, de part et d'autre de la photo.
  * @param {import("./lib.js").Outils} outils
- * @param {boolean} bureau
  */
-export function initEnseigne(outils, bureau) {
+export function initHeroDefilement(outils) {
   const { gsap } = outils;
+  const parcours = { trigger: ".hero", start: "top top", end: "bottom top", scrub: SCRUB };
 
-  const hero = element(".hero");
-  const enseigne = element(".hero__enseigne");
-  const cadre = element(".hero__cadre");
-  const gauche = element(".hero__mot--gauche");
-  const droite = element(".hero__mot--droite");
-
-  const bordure = element(".hero__bande");
-  const coteGauche = element(".hero__cote--gauche");
-  const coteDroite = element(".hero__cote--droite");
-  const titre = element(".hero__titre");
-  const bas = element(".hero__bas");
-
-  /**
-   * Les positions de départ et d'arrivée, mesurées sur la mise en page (les
-   * transformations en cours n'y entrent pas). Chaque animation les demande
-   * (une dizaine de fois par calcul) : on ne mesure qu'une fois par état de
-   * la page, sinon chaque demande force une remise en page complète.
-   * @type {ReturnType<typeof calculer> | null}
-   */
-  let mesure = null;
-  let cle = "";
-  function mesurer() {
-    const courante = `${hero.offsetWidth}x${hero.offsetHeight}x${window.innerHeight}`;
-    if (!mesure || cle !== courante) {
-      mesure = calculer();
-      cle = courante;
-    }
-    return mesure;
-  }
-
-  function calculer() {
-    const largeur = hero.offsetWidth;
-    const hauteur = hero.offsetHeight;
-    const marge = parseFloat(getComputedStyle(titre).paddingLeft);
-    const ecart = Math.max(12, hauteur * 0.02);
-
-    const posCadre = positionDans(cadre, hero);
-    const posGauche = positionDans(gauche, hero);
-    const posDroite = positionDans(droite, hero);
-
-    // L'enseigne s'accroche sous la frise, après son filet ivoire (3 px) ;
-    // elle a pour hauteur ce que la photo lui laisse, double filet du bas
-    // (6 px) et respiration compris.
-    const dessus = positionDans(bordure, hero).y + bordure.offsetHeight + 3;
-    const place = posCadre.y - ecart - 6 - dessus;
-
-    // La ligne « Snack du Marché » : les deux mots séparés d'une espace de la
-    // police (0,22 em), réduits pour tenir entre les marges et dans la place
-    // au-dessus de la photo.
-    // Chaque plaque déborde du mot de son rembourrage et de son filet : une
-    // fois la céramique effacée, il ne reste que les lettres, qu'on
-    // rapproche d'autant.
-    const styleMot = getComputedStyle(gauche);
-    const bord = parseFloat(styleMot.paddingLeft) + parseFloat(styleMot.borderLeftWidth);
-    const espace = parseFloat(styleMot.fontSize) * 0.22 - 2 * bord;
-    const longueur = gauche.offsetWidth + espace + droite.offsetWidth;
-    const echelle = Math.max(0.2, Math.min(1, (largeur - 2 * marge) / longueur, place / (gauche.offsetHeight * 1.4)));
-    const bande = gauche.offsetHeight * echelle * 1.4;
-    enseigne.style.setProperty("--enseigne-haut", `${dessus}px`);
-    enseigne.style.setProperty("--enseigne-hauteur", `${bande}px`);
-    const centre = dessus + bande / 2;
-    const debutLigne = (largeur - longueur * echelle) / 2;
-
-    // La photo remonte sous l'enseigne, comme la vitrine sous son fronton,
-    // puis grandit vers le bas, sans toucher le bandeau du bas ni la section
-    // qui monte ensuite.
-    const cible = dessus + bande + 6 + Math.max(16, hauteur * 0.03);
-    const monte = Math.min(0, cible - posCadre.y);
-    const haut = posCadre.y + monte;
-    const limite = positionDans(bas, hero).y - 6 - Math.max(16, hauteur * 0.03);
-    const croissance = Math.max(1, Math.min(bureau ? 1.25 : 1.3, (limite - haut) / cadre.offsetHeight));
-
-    // La vitrine (grand écran) : deux photos un peu plus petites que la
-    // photo du milieu, centrées sur elle, de part et d'autre, entre les
-    // bordures latérales.
-    if (bureau) {
-      const hauteurFinale = cadre.offsetHeight * croissance;
-      const largeurFinale = cadre.offsetWidth * croissance;
-      const milieu = posCadre.x + cadre.offsetWidth / 2;
-      const ecartCote = Math.max(20, largeur * 0.018);
-      const bordure = parseFloat(getComputedStyle(titre).paddingLeft);
-      const cadreCote = parseFloat(getComputedStyle(coteGauche).paddingLeft) * 2;
-      const dispo = milieu - largeurFinale / 2 - ecartCote - bordure;
-      const hauteurCote = Math.min(hauteurFinale * 0.8, (dispo * 4) / 3);
-      const largeurCote = hauteurCote * 0.75;
-      const exterieurL = largeurCote + cadreCote;
-      const exterieurH = hauteurCote + cadreCote;
-      hero.style.setProperty("--cote-largeur", `${largeurCote}px`);
-      hero.style.setProperty("--cote-hauteur", `${hauteurCote}px`);
-      hero.style.setProperty("--cote-haut", `${haut + (hauteurFinale - exterieurH) / 2}px`);
-      hero.style.setProperty("--cote-gauche", `${milieu - largeurFinale / 2 - ecartCote - exterieurL}px`);
-      hero.style.setProperty("--cote-droite", `${milieu + largeurFinale / 2 + ecartCote}px`);
-    }
-
-    return {
-      echelle,
-      monte,
-      croissance,
-      gauche: {
-        x: debutLigne + (gauche.offsetWidth * echelle) / 2 - (posGauche.x + gauche.offsetWidth / 2),
-        y: centre - (posGauche.y + gauche.offsetHeight / 2),
-      },
-      droite: {
-        x:
-          debutLigne +
-          (gauche.offsetWidth + espace) * echelle +
-          (droite.offsetWidth * echelle) / 2 -
-          (posDroite.x + droite.offsetWidth / 2),
-        y: centre - (posDroite.y + droite.offsetHeight / 2),
-      },
-      // Découpes de l'enseigne : un point au milieu de l'écran, qui s'ouvre
-      // en bandeau jusqu'aux bords. À l'arrivée, la découpe descend sous le
-      // bandeau pour laisser voir son double filet.
-      depart: `inset(${bande / 2}px ${largeur / 2}px ${bande / 2}px ${largeur / 2}px)`,
-      arrivee: "inset(0px 0px -6px 0px)",
-    };
-  }
-
-  const scene = gsap.timeline({
-    defaults: { ease: "power2.inOut" },
-    scrollTrigger: {
-      trigger: ".accueil",
-      start: "top top",
-      end: "bottom bottom",
-      scrub: SCRUB,
-      invalidateOnRefresh: true,
-      onRefreshInit: () => {
-        mesure = null;
-      },
-    },
-  });
-
-  scene.fromTo(enseigne, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, ease: "none" }, 0);
-
-  // Les deux plaques glissent jusqu'à leur place sur la ligne. Sur
-  // téléphone, « Marché » monte de sous la photo et passe devant elle pour
-  // rejoindre « Snack du ».
-  scene
-    .to(
-      gauche,
-      { x: () => mesurer().gauche.x, y: () => mesurer().gauche.y, scale: () => mesurer().echelle, duration: 0.75 },
-      0.05,
-    )
-    .to(
-      droite,
-      { x: () => mesurer().droite.x, y: () => mesurer().droite.y, scale: () => mesurer().echelle, duration: 0.75 },
-      0.05,
-    );
-
-  // L'enseigne se déroule depuis le milieu. Sur téléphone, elle est en
-  // place plus tôt : « Marché » arrive par en dessous et doit trouver le
-  // bandeau déjà là.
-  scene.fromTo(
-    enseigne,
-    { clipPath: () => mesurer().depart },
-    { clipPath: () => mesurer().arrivee, duration: bureau ? 0.6 : 0.45 },
-    bureau ? 0.3 : 0.15,
-  );
-
-  // La photo reste entière : elle remonte sous l'enseigne et prend la place
-  // que les mots lui laissent.
-  scene.fromTo(
-    cadre,
-    { y: 0, scale: 1, transformOrigin: "50% 0%" },
-    { y: () => mesurer().monte, scale: () => mesurer().croissance, transformOrigin: "50% 0%", duration: 0.8 },
-    bureau ? 0.05 : 0.15,
-  );
-
-  // La céramique des plaques s'efface, les lettres passent à l'ivoire : le
-  // nom est désormais écrit sur l'enseigne. Chaque plaque s'efface quand
-  // elle arrive sur le bandeau, pas avant (des lettres ivoire sur le mur ne
-  // se lisent pas) : sur téléphone, « Snack du », tout proche, d'abord ;
-  // « Marché », qui monte de sous la photo, ensuite.
-  const effacer = {
-    backgroundColor: "rgba(251, 249, 242, 0)",
-    borderColor: "rgba(18, 38, 160, 0)",
-    color: "#fbf9f2",
-    ease: "power1.inOut",
-  };
-  if (bureau) {
-    scene.to([gauche, droite], { ...effacer, duration: 0.35 }, 0.4);
-  } else {
-    scene.to(gauche, { ...effacer, duration: 0.25 }, 0.42).to(droite, { ...effacer, duration: 0.25 }, 0.55);
-  }
-
-  // La vitrine : les deux photos de côté montent et se découvrent de bas en
-  // haut, la gauche puis la droite, pendant que la photo du milieu grandit.
-  if (bureau) {
-    scene
-      .fromTo(
-        [coteGauche, coteDroite],
-        { y: 60, clipPath: "inset(100% 0% 0% 0%)" },
-        { y: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, stagger: 0.1, ease: "power3.out" },
-        0.4,
-      )
-      .fromTo(
-        [element("img", coteGauche), element("img", coteDroite)],
-        { scale: 1.25 },
-        { scale: 1, duration: 0.6, stagger: 0.1, ease: "power2.out" },
-        0.4,
-      );
-  }
-
-  // Un temps d'arrêt sur l'enseigne complète avant que la page ne reparte.
-  scene.to({}, { duration: 0.15 });
+  gsap
+    .timeline({ defaults: { ease: "none" }, scrollTrigger: parcours })
+    .fromTo(".hero__mot--gauche", { y: 0 }, { y: () => -window.innerHeight * 0.1 }, 0)
+    .fromTo(".hero__mot--droite", { y: 0 }, { y: () => window.innerHeight * 0.06 }, 0)
+    // Pas de rendu immédiat : l'entrée anime déjà l'échelle de la photo.
+    .fromTo(".hero__photo", { scale: 1 }, { scale: 1.12, immediateRender: false }, 0);
 }
