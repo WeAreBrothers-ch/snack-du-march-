@@ -155,13 +155,13 @@ html.anime .histoire__pause--intro {
   height: calc(var(--ecran-visible) * 0.9);
 }
 
-/* Sur téléphone, mode animé : la plaque (titre et phrase), puis la vitrine
-   avec deux photos de chaque côté, comme l'album autour du titre sur grand
-   écran. Au défilement, les photos s'écartent et s'effacent quand la vitrine
-   s'ouvre (histoire.js). */
-.histoire__rangee { display: flex; justify-content: center; }
-.histoire__flanc { display: none; }
+.histoire__voisin { display: none; }
 
+/* Sur téléphone, mode animé : la même composition que sur grand écran. La
+   plaque (titre et phrase) et la vitrine au centre, et autour d'elles cinq
+   petites photos posées à distance (trois aux coins, deux accrochées aux
+   flancs de la vitrine), sans toucher ni la plaque ni la vitrine ;
+   elles s'écartent et s'effacent quand la vitrine s'ouvre (histoire.js). */
 @media (max-width: 991px) {
   .histoire__plaque { width: min(100%, 26rem); }
 
@@ -171,40 +171,59 @@ html.anime .histoire__pause--intro {
     line-height: 1;
   }
 
-  .histoire__sous {
-    font-size: clamp(0.9375rem, 3.8vw, 1.15rem);
-  }
-
-  html.anime .histoire__photos { display: none; }
+  .histoire__sous { font-size: clamp(0.9375rem, 3.8vw, 1.15rem); }
 
   html.anime .histoire__texte { width: 100%; }
 
-  html.anime .histoire__rangee {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    align-items: stretch;
-    gap: clamp(0.45rem, 2.4vw, 0.9rem);
-    width: 100%;
-  }
-
   html.anime .histoire__vitrine {
-    width: min(46vw, 17rem);
-    height: min(34svh, 23rem);
+    position: relative;
+    width: min(48vw, 17rem);
+    height: min(31svh, 21rem);
   }
 
-  html.anime .histoire__flanc {
-    display: grid;
-    grid-template-rows: repeat(2, minmax(0, 1fr));
-    gap: clamp(0.4rem, 2vw, 0.7rem);
-  }
-
-  html.anime .histoire__flanc-photo {
-    min-height: 0;
+  /* Les deux photos de flanc : accrochées à la vitrine, 4vw d'écart. */
+  html.anime .histoire__voisin {
+    position: absolute;
+    display: block;
     overflow: hidden;
-    border: 0.22rem solid var(--craie);
-    border-radius: calc(var(--rayon) + 0.22rem);
+    border: 0.2rem solid var(--craie);
+    border-radius: calc(var(--rayon) + 0.2rem);
     box-shadow: 0 0 0 2px var(--cobalt);
   }
+
+  html.anime .histoire__voisin--gauche { right: calc(100% + 4vw); top: 16%; width: 15vw; aspect-ratio: 2 / 3; }
+  html.anime .histoire__voisin--droite { left: calc(100% + 4vw); top: 54%; width: 15vw; aspect-ratio: 1; }
+
+  html.anime .histoire__photos {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  html.anime .histoire__cadre,
+  html.anime .histoire__cadre:nth-child(even),
+  html.anime .histoire__cadre:nth-child(n + 5) {
+    position: absolute;
+    display: block;
+    margin: 0;
+    width: var(--l, 20vw);
+    aspect-ratio: var(--ar, 1);
+    border-width: 0.2rem;
+  }
+
+  /* La devanture est déjà dans la vitrine, l'enseigne et l'assiette sont
+     accrochées à ses flancs. */
+  html.anime .histoire__cadre:nth-child(1),
+  html.anime .histoire__cadre:nth-child(2),
+  html.anime .histoire__cadre:nth-child(5) { display: none; }
+
+  /* Trois petites photos aux coins, à l'écart de la plaque et de la vitrine. */
+  html.anime .histoire__cadre:nth-child(3) { --l: 16vw; --ar: 1; left: 9%; top: 9%; }
+  html.anime .histoire__cadre:nth-child(4) { --l: 22vw; --ar: 4 / 3; right: 5%; top: 7%; }
+  html.anime .histoire__cadre:nth-child(6) { --l: 21vw; --ar: 4 / 3; right: 8%; bottom: 4%; }
 }
 
 /* Tablette : l'album sur une ligne. */
@@ -355,21 +374,20 @@ html.anime .histoire__mur {
   padding: clamp(1rem, 4vw, 1.5rem) clamp(1rem, 4vw, 1.75rem) clamp(1.1rem, 4.5vw, 1.75rem);
 }
 
-/* La photo garde son format (--r, largeur / hauteur) : jamais rognée. Sa
-   hauteur est plafonnée (--hmax), sa largeur suit ; elle est posée au centre
-   de la carte, comme un tirage. */
+/* La photo : toute la largeur de la carte, en 4/3, coins arrondis, sans
+   cadre ni ombre. Une petite part est recadrée (haut et bas), réglée photo par
+   photo (--cadrage) pour garder les visages et l'enseigne. Sur grand écran, à
+   côté du texte, elle reprend son format. */
 .chapitre__photo {
-  --hmax: clamp(8.5rem, 31svh, 16rem);
-  justify-self: center;
-  width: min(100%, calc(var(--hmax) * var(--r, 1.5)));
-  aspect-ratio: var(--r, 1.5);
+  aspect-ratio: 4 / 3;
+  max-height: 36svh;
+  width: 100%;
   overflow: hidden;
   border-radius: var(--rayon);
   background: var(--craie);
 }
 
-.chapitre--cobalt .chapitre__photo { box-shadow: 0 0 0 0.3rem var(--craie); margin-block: 0.3rem; }
-.chapitre--craie .chapitre__photo { box-shadow: 0 0 0 2px var(--cobalt); margin-block: 2px; }
+.chapitre__photo img { object-position: 50% var(--cadrage, 40%); }
 
 .chapitre__texte {
   display: grid;
@@ -441,7 +459,13 @@ html.anime .histoire__mur {
     padding: clamp(1.5rem, 3svh, 2.25rem) clamp(1.75rem, 3vw, 2.75rem) clamp(1.75rem, 3.5svh, 2.5rem);
   }
 
-  .chapitre__photo { --hmax: clamp(15rem, 42svh, 25rem); }
+  .chapitre__photo {
+    --hmax: clamp(15rem, 42svh, 25rem);
+    justify-self: center;
+    width: min(100%, calc(var(--hmax) * var(--r, 1.5)));
+    max-height: none;
+    aspect-ratio: var(--r, 1.5);
+  }
   .chapitre__recit { font-size: var(--t-lead); line-height: 1.35; }
   .chapitre__citation { font-size: clamp(1.4rem, 1.7vw, 2.1rem); }
 }

@@ -4,12 +4,11 @@
  * L'intro est une scène plein écran : le titre, et entre ses deux lignes une
  * vitrine où la devanture se découvre en arrivant. Pendant une courte pause,
  * la vitrine s'ouvre en grand, jusqu'aux bords de l'écran, et la photo
- * recule comme si l'on passait la porte. Les photos posées autour (l'album sur
- * grand écran, les photos de côté sur téléphone) s'écartent pour lui faire
- * place.
+ * recule comme si l'on passait la porte. Les photos posées autour s'écartent
+ * pour lui faire place.
  *
- * Sur téléphone, deux photos de chaque côté de la vitrine tiennent la place de
- * l'album : elles s'écartent et s'effacent quand elle s'ouvre.
+ * Sur téléphone, cinq petites photos posées autour de la plaque et de la
+ * vitrine reprennent la composition du grand écran.
  *
  * Puis trois cartes s'empilent par-dessus la devanture, qui recule et
  * s'assombrit : chacune se colle en haut de l'écran et laisse dépasser son
@@ -76,9 +75,9 @@ function initIntro(outils, bureau, pauseIntro) {
   const vitrine = element(".histoire__vitrine");
   const titre = decouperEnLignes(SplitText, element(".histoire__titre"));
   const sousTitre = decouperEnLignes(SplitText, element(".histoire__sous"));
-  // Les photos autour du titre : l'album (grand écran) ou les deux photos de
-  // chaque côté de la vitrine (téléphone).
-  const photos = elements(bureau ? ".histoire__cadre" : ".histoire__flanc-photo");
+  // Les photos posées autour du titre et de la vitrine (grand écran et
+  // téléphone : la même composition).
+  const photos = elements(".histoire__cadre, .histoire__voisin");
 
   gsap
     .timeline({
