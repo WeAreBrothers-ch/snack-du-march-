@@ -1,6 +1,6 @@
 # Direction artistique — Snack du Marché
 
-**Version 4.0 — novembre 2026.** Le client n'a pas aimé la version « ardoise
+**Version 4.1 — novembre 2026.** Fond uni, haut de page en vitrine, frise de l'histoire, broche en trois gestes, anatomie lue au défilement sur grand écran, pied de page lisible. **Version 4.0.** Le client n'a pas aimé la version « ardoise
 et bordeaux » : il préfère l'esprit du site du P'tit Central (un bistrot
 lausannois aux murs de carreaux, fait lui aussi par WeAreBrothers) et veut
 que la Turquie se voie d'emblée. Le site passe de la nuit à la **faïence
@@ -15,7 +15,8 @@ de la 3.2 restent : seuls la matière, les couleurs et l'ornement changent.
 seule page, qui se joue au fil du défilement comme un court film : le nom se
 rassemble sur son enseigne, l'histoire s'empile, le sandwich se dissèque sur
 sa planche, la carte s'ouvre. Le mur, lui, ne bouge pas : c'est le carreau
-d'Iznik, plein dans le haut de page, très pâle partout ailleurs.
+d'Iznik, plein dans le haut de page et dans les frises ; partout ailleurs, un
+ivoire uni, où le texte se lit.
 
 ## D'où vient la direction
 
@@ -42,8 +43,8 @@ n'ont que de petits rôles.
 | `--nuit` | `#0a1250` | Le bleu le plus sombre : ton sur ton sur les panneaux (années, nom en pied de page), voiles |
 | `--turquoise` | `#2fa9c4` | Survols sur cobalt, focus. Rien d'autre |
 | `--rouge` | `#d41c0c` | Le rouge du carreau : prix, survols sur fond clair, « Afiyet olsun » |
-| `--fond` | `#f3eddc` | Le mur : un ivoire chaud (le carreau très atténué par-dessus) |
-| `--craie` | `#fbf9f2` | La céramique : plaques du nom, avis, ticket, cadres des photos, texte sur cobalt |
+| `--fond` | `#f3eddc` | Le mur : un ivoire chaud, uni |
+| `--craie` | `#fbf9f2` | La céramique : plaques du nom, avis, cadres des photos, texte sur cobalt |
 | `--encre` | `#0d1553` | Texte courant |
 | `--drapeau` | `#e30a17` | Le rouge du drapeau turc, pour le drapeau seul |
 
@@ -56,13 +57,14 @@ Tous tirés de l'image du client (`assets/img/`), débruités en moyennant les
 répétitions du carreau :
 
 - `carreau-iznik.webp` : le motif, sans couture (un motif fait deux carreaux
-  de haut). Plein dans le haut de page ; sous un voile ivoire à 60 %, avec un dégradé à la jonction pour le
-  reste du site (`--mur`).
+  de haut). Plein dans le haut de page, et nulle part ailleurs : le carreau
+  pâli en fond de page (version 4.0) brouillait le texte et laissait une
+  jonction molle sous le haut de page. Il est retiré.
 - `bande-h.webp`, `bande-v.webp` : la bordure du carreau, à répéter. En
   filet entre deux sections (`.espace`), en tête de chaque panneau, en haut
   du hero ; sur grand écran, sur les côtés du hero.
 - Le **drapeau de la Turquie** est un symbole SVG défini dans `index.html`
-  (`#drapeau-tr`), utilisé sur le ticket du pied de page. Pas dans la
+  (`#drapeau-tr`), utilisé à côté de « Afiyet olsun » dans le pied de page. Pas dans la
   navigation, pas plus : c'est un clin d'œil, pas un décor.
 
 ## Typographie
@@ -101,14 +103,14 @@ il reste centré, les panneaux cobalt continuent d'aller d'un bord à l'autre.
 
 ## Les gestes du site
 
-1. **Le hero** : le carreau en plein, encadré par ses barres cobalt (en haut l'étiquette et le menu, puis la bordure ornée ; en bas ouvert ou fermé, l'adresse, la carte). Le nom, sur deux plaques de céramique, de part et d'autre de la photo, dans son cadre cobalt. Pas de rideau : la page est là tout de suite, la photo se découvre de bas en haut, comme un store qu'on lève à l'ouverture, et le nom monte. Une seconde et demie.
-   **L'enseigne** : au premier défilement, le hero reste épinglé ; les deux plaques se rejoignent au-dessus de la photo pour former « Snack du Marché » sur une seule ligne, sur un bandeau cobalt qui se déroule depuis le milieu, accroché juste sous la frise comme un fronton (filet ivoire au-dessus, double filet ivoire et cobalt en dessous, comme les autres barres) : la céramique s'efface, les lettres passent à l'ivoire. La photo reste entière, remonte sous l'enseigne et grandit un peu vers le bas.
-2. **L'histoire : on entre dans la maison.** Le titre, et sous lui une vitrine où la devanture se découvre. Pendant une courte pause, la vitrine s'ouvre jusqu'aux bords de l'écran et la photo recule, comme si l'on passait la porte ; le titre, cobalt sur le mur, passe à l'ivoire (sur grand écran, les photos de l'album posées autour s'écartent). Puis trois cartes cobalt, chacune coiffée de la bordure du carreau, glissent par-dessus, l'une après l'autre (1998, 2018, 2026), et chacune, la dernière comprise, reste le temps d'être lue ; l'année en bleu nuit géante arrive de la droite, la photo bouge dans son cadre.
-3. **La broche** : la photo se découvre de bas en haut au rythme du défilement, en reculant depuis un gros plan, puis glisse doucement dans son cadre.
-4. **L'anatomie** : le panneau cobalt monte comme une carte, en retrait des bords et les coins du haut arrondis, et s'élargit jusqu'aux bords en arrivant ; la frise reste droite et entière. La vraie photo du veau-agneau, huit repères posés sur les ingrédients, la légende numérotée. Sur téléphone, une ligne craie lit la planche : elle reste au milieu de l'écran pendant que la photo passe dessous, chaque repère s'allume quand elle le croise, avec son ingrédient dans la légende, et une étiquette le nomme. Pas un écran de plus à faire défiler. Sur grand écran, une planche comme dans un livre de sciences naturelles : la légende de part et d'autre, reliée à chaque repère par un trait qui se dessine.
+1. **Le hero** : le carreau en plein, encadré par ses barres cobalt (en haut l'étiquette et le menu, puis la bordure ornée ; en bas ouvert ou fermé, l'adresse, la carte). Le nom, sur deux plaques de céramique, de part et d'autre de la photo, dans son cadre cobalt. Pas de rideau : la photo se découvre de bas en haut, comme un store qu'on lève, et le nom apparaît.
+   **L'enseigne et la vitrine** : au premier défilement, le hero reste épinglé ; les deux plaques se rejoignent sur un bandeau cobalt accroché sous la frise, comme un fronton, et passent à l'ivoire. La photo remonte sous l'enseigne et grandit jusqu'à la barre du bas, qui reste visible : le haut de page finit comme une devanture complète. Sur grand écran, deux autres photos encadrées (la broche tranchée, l'assiette) montent de part et d'autre : la vitrine. Le haut de page s'arrête net sur sa barre cobalt ; la section suivante commence sur l'ivoire, sans chevauchement ni dégradé.
+2. **L'histoire : on entre dans la maison, puis on lit la frise.** Le titre, et sous lui une vitrine où la devanture se découvre ; pendant une courte pause, elle s'ouvre jusqu'aux bords de l'écran. Puis la frise monte par-dessus, coiffée de la bordure du carreau : une page de journal sur l'ivoire, trois chapitres (1998, 2018, 2026). Sur le côté (en haut sur téléphone), l'année reste en place et **ses chiffres roulent comme un compteur** d'un chapitre à l'autre, les unités d'abord ; la table des chapitres suit la lecture. La presse est citée en grand, comme une coupure. Référence : les frises éditoriales de Freitag, Büro, Mews (Mobbin).
+3. **La broche** : le titre, la photo de la broche dans son format (paysage, jamais agrandie au-delà du fichier), et trois gestes numérotés entre des filets cobalt qui se tracent : la viande entière, la recette du père, tranchée au couteau. Chaque phrase dit un fait vérifié (voir `RECHERCHE-CLIENT.md`).
+4. **L'anatomie** : le panneau cobalt monte comme une carte, en retrait des bords et les coins du haut arrondis, et s'élargit jusqu'aux bords. La vraie photo du veau-agneau, huit repères. **Une ligne lit la planche** de haut en bas au défilement : chaque repère s'allume quand elle le croise, avec son ingrédient. Sur téléphone, la photo passe sous la ligne et une étiquette nomme l'ingrédient. Sur grand écran, la scène reste en place le temps de la lecture : la légende est de part et d'autre, chaque trait se dessine de l'ingrédient au repère quand il est lu, le dernier lu passe au turquoise, la photo recule doucement.
 5. **La carte** : « Tout est fait maison » en grand ; tant qu'il est à l'écran, ses lignes glissent en sens contraires. Puis le carrousel des plats, qu'on feuillette au doigt
 6. **Le grand texte du quartier** : la copie cobalt se dévoile de haut en bas sur sa copie cobalt pâle ; les photos et les avis défilent chacun à sa vitesse.
-7. **Le pied de page** : le panneau cobalt monte comme une carte qui s'élargit, le nom monte en géant au rythme du défilement, le ticket d'adresse (« Afiyet olsun », avec le drapeau) se pose sur le bas des lettres.
+7. **Le pied de page** : le panneau cobalt monte comme une carte qui s'élargit. Ce qu'on vient y chercher, en grand et en ivoire plein : l'adresse (et l'itinéraire), les horaires (et ouvert ou fermé), le téléphone. Puis le nom, d'un bord à l'autre, dont les lettres montent de leur ligne au rythme du défilement. Plus de ticket de travers ni de nom ton sur ton : ils ne se lisaient pas.
 
 Un seul élément décoratif par section : la bordure en tête, ou le cadre cobalt.
 
@@ -154,9 +156,8 @@ en grand, sur un aplat cobalt, jamais par la photo d'un autre plat.
   calligraphie ou de croissants redessinés, pas de clipart « oriental ».
   Toute l'ornementation vient du carreau fourni ; le drapeau est le seul
   symbole ajouté, en petit.
-- Le motif plein derrière du texte courant : il est plein dans le haut de
-  page et dans les bandes, atténué (`--mur`) ailleurs, et le nom est toujours
-  sur une plaque.
+- Le motif derrière du texte courant, plein ou pâli : il n'est que dans le
+  haut de page et dans les bandes, et le nom y est toujours sur une plaque.
 - Plus d'un rouge : `--rouge` pour les prix et les survols, `--drapeau` pour
   le drapeau, c'est tout.
 - Les dégradés, les ombres floues, les icônes génériques.

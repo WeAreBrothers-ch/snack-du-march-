@@ -5,9 +5,10 @@ Site du Snack du Marché, kebab à la broche, Rue Pré-du-Marché 3, 1004 Lausan
 Le site est **une seule page qui se déroule**, pensée d'abord pour le
 téléphone, sur un **mur de faïence d'Iznik** (cobalt, turquoise, rouge), et
 que le défilement anime de bout en bout : le nom qui se
-rassemble sur son enseigne cobalt, au-dessus de la photo, la vitrine qui
-s'ouvre sur l'histoire de la maison, la planche d'anatomie qu'une ligne lit
-de haut en bas, la carte à feuilleter au doigt.
+rassemble sur son enseigne cobalt, au-dessus de la vitrine, la devanture qui
+s'ouvre sur l'histoire de la maison et sa frise à l'année qui roule, la
+planche d'anatomie qu'une ligne lit de haut en bas, la carte à feuilleter au
+doigt.
 
 | Fichier | Ce que c'est |
 |---|---|
@@ -134,8 +135,7 @@ numérotée se passe de traits.
 ### La faïence
 
 Le motif et les bordures sont dans `assets/img/`. Les couleurs, la taille du
-motif (`--maille`), sa transparence hors du haut de page (`--mur`), la hauteur
-des bordures (`--bande-h`) sont des jetons
+motif (`--maille`), la hauteur des bordures (`--bande-h`) sont des jetons
 en tête de `base.css`. Le drapeau de la Turquie est un symbole SVG au début
 de `index.html` (`#drapeau-tr`). Voir `DIRECTION-ARTISTIQUE.md`.
 
@@ -159,12 +159,10 @@ grotesque condensé) et les largeurs `--mot` des plats sans photo dans
 Ce qui a été mesuré (réseau 4G lent et processeur 4× plus lent simulés) et
 corrigé : plus aucune dépendance externe (Google Fonts, jsDelivr), CSS et
 modules chargés en parallèle (`<link>` et `modulepreload`), mise en page
-animée figée dès le premier affichage, fond en une seule image (le voile
-ivoire est cuit dans `img/mur.webp`), mesures des animations calculées une
-fois par état de la page, défilement natif au doigt, carrousel en
-`scroll-snap`, photos chargées au calme une fois la page installée. Si on
-change `--voile-mur` ou le carreau, **refaire `img/mur.webp`** (le carreau à
-40 % sur l'ivoire `#f3eddc`).
+animée figée dès le premier affichage, fond ivoire uni (aucune image en
+fond de page), mesures des animations calculées une fois par état de la page,
+défilement natif au doigt, carrousel en `scroll-snap`, photos chargées au
+calme une fois la page installée.
 
 ---
 

@@ -4,54 +4,89 @@
 
 /* L'accroche ------------------------------------------------------------- */
 
-/* Sur téléphone : le titre, le texte, puis la broche en grand. */
+/* Le titre, la broche dans son format (paysage, jamais agrandie au-delà de
+   la photo), puis les trois gestes, numérotés entre des filets cobalt. */
 .broche {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1.25rem, 5vw, 2rem);
+  display: grid;
+  gap: clamp(1.5rem, 6vw, 2.5rem);
   padding-bottom: clamp(3.5rem, 14vw, 6rem);
 }
 
 .broche__accroche {
   max-width: 16ch;
-  font-size: clamp(2rem, 0.9rem + 3.9vw, 5.75rem);
+  font-size: clamp(2rem, 0.9rem + 3.9vw, 5.5rem);
   color: var(--cobalt);
 }
 
-.broche__texte {
-  max-width: 30ch;
-  font-size: var(--t-lead);
-  line-height: 1.35;
+.broche__apercu {
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--rayon);
+  background: var(--craie);
+}
+
+.broche__apercu img { object-position: 30% 45%; }
+
+.gestes { display: grid; }
+
+.geste {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: clamp(1rem, 4vw, 1.75rem);
+  row-gap: 0.4rem;
+  padding-block: clamp(1.1rem, 4vw, 1.6rem);
+}
+
+/* Le filet : le script le trace de gauche à droite (scaleX). */
+.geste::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: var(--cobalt);
+  transform: scaleX(var(--filet, 1));
+  transform-origin: 0 50%;
+}
+
+.geste__num {
+  grid-row: span 2;
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  color: var(--cobalt);
+}
+
+.geste__titre {
+  font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2.25rem);
+  color: var(--cobalt);
+}
+
+.geste__texte {
+  max-width: 34ch;
+  line-height: 1.45;
   color: var(--texte-doux);
 }
-
-/* La photo de la broche : un cadre cobalt, un filet d'ivoire, comme un
-   carreau encadré. */
-.broche__apercu {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  --epaisseur: clamp(0.4rem, 0.9vw, 0.7rem);
-  border: var(--epaisseur) solid var(--cobalt);
-  /* Arrondi extérieur = arrondi de la photo + épaisseur du cadre : la photo
-     garde ses coins arrondis à l'intérieur, sans coin carré qui dépasse. */
-  border-radius: calc(var(--rayon) + var(--epaisseur));
-}
-
-.broche__apercu img { object-position: 22% 40%; }
 
 /* L'anatomie ------------------------------------------------------------- */
 
 .anatomie {
   position: relative;
   z-index: 1;
-  padding: calc(var(--bande-h) + clamp(2rem, 9vw, 4rem)) var(--marge) clamp(3.5rem, 14vw, 6rem);
+  padding: 0;
   background: var(--panneau);
   color: var(--panneau-texte);
 }
 
+.anatomie__scene {
+  position: relative;
+  padding: calc(var(--bande-h) + clamp(2rem, 9vw, 4rem)) var(--marge) clamp(3.5rem, 14vw, 6rem);
+}
+
 /* La bordure du carreau en tête du panneau. */
-.anatomie::before {
+.anatomie__scene::before {
   content: "";
   position: absolute;
   inset: 0 0 auto;
@@ -243,35 +278,35 @@
 /* Grand écran ------------------------------------------------------------ */
 
 @media (min-width: 992px) {
-  /* L'accroche reste en place, le panneau de l'anatomie monte par-dessus.
-     L'accroche en haut à gauche, le texte en bas, la broche sur toute la
-     hauteur à droite. */
+  /* Le titre sur toute la largeur ; dessous, la broche à gauche (à sa
+     taille, sans agrandissement) et les trois gestes à droite. */
   .broche {
-    position: sticky;
-    top: 0;
-    display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-    grid-template-rows: auto 1fr;
-    grid-template-areas:
-      "titre photo"
-      "texte photo";
-    column-gap: calc(var(--gouttiere) * 2);
-    height: var(--ecran);
-    padding: var(--sous-menu) max(var(--marge), (100% - var(--largeur-max)) / 2) var(--marge);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gouttiere);
+    row-gap: clamp(2.5rem, 6svh, 4.5rem);
+    padding-inline: max(var(--marge), (100% - var(--largeur-max)) / 2);
+    padding-bottom: clamp(6rem, 14svh, 10rem);
   }
 
-  .broche__accroche { grid-area: titre; }
-  .broche__texte { grid-area: texte; align-self: end; }
+  .broche__accroche { grid-column: 1 / -1; max-width: 18ch; }
 
   .broche__apercu {
-    grid-area: photo;
-    height: 100%;
-    aspect-ratio: auto;
+    grid-column: 1 / 8;
+    align-self: start;
+    max-width: 1125px;
   }
+
+  .gestes {
+    grid-column: 8 / -1;
+    align-self: end;
+    padding-left: clamp(0rem, 2vw, 2rem);
+  }
+
+  .geste:last-child { padding-bottom: 0; }
 
   /* L'anatomie : une planche comme dans un livre de sciences naturelles,
      la légende de part et d'autre de la photo, reliée par des traits. */
-  .anatomie {
+  .anatomie__scene {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -279,6 +314,16 @@
     gap: clamp(1rem, 2.5svh, 2rem);
     min-height: var(--ecran);
     padding: calc(var(--bande-h) + var(--sous-menu) * 0.5) var(--marge) var(--marge);
+  }
+
+  /* En mode animé, la planche se lit au défilement : la scène reste en
+     place le temps qu'une ligne la parcoure de haut en bas (broche.js). */
+  html.anime .anatomie { height: calc(var(--ecran) * 2.4); }
+
+  html.anime .anatomie__scene {
+    position: sticky;
+    top: 0;
+    height: var(--ecran);
   }
 
   .anatomie__titre {
@@ -351,5 +396,33 @@
   }
 
   .planche__traits { display: block; }
-  .planche__lecture { display: none; }
+
+  /* La lecture : la ligne passe sur la photo, un peu plus large qu'elle ;
+     chaque ingrédient croisé s'allume, son trait se dessine depuis la
+     légende jusqu'au repère. Le dernier croisé passe au turquoise. */
+  .planche__lecture { left: -1.25rem; right: -1.25rem; }
+  .planche__lecture-nom { display: none; }
+
+  .planche--lue .planche__traits path {
+    stroke-dashoffset: 1;
+    opacity: 0.5;
+    transition: stroke-dashoffset 0.8s var(--sortie), opacity 0.4s var(--sortie);
+  }
+
+  .planche--lue .planche__traits path.est-vu { stroke-dashoffset: 0; }
+  .planche--lue .planche__traits path.est-courant { opacity: 1; stroke: var(--panneau-accent); stroke-width: 2; }
+
+  .planche--lue .planche__ingredient {
+    opacity: 0.3;
+    transition: opacity 0.4s var(--sortie), translate 0.6s var(--sortie);
+  }
+
+  .planche--lue .planche__nom { transition: color 0.4s var(--sortie); }
+  .planche--lue .planche__ingredient.est-courant .planche__nom { color: var(--panneau-accent); }
+  .planche--lue .planche__ingredient.est-courant[data-cote="gauche"] { translate: -0.6rem 0; }
+  .planche--lue .planche__ingredient.est-courant[data-cote="droite"] { translate: 0.6rem 0; }
+
+  .planche--lue .planche__point.est-courant {
+    box-shadow: 0 0 0 3px var(--cobalt), 0 0 0 6px var(--panneau-accent);
+  }
 }

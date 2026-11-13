@@ -35,3 +35,21 @@ export function restaurerDecoupes() {
     }
   });
 }
+
+/**
+ * Découpe un texte en lettres masquées (le nom du pied de page) : chaque
+ * lettre monte de sa propre fente.
+ * @param {any} SplitText
+ * @param {HTMLElement} cible
+ * @returns {{ chars: HTMLElement[], revert: () => void }}
+ */
+export function decouperEnLettres(SplitText, cible) {
+  const decoupe = SplitText.create(cible, {
+    type: "chars",
+    mask: "chars",
+    charsClass: "lettre",
+    reduceWhiteSpace: false,
+  });
+  decoupesActives.push(decoupe);
+  return decoupe;
+}

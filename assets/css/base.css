@@ -29,17 +29,12 @@
   --panneau-survol:     var(--turquoise);
   --panneau-accent:     #7fd4e8;   /* turquoise clair : les années, lisibles sur le cobalt */
 
-  /* La faïence en fond. --maille : la largeur d'un motif (un carreau en fait
-     deux de haut). --mur : le motif très atténué, pour tout le site ; il
-     reste plein dans le haut de page et dans les bandes. */
+  /* La faïence. --maille : la largeur d'un motif (un carreau en fait deux de
+     haut). Le motif n'est plein que dans le haut de page et dans les frises ;
+     partout ailleurs, le mur est un ivoire uni : le texte s'y lit, et le
+     carreau garde sa force là où il est. */
   --maille: clamp(13rem, 11rem + 9vw, 21rem);
   --carreau: url("../img/carreau-iznik.webp");
-  /* Le voile ivoire est cuit dans l'image (mur.webp = le carreau à 40 %, sur
-     l'ivoire du mur) : une seule image à peindre, au lieu d'un dégradé
-     superposé à une image sur toute la hauteur de la page. --voile-mur ne
-     sert plus qu'au dégradé de la jonction du haut de page (histoire.css). */
-  --voile-mur: rgba(243, 237, 220, 0.6);
-  --mur: url("../img/mur.webp");
   --bande-h: clamp(2.25rem, 1.8rem + 2vw, 3.5rem);
   --bande-h-url: url("../img/bande-h.webp");
   --bande-v-url: url("../img/bande-v.webp");
@@ -91,7 +86,7 @@ html {
 }
 
 body {
-  background: var(--mur) 0 0 / var(--maille) auto;
+  background: var(--fond);
   color: var(--encre);
   font-family: var(--f-texte);
   font-size: var(--t-corps);

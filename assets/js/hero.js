@@ -19,13 +19,6 @@
 import { element, elements, positionDans, SCRUB } from "./lib.js";
 
 /**
- * Part du bas du haut de page que la section suivante recouvre en montant
- * (histoire.css, 15 %), plus la jonction en dégradé qui la précède : la
- * photo, en grandissant, s'arrête au-dessus.
- */
-const RECOUVREMENT = 0.22;
-
-/**
  * Crée et lance l'entrée. Les états de départ sont posés immédiatement, avant
  * que la page ne retire son masque d'attente (classe « anime »).
  *
@@ -81,6 +74,8 @@ export function initEnseigne(outils, bureau) {
   const droite = element(".hero__mot--droite");
 
   const bordure = element(".hero__bande");
+  const coteGauche = element(".hero__cote--gauche");
+  const coteDroite = element(".hero__cote--droite");
   const titre = element(".hero__titre");
   const bas = element(".hero__bas");
 
@@ -141,8 +136,30 @@ export function initEnseigne(outils, bureau) {
     const cible = dessus + bande + 6 + Math.max(16, hauteur * 0.03);
     const monte = Math.min(0, cible - posCadre.y);
     const haut = posCadre.y + monte;
-    const limite = Math.min(positionDans(bas, hero).y, hauteur * (1 - RECOUVREMENT)) - ecart;
-    const croissance = Math.max(1, Math.min(bureau ? 1.12 : 1.3, (limite - haut) / cadre.offsetHeight));
+    const limite = positionDans(bas, hero).y - 6 - Math.max(16, hauteur * 0.03);
+    const croissance = Math.max(1, Math.min(bureau ? 1.25 : 1.3, (limite - haut) / cadre.offsetHeight));
+
+    // La vitrine (grand écran) : deux photos un peu plus petites que la
+    // photo du milieu, centrées sur elle, de part et d'autre, entre les
+    // bordures latérales.
+    if (bureau) {
+      const hauteurFinale = cadre.offsetHeight * croissance;
+      const largeurFinale = cadre.offsetWidth * croissance;
+      const milieu = posCadre.x + cadre.offsetWidth / 2;
+      const ecartCote = Math.max(20, largeur * 0.018);
+      const bordure = parseFloat(getComputedStyle(titre).paddingLeft);
+      const cadreCote = parseFloat(getComputedStyle(coteGauche).paddingLeft) * 2;
+      const dispo = milieu - largeurFinale / 2 - ecartCote - bordure;
+      const hauteurCote = Math.min(hauteurFinale * 0.8, (dispo * 4) / 3);
+      const largeurCote = hauteurCote * 0.75;
+      const exterieurL = largeurCote + cadreCote;
+      const exterieurH = hauteurCote + cadreCote;
+      hero.style.setProperty("--cote-largeur", `${largeurCote}px`);
+      hero.style.setProperty("--cote-hauteur", `${hauteurCote}px`);
+      hero.style.setProperty("--cote-haut", `${haut + (hauteurFinale - exterieurH) / 2}px`);
+      hero.style.setProperty("--cote-gauche", `${milieu - largeurFinale / 2 - ecartCote - exterieurL}px`);
+      hero.style.setProperty("--cote-droite", `${milieu + largeurFinale / 2 + ecartCote}px`);
+    }
 
     return {
       echelle,
@@ -233,6 +250,24 @@ export function initEnseigne(outils, bureau) {
     scene.to([gauche, droite], { ...effacer, duration: 0.35 }, 0.4);
   } else {
     scene.to(gauche, { ...effacer, duration: 0.25 }, 0.42).to(droite, { ...effacer, duration: 0.25 }, 0.55);
+  }
+
+  // La vitrine : les deux photos de côté montent et se découvrent de bas en
+  // haut, la gauche puis la droite, pendant que la photo du milieu grandit.
+  if (bureau) {
+    scene
+      .fromTo(
+        [coteGauche, coteDroite],
+        { y: 60, clipPath: "inset(100% 0% 0% 0%)" },
+        { y: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, stagger: 0.1, ease: "power3.out" },
+        0.4,
+      )
+      .fromTo(
+        [element("img", coteGauche), element("img", coteDroite)],
+        { scale: 1.25 },
+        { scale: 1, duration: 0.6, stagger: 0.1, ease: "power2.out" },
+        0.4,
+      );
   }
 
   // Un temps d'arrêt sur l'enseigne complète avant que la page ne reparte.

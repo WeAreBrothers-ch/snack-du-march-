@@ -1,14 +1,16 @@
 /**
  * Le pied de page : le panneau cobalt monte comme une carte qui s'élargit
- * jusqu'aux bords, comme celui de l'anatomie ; le nom monte en géant depuis le bas au rythme du
- * défilement, et le ticket d'adresse vient se poser dessus.
+ * jusqu'aux bords, comme celui de l'anatomie. Les trois blocs (adresse,
+ * horaires, téléphone) arrivent l'un après l'autre ; le nom monte lettre à
+ * lettre depuis sa ligne, au rythme du défilement, jusqu'au bas de la page.
  */
 
 import { element, elements, SCRUB } from "./lib.js";
+import { decouperEnLettres } from "./texte.js";
 
 /** @param {import("./lib.js").Outils} outils */
 export function initPied(outils) {
-  const { gsap } = outils;
+  const { gsap, SplitText } = outils;
 
   // La découpe est animée telle quelle (et non par des variables CSS, qui
   // recalculeraient le style de tout le panneau à chaque image).
@@ -34,29 +36,29 @@ export function initPied(outils) {
     },
   );
 
-  gsap
-    .timeline({
-      defaults: { ease: "none" },
-      scrollTrigger: { trigger: ".pied", start: "top 85%", end: "top 25%", scrub: SCRUB },
-    })
-    .fromTo(elements(".pied__ligne"), { yPercent: 110 }, { yPercent: 0, stagger: 0.25, duration: 1, ease: "power2.out" })
-    .fromTo(
-      element("[data-pied-carte]"),
-      { autoAlpha: 0, yPercent: -60 },
-      { autoAlpha: 1, yPercent: 0, duration: 0.8, ease: "power2.out" },
-      0.55,
-    );
-
   gsap.fromTo(
-    elements(".pied__bas > *"),
-    { autoAlpha: 0, y: 14 },
+    elements(".pied__voeu, .pied__bloc"),
+    { autoAlpha: 0, y: 24 },
     {
       autoAlpha: 1,
       y: 0,
-      stagger: 0.08,
-      duration: 0.6,
+      duration: 0.8,
+      stagger: 0.1,
       ease: "power3.out",
-      scrollTrigger: { trigger: ".pied__bas", start: "top 98%", toggleActions: "play none none reverse" },
+      scrollTrigger: { trigger: ".pied__infos", start: "top 92%", toggleActions: "play none none reverse" },
+    },
+  );
+
+  // Les lettres montent de leur ligne (un masque par lettre).
+  const nom = decouperEnLettres(SplitText, element(".pied__nom"));
+  gsap.fromTo(
+    nom.chars,
+    { yPercent: 105 },
+    {
+      yPercent: 0,
+      ease: "power2.out",
+      stagger: 0.04,
+      scrollTrigger: { trigger: ".pied__nom", start: "top bottom", end: "bottom bottom", scrub: SCRUB },
     },
   );
 }

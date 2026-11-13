@@ -7,13 +7,13 @@
  * recule comme si l'on passait la porte. Sur grand écran, les photos de
  * l'album s'écartent pour lui faire place.
  *
- * Puis les trois cartes s'empilent (l'empilement lui-même est en CSS, avec
- * position: sticky) : chacune glisse par-dessus la précédente, qui recule et
- * s'assombrit. Pendant qu'une carte est à l'écran, sa grande année glisse
- * de côté et sa photo prend de la profondeur, au rythme du défilement.
+ * Puis la frise monte par-dessus la devanture, qui recule et s'assombrit :
+ * trois chapitres, et sur le côté l'année, dont les chiffres roulent d'un
+ * chapitre à l'autre, comme un compteur.
  *
- * Les déclencheurs sont posés sur la section et sur les pauses, jamais sur
- * l'intro ni sur les cartes : un élément collé fausserait les mesures.
+ * Les déclencheurs sont posés sur la section, la pause et les chapitres,
+ * jamais sur l'intro ni sur le repère : un élément collé fausserait les
+ * mesures.
  */
 
 import { element, elements, positionDans, SCRUB } from "./lib.js";
@@ -24,35 +24,13 @@ import { decouperEnLignes } from "./texte.js";
  * @param {boolean} bureau
  */
 export function initHistoire(outils, bureau) {
-  // La pause qui suit l'intro, puis celle qui suit chaque carte (la
-  // dernière comprise : elle reste, elle aussi, le temps d'être lue).
-  const pauses = elements(".histoire__pause");
-  const [pauseIntro] = pauses;
+  const pauseIntro = element(".histoire__pause--intro");
 
   initIntro(outils, bureau, pauseIntro);
-  reculer(outils, element(".histoire__intro"), element(".histoire__recul"), pauseIntro, {}, bureau);
-
-  const etapes = elements(".etape");
-  etapes.forEach((etape, index) => {
-    const avant = pauses[index];
-    const apres = pauses[index + 1];
-
-    revelerEtape(outils, etape, { trigger: avant, start: "bottom 55%" });
-    animerPendant(outils, etape, avant, apres);
-
-    // La dernière carte n'est recouverte par rien : après sa pause, elle
-    // s'en va avec la section.
-    if (apres && index < etapes.length - 1) {
-      reculer(
-        outils,
-        etape,
-        element(".etape__voile", etape),
-        apres,
-        { rotate: bureau ? (index % 2 === 0 ? 1.5 : -1.5) : 0 },
-        bureau,
-      );
-    }
-  });
+  // Quand la frise monte par-dessus la devanture, celle-ci recule et
+  // s'assombrit.
+  reculer(outils, element(".histoire__intro"), element(".histoire__recul"), pauseIntro, bureau);
+  initFrise(outils);
 }
 
 /**
@@ -197,14 +175,12 @@ function initIntro(outils, bureau, pauseIntro) {
  * @param {HTMLElement} panneau
  * @param {HTMLElement} voile
  * @param {HTMLElement} pause la pause qui défile pendant ce temps
- * @param {Record<string, number>} proprietes
  * @param {boolean} bureau
  */
-function reculer(outils, panneau, voile, pause, proprietes, bureau) {
+function reculer(outils, panneau, voile, pause, bureau) {
   const parcours = { trigger: pause, start: "bottom bottom", end: "bottom top", scrub: SCRUB };
   outils.gsap.to(panneau, {
-    scale: bureau ? 0.9 : 0.94,
-    ...proprietes,
+    scale: bureau ? 0.92 : 0.94,
     ease: "none",
     scrollTrigger: parcours,
   });
@@ -212,66 +188,83 @@ function reculer(outils, panneau, voile, pause, proprietes, bureau) {
 }
 
 /**
- * Tant que la carte est à l'écran (de son arrivée au moment où la suivante
- * l'a recouverte) : l'année glisse depuis la droite jusqu'à sa place, la
- * photo prend de la profondeur.
+ * La frise. L'année du repère est un compteur : entre deux chapitres, ses
+ * chiffres roulent jusqu'à la nouvelle année, au rythme du défilement (les
+ * unités d'abord, comme un vrai compteur). La table des chapitres suit la
+ * lecture. Chaque chapitre se découvre en arrivant : la photo de bas en
+ * haut, puis glisse doucement dans son cadre ; le titre et le récit montent
+ * ligne par ligne.
  * @param {import("./lib.js").Outils} outils
- * @param {HTMLElement} etape
- * @param {HTMLElement} avant
- * @param {HTMLElement | undefined} apres
  */
-function animerPendant(outils, etape, avant, apres) {
-  const { gsap } = outils;
-  const fin = apres || ".histoire";
+function initFrise(outils) {
+  const { gsap, ScrollTrigger, SplitText } = outils;
 
-  // L'année est en place quand la carte suivante commence à monter.
-  gsap.fromTo(
-    element(".etape__annee", etape),
-    { xPercent: 30 },
-    {
-      xPercent: 0,
-      ease: "power1.out",
-      scrollTrigger: { trigger: avant, start: "bottom bottom", endTrigger: fin, end: "bottom bottom", scrub: true },
-    },
-  );
-  // La photo glisse dans son cadre jusqu'à ce que la carte soit recouverte.
-  gsap.fromTo(
-    element(".etape__cadre img", etape),
-    { yPercent: -8, scale: 1.18 },
-    {
-      yPercent: 8,
-      scale: 1.18,
-      ease: "none",
-      scrollTrigger: { trigger: avant, start: "bottom bottom", endTrigger: fin, end: "bottom top", scrub: true },
-    },
-  );
-}
+  const roues = elements(".roue__bande");
+  const chapitres = elements(".chapitre");
+  const entrees = elements("[data-frise-entree]");
+  const chiffres = (/** @type {HTMLElement} */ chapitre) =>
+    (chapitre.dataset.annee || "0000").split("").map(Number);
 
-/**
- * Fait monter l'année, le titre et le texte d'une carte ; découvre sa photo.
- * @param {import("./lib.js").Outils} outils
- * @param {HTMLElement} etape
- * @param {{ trigger: HTMLElement | string, start: string }} declencheur
- */
-function revelerEtape(outils, etape, declencheur) {
-  const { gsap, SplitText } = outils;
-  const annee = decouperEnLignes(SplitText, element(".etape__annee", etape));
-  const titre = decouperEnLignes(SplitText, element(".etape__titre", etape));
-  const texte = decouperEnLignes(SplitText, element(".etape__texte", etape));
-  const cadre = element(".etape__cadre", etape);
+  chiffres(chapitres[0]).forEach((chiffre, index) => {
+    gsap.set(roues[index], { yPercent: -chiffre * 10 });
+  });
 
-  gsap
-    .timeline({
-      defaults: { ease: "power3.out" },
-      scrollTrigger: { ...declencheur, toggleActions: "play none none reverse" },
-    })
-    .fromTo(annee.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.9 })
-    .fromTo(titre.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.08 }, "<0.1")
-    .fromTo(texte.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.05 }, "<0.1")
-    .fromTo(
-      cadre,
-      { clipPath: "inset(100% 0% 0% 0%)" },
-      { clipPath: "inset(0% 0% 0% 0%)", duration: 1, ease: "power3.inOut" },
-      "<",
+  chapitres.forEach((chapitre, index) => {
+    // Le chapitre en cours, dans la table.
+    ScrollTrigger.create({
+      trigger: chapitre,
+      start: "top 60%",
+      end: "bottom 60%",
+      onToggle: (/** @type {any} */ declencheur) => {
+        if (!declencheur.isActive) return;
+        entrees.forEach((entree, rang) => entree.classList.toggle("est-courante", rang === index));
+      },
+    });
+
+    if (index > 0) {
+      const de = chiffres(chapitres[index - 1]);
+      const vers = chiffres(chapitre);
+      const roulement = gsap.timeline({
+        scrollTrigger: { trigger: chapitre, start: "top 90%", end: "top 45%", scrub: SCRUB },
+      });
+      roues.forEach((roue, rang) => {
+        if (de[rang] === vers[rang]) return;
+        roulement.fromTo(
+          roue,
+          { yPercent: -de[rang] * 10 },
+          { yPercent: -vers[rang] * 10, duration: 1, ease: "power2.inOut", immediateRender: false },
+          (roues.length - 1 - rang) * 0.15,
+        );
+      });
+    }
+
+    const photo = element(".chapitre__photo", chapitre);
+    const image = element("img", photo);
+    const titre = decouperEnLignes(SplitText, element(".chapitre__titre", chapitre));
+    const recit = decouperEnLignes(SplitText, element(".chapitre__recit", chapitre));
+    const citation = chapitre.querySelector(".chapitre__citation");
+
+    const entree = gsap
+      .timeline({
+        defaults: { ease: "power3.out" },
+        scrollTrigger: { trigger: chapitre, start: "top 78%", toggleActions: "play none none reverse" },
+      })
+      .fromTo(photo, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "power3.inOut" })
+      .fromTo(titre.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.08 }, 0.35);
+    if (citation) {
+      entree.fromTo(citation, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.45);
+    }
+    entree.fromTo(recit.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.05 }, 0.5);
+
+    gsap.fromTo(
+      image,
+      { yPercent: -6, scale: 1.14 },
+      {
+        yPercent: 6,
+        scale: 1.14,
+        ease: "none",
+        scrollTrigger: { trigger: photo, start: "top bottom", end: "bottom top", scrub: true },
+      },
     );
+  });
 }

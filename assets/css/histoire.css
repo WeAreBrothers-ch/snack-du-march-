@@ -1,5 +1,5 @@
 /* ==========================================================================
-   L'histoire — une intro et son album, puis trois cartes qui s'empilent
+   L'histoire — une intro et son album, puis la frise des trois chapitres
    ========================================================================== */
 
 .histoire { position: relative; }
@@ -59,26 +59,6 @@
 /* L'intro devient une scène plein écran, collée en haut comme les cartes qui
    glisseront par-dessus. Le titre est posé au-dessus d'une vitrine ; pendant
    une courte pause, la devanture s'y ouvre en grand (histoire.js). */
-/* La section monte un peu par-dessus la fin du haut de page : elle couvre
-   le bandeau du bas (adresse, ouvert ou fermé), jamais la photo, qui
-   s'arrête plus haut (hero.js, RECOUVREMENT). */
-html.anime .histoire {
-  z-index: 1;
-  margin-top: calc(var(--ecran) * -0.15);
-}
-
-/* La jonction avec le haut de page : au lieu d'une coupe franche entre le
-   motif plein et le motif voilé, le motif plein se voile peu à peu, jusqu'au
-   même voile que le mur d'en dessous. */
-html.anime .histoire::before {
-  content: "";
-  position: absolute;
-  inset: auto 0 100%;
-  height: clamp(3rem, 7svh, 4.5rem);
-  background: linear-gradient(rgba(243, 237, 220, 0), var(--voile-mur));
-  pointer-events: none;
-}
-
 /* L'espace qui sépare d'habitude les sections n'a pas lieu d'être ici. */
 html.anime .accueil + .espace { display: none; }
 
@@ -87,7 +67,7 @@ html.anime .histoire__intro {
   top: 0;
   /* D'un bord à l'autre de l'écran, par-dessus la marge de la section. */
   margin: calc(var(--marge) * -1) calc(var(--marge) * -1) 0;
-  background: var(--mur) 0 0 / var(--maille) auto;
+  background: var(--fond);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -154,123 +134,6 @@ html.anime .histoire__pause--intro {
   html.anime .histoire__photos { display: none; }
 }
 
-/* Les étapes ------------------------------------------------------------- */
-
-/* Trois cartes qui s'empilent : chacune reste collée en haut de l'écran le
-   temps d'être lue, puis la suivante glisse par-dessus. Le fond couvre tout
-   l'écran (barres du navigateur repliées) ; le contenu tient dans la part
-   toujours visible (barres déployées), d'où le bas qui compense. */
-.etape {
-  position: sticky;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.75rem, 2.2svh, 1.5rem);
-  height: var(--ecran);
-  padding:
-    calc(var(--bande-h) + clamp(0.9rem, 2.6svh, 1.75rem))
-    var(--marge)
-    calc(var(--ecran) - var(--ecran-visible) + var(--marge));
-  overflow: hidden;
-  background: var(--panneau);
-  color: var(--panneau-texte);
-}
-
-/* Le temps de lire : entre deux cartes, un peu de défilement où la carte
-   reste seule à l'écran. */
-.histoire__pause {
-  height: calc(var(--ecran-visible) * 0.35);
-}
-
-/* La bordure du carreau court en haut de chaque carte : on la voit arriver
-   avant le reste, quand la carte glisse par-dessus la précédente. */
-.etape::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: var(--bande-h);
-  background: var(--bande-h-url) repeat-x 0 50% / auto 100%;
-  box-shadow: 0 3px 0 var(--craie);
-}
-
-/* Un voile sombre, piloté par le script, recouvre la carte du dessous quand la
-   suivante glisse par-dessus. Un voile plutôt qu'une transparence : rien ne
-   doit apparaître au travers. Un calque à part, dont seule l'opacité change :
-   pas de repeinte de la carte à chaque image. */
-.etape__voile {
-  position: absolute;
-  inset: 0;
-  background: var(--nuit);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.etape__contenu {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.5rem, 1.6svh, 1rem);
-}
-
-/* L'année et le texte suivent aussi la hauteur de l'écran : sur un petit
-   téléphone, la photo garde sa place. */
-.etape__annee {
-  font-family: var(--f-titre);
-  font-weight: 900;
-  font-size: min(22vw, 11svh);
-  line-height: 0.78;
-  letter-spacing: -0.02em;
-  color: var(--panneau-accent);
-}
-
-.etape__tete {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.4rem, 1.2vw, 1.25rem);
-  max-width: 36rem;
-}
-
-.etape__texte {
-  font-size: clamp(1.0625rem, 2.9svh, 1.25rem);
-  line-height: 1.4;
-  color: var(--panneau-texte-doux);
-}
-
-/* La photo, comme un tirage : un cadre ivoire, des coins doux. Elle prend
-   toute la hauteur qui reste. */
-.etape__cadre {
-  flex: 1;
-  min-height: 0;
-  width: 100%;
-  overflow: hidden;
-  border: clamp(0.3rem, 0.6vw, 0.6rem) solid var(--craie);
-  border-radius: calc(var(--rayon) + clamp(0.3rem, 0.6vw, 0.6rem));
-  background: var(--craie);
-}
-
-/* La photo prise en paysage garde son format pour être vue en entier, en
-   bas de la carte. */
-.etape__cadre--paysage {
-  flex: 0 1 auto;
-  aspect-ratio: 4 / 3;
-  margin-top: auto;
-}
-
-.etape__cadre--paysage img { object-position: center 30%; }
-
-/* Sur téléphone, les cartes vont d'un bord à l'autre de l'écran, comme
-   l'intro : une carte plus étroite que l'intro qui recule laissait voir
-   celle-ci en bandes sombres sur les côtés. La dernière carte, qui s'en va
-   avec la section, laisse sa photo descendre dans la place réservée aux
-   barres du navigateur : en partant, elle ne montre pas un pan de cobalt
-   vide sous la photo, seulement la marge. */
-@media (max-width: 991px) {
-  .histoire__etapes { margin-inline: calc(var(--marge) * -1); }
-
-  .etape:last-of-type .etape__cadre {
-    margin-bottom: calc(var(--ecran-visible) - var(--ecran));
-  }
-}
-
 /* Tablette : l'album sur une ligne. */
 @media (min-width: 600px) {
   .histoire__photos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -328,48 +191,234 @@ html.anime .histoire__pause--intro {
 
   /* En mode animé, la devanture est la vitrine elle-même : pas de doublon. */
   html.anime .histoire__cadre:nth-child(2) { display: none; }
+}
 
-  /* Les cartes : le texte d'un côté, la photo de l'autre ; l'année en haut,
-     le titre et le texte en bas de leur colonne. */
-  .etape {
+/* L'intro forme sa propre pile : ses calques (devanture, voile, recul) ne
+   passent jamais devant la frise qui monte par-dessus. */
+html.anime .histoire__intro { z-index: 0; }
+
+/* La frise ----------------------------------------------------------------- */
+
+/* Une page de journal sur le mur ivoire : coiffée de la bordure du carreau,
+   elle monte par-dessus la devanture. Sur le côté (en haut, sur téléphone),
+   le repère : l'année, dont les chiffres roulent d'un chapitre à l'autre, et
+   la table des chapitres. */
+.frise {
+  position: relative;
+  z-index: 1;
+  margin: 0 calc(var(--marge) * -1) calc(var(--marge) * -1);
+  padding: calc(var(--bande-h) + clamp(1.5rem, 6vw, 5rem)) var(--marge) clamp(4rem, 12vw, 9rem);
+  background: var(--fond);
+}
+
+.frise::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--bande-h);
+  background: var(--bande-h-url) repeat-x 0 50% / auto 100%;
+  box-shadow: 0 3px 0 var(--craie), 0 6px 0 var(--cobalt);
+}
+
+/* Le repère. Sur téléphone, une barre qui reste en haut de l'écran : l'année
+   à gauche, le chapitre en cours à côté (le bouton « Menu » flotte à
+   droite). */
+.frise__repere {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 calc(var(--marge) * -1) clamp(1.5rem, 6vw, 2.5rem);
+  padding: 0.6rem calc(var(--marge) + 6rem) 0.6rem var(--marge);
+  background: var(--fond);
+  box-shadow: 0 2px 0 var(--cobalt);
+}
+
+.frise__annee {
+  display: flex;
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-size: clamp(2.75rem, 13vw, 4.25rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--cobalt);
+}
+
+/* Un chiffre du compteur : une fenêtre d'un chiffre de haut, et derrière,
+   la bande de 0 à 9 que le script fait rouler. */
+.roue {
+  display: block;
+  height: 1em;
+  overflow: hidden;
+}
+
+.roue__bande {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  will-change: transform;
+}
+
+.roue__bande > span {
+  display: block;
+  height: 1em;
+}
+
+.frise__table {
+  display: grid;
+  min-width: 0;
+}
+
+.frise__entree {
+  display: none;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--f-titre);
+  font-weight: 700;
+  font-size: var(--t-label);
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cobalt);
+}
+
+/* Sur téléphone, seul le chapitre en cours, sans son année (elle est déjà
+   en grand). */
+.frise__entree.est-courante { display: flex; }
+.frise__entree > span + span { display: none; }
+
+/* Les chapitres ------------------------------------------------------------ */
+
+.frise__chapitres {
+  display: grid;
+  gap: clamp(4rem, 16vw, 7rem);
+}
+
+.chapitre {
+  display: grid;
+  gap: clamp(1.25rem, 5vw, 2rem);
+}
+
+.chapitre__photo {
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--rayon);
+  background: var(--craie);
+}
+
+.chapitre:nth-child(1) .chapitre__photo { aspect-ratio: 1; }
+.chapitre:nth-child(3) .chapitre__photo { aspect-ratio: 3 / 2; }
+.chapitre:nth-child(3) .chapitre__photo img { object-position: center 30%; }
+
+.chapitre__texte {
+  display: grid;
+  gap: clamp(0.75rem, 3vw, 1.25rem);
+  max-width: 38rem;
+}
+
+/* L'année de chaque chapitre : visible sans animation ; en mode animé, le
+   compteur la dit déjà (elle reste pour les lecteurs d'écran). */
+.chapitre__annee {
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-size: var(--t-h3);
+  line-height: 1;
+  color: var(--cobalt);
+}
+
+html.anime .chapitre__annee {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+html:not(.anime) .frise__repere { display: none; }
+
+.chapitre__titre {
+  font-size: var(--t-h3);
+  color: var(--cobalt);
+}
+
+.chapitre__recit {
+  font-size: var(--t-lead);
+  line-height: 1.38;
+  color: var(--texte-doux);
+}
+
+/* La citation de la presse : en grand, comme une coupure de journal. */
+.chapitre__citation {
+  padding-left: clamp(0.9rem, 3vw, 1.5rem);
+  border-left: 3px solid var(--rouge);
+  font-family: var(--f-titre);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 1rem + 1.6vw, 2.5rem);
+  line-height: 1.12;
+  color: var(--encre);
+}
+
+.chapitre__citation cite {
+  display: block;
+  margin-top: 0.6rem;
+  font-family: var(--f-texte);
+  font-weight: 400;
+  font-size: var(--t-petit);
+  font-style: normal;
+  color: var(--texte-doux);
+}
+
+/* Grand écran : le repère sur la gauche, les chapitres à droite ----------- */
+
+@media (min-width: 992px) {
+  .frise {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     column-gap: calc(var(--gouttiere) * 2);
-    padding: calc(var(--bande-h) + var(--sous-menu) * 0.6) max(var(--marge), (100% - var(--largeur-max)) / 2) var(--marge);
+    padding-inline: max(var(--marge), (100% - var(--largeur-max)) / 2);
   }
 
-  /* Le texte est en bas de sa colonne : la carte suivante le recouvrirait
-     d'emblée. La pause est plus longue. */
-  .histoire__pause { height: calc(var(--ecran) * 0.6); }
-
-  .etape__contenu {
-    justify-content: space-between;
-    min-height: 0;
+  .frise__repere {
+    top: calc(var(--sous-menu) + 1rem);
+    align-self: start;
+    flex-direction: column;
+    align-items: stretch;
+    gap: clamp(1.5rem, 4svh, 3rem);
+    margin: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
   }
 
-  .etape--inverse .etape__contenu { order: 2; }
+  .frise__annee { font-size: clamp(7rem, 12.5vw, 15rem); line-height: 0.95; }
+  .roue, .roue__bande > span { height: 0.95em; }
 
-  .etape__annee { font-size: clamp(6rem, 11.5vw, 13.5rem); }
-  .etape__texte { font-size: var(--t-lead); line-height: 1.35; }
-
-  .etape__cadre {
-    flex: none;
-    align-self: center;
-    justify-self: end;
-    width: auto;
-    max-width: 100%;
-    height: 100%;
-    max-height: 60rem;
-    aspect-ratio: 3 / 4;
+  /* La table des chapitres : les trois, entre des filets ; celui qu'on lit
+     en cobalt plein. */
+  .frise__entree,
+  .frise__entree.est-courante {
+    display: flex;
+    padding-block: 0.9rem;
+    border-top: 1px solid var(--trait);
+    color: rgba(18, 38, 160, 0.4);
+    transition: color 0.4s var(--sortie);
   }
 
-  .etape--inverse .etape__cadre { justify-self: start; }
+  .frise__entree:last-child { border-bottom: 1px solid var(--trait); }
+  .frise__entree.est-courante { color: var(--cobalt); }
+  .frise__entree > span + span { display: inline; }
 
-  .etape__cadre--paysage {
-    width: 100%;
-    max-width: 44rem;
-    height: auto;
-    margin-top: 0;
-    aspect-ratio: 3 / 2;
-  }
+  .frise__chapitres { gap: clamp(8rem, 22svh, 16rem); }
+
+  /* Sans animation, pas de repère : les chapitres prennent la largeur. */
+  html:not(.anime) .frise { display: block; }
+
+  .chapitre { gap: clamp(1.5rem, 3svh, 2.5rem); }
+
+  .chapitre__photo { width: min(100%, 34rem); max-height: 68svh; }
+  .chapitre:nth-child(1) .chapitre__photo { width: min(100%, 36rem); }
+  .chapitre:nth-child(3) .chapitre__photo { width: min(100%, 42rem); }
 }

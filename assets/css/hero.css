@@ -269,3 +269,31 @@ html.anime .hero {
   .hero__adresse { justify-self: start; }
   .hero__descendre { justify-self: end; }
 }
+
+/* La vitrine : deux photos encadrées qui montent de part et d'autre de la
+   photo quand le nom est sur l'enseigne (grand écran, mode animé). Le script
+   les place (hero.js) ; elles attendent, découpées à zéro, de se découvrir
+   de bas en haut. */
+.hero__cote { display: none; }
+
+@media (min-width: 992px) {
+  html.anime .hero__cote {
+    --cadre: clamp(0.5rem, 0.3rem + 0.6vw, 0.9rem);
+    position: absolute;
+    top: var(--cote-haut, 0);
+    z-index: 1;
+    display: block;
+    padding: var(--cadre);
+    background: var(--cobalt);
+    border-radius: calc(var(--rayon) + var(--cadre) * 0.5);
+    clip-path: inset(100% 0% 0% 0%);
+  }
+
+  html.anime .hero__cote--gauche { left: var(--cote-gauche, 0); }
+  html.anime .hero__cote--droite { left: var(--cote-droite, 0); }
+
+  .hero__cote .hero__image {
+    width: var(--cote-largeur, 10rem);
+    height: var(--cote-hauteur, 13rem);
+  }
+}

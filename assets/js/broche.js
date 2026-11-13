@@ -1,15 +1,14 @@
 /**
- * La broche : l'accroche monte ligne par ligne, et la photo de la broche se
- * découvre de bas en haut au rythme du défilement, en reculant depuis un
- * gros plan ; elle glisse ensuite doucement dans son cadre. Sur grand écran,
- * l'accroche reste en place (CSS) et recule pendant que le panneau de
- * l'anatomie monte par-dessus.
+ * La broche : l'accroche monte ligne par ligne, la photo se découvre de bas
+ * en haut au rythme du défilement, puis les trois gestes arrivent : chaque
+ * filet se trace, le numéro, le titre et le texte montent.
  *
- * L'anatomie : le panneau cobalt monte comme une carte qui s'élargit ; le titre
- * monte et la photo se découvre. Sur grand écran, la planche se dessine
- * ensuite d'un seul geste : la légende, les traits qui vont de chaque
- * ingrédient à son repère, les repères eux-mêmes. Sur téléphone, une ligne
- * lit la planche au défilement (lirePlanche).
+ * L'anatomie : le panneau cobalt monte comme une carte qui s'élargit ; le
+ * titre monte et la photo se découvre. Puis une ligne lit la planche au
+ * défilement (lirePlanche) : chaque ingrédient croisé s'allume. Sur grand
+ * écran, la scène reste en place pendant la lecture (CSS) et le trait de
+ * chaque ingrédient se dessine jusqu'à son repère ; sur téléphone, la photo
+ * passe sous la ligne.
  */
 
 import { element, elements, SCRUB } from "./lib.js";
@@ -25,45 +24,41 @@ export function initBroche(outils, bureau, planche) {
   const { gsap, SplitText } = outils;
 
   const accroche = decouperEnLignes(SplitText, element(".broche__accroche"));
-  const texte = decouperEnLignes(SplitText, element(".broche__texte"));
   const apercu = element(".broche__apercu");
 
-  // Les déclencheurs visent le bloc, jamais la section : sur grand écran,
-  // elle reste collée en haut de l'écran et fausserait les mesures.
-  gsap
-    .timeline({
-      defaults: { ease: "power3.out" },
-      scrollTrigger: { trigger: ".broche-bloc", start: "top 70%", toggleActions: "play none none reverse" },
-    })
-    .fromTo(accroche.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.9, stagger: 0.08 })
-    .fromTo(texte.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.05 }, "<0.25");
-
-  const decouvrir = {
-    clipPath: "inset(0% 0% 0% 0%)",
-    duration: 1.1,
-    ease: "power3.inOut",
-  };
-
-  // Sur grand écran, la photo occupe la colonne de droite : elle se découvre
-  // pendant que la section entre dans l'écran. Sur téléphone, elle est sous
-  // le texte : elle se découvre en y entrant.
-  devoiler(
-    outils,
-    apercu,
-    bureau
-      ? { trigger: ".broche-bloc", start: "top 85%", end: "top top" }
-      : { trigger: apercu, start: "top bottom", end: "center 55%" },
+  gsap.fromTo(
+    accroche.lines,
+    { yPercent: 120 },
+    {
+      yPercent: 0,
+      duration: 0.9,
+      stagger: 0.08,
+      ease: "power3.out",
+      scrollTrigger: { trigger: ".broche", start: "top 75%", toggleActions: "play none none reverse" },
+    },
   );
 
-  if (bureau) {
-    // L'accroche recule pendant que le panneau de l'anatomie monte.
-    gsap.to(".broche", {
-      scale: 0.94,
-      autoAlpha: 0.4,
-      ease: "none",
-      scrollTrigger: { trigger: ".anatomie", start: "top bottom", end: "top top", scrub: SCRUB },
-    });
-  }
+  devoiler(outils, apercu, { trigger: apercu, start: "top 95%", end: "center 60%" });
+
+  // Les gestes : chacun à son tour, quand il entre dans l'écran.
+  elements(".geste").forEach((geste) => {
+    const titre = decouperEnLignes(SplitText, element(".geste__titre", geste));
+    const texte = decouperEnLignes(SplitText, element(".geste__texte", geste));
+    gsap
+      .timeline({
+        defaults: { ease: "power3.out" },
+        scrollTrigger: { trigger: geste, start: "top 88%", toggleActions: "play none none reverse" },
+      })
+      .fromTo(geste, { "--filet": 0 }, { "--filet": 1, duration: 0.9, ease: "power3.inOut" }, 0)
+      .fromTo(
+        element(".geste__num", geste),
+        { autoAlpha: 0, y: 20 },
+        { autoAlpha: 1, y: 0, duration: 0.7 },
+        0.1,
+      )
+      .fromTo(titre.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8 }, 0.15)
+      .fromTo(texte.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.8, stagger: 0.05 }, 0.25);
+  });
 
   // Le panneau de l'anatomie monte comme une carte en retrait des bords, et
   // s'élargit jusqu'aux bords quand il arrive en haut de l'écran.
@@ -97,40 +92,6 @@ export function initBroche(outils, bureau, planche) {
   const ingredients = elements(".planche__ingredient");
   const note = element(".anatomie__note");
 
-  const decouvrirPhoto = { ...decouvrir, duration: 1 };
-
-  if (bureau) {
-    const traits = planche ? planche.traits : [];
-    const dessin = gsap.timeline({
-      defaults: { ease: "power3.out" },
-      scrollTrigger: { trigger: ".anatomie", start: "top 35%", toggleActions: "play none none reverse" },
-    });
-
-    dessin
-      .fromTo(titre.lines, { yPercent: 120 }, { yPercent: 0, duration: 0.9, stagger: 0.08 })
-      .fromTo(photo, { clipPath: "inset(100% 0% 0% 0%)" }, decouvrirPhoto, "<0.1")
-      .fromTo(ingredients, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.05 }, "<0.55");
-    if (traits.length > 0) {
-      dessin.fromTo(
-        traits,
-        { strokeDashoffset: 1 },
-        { strokeDashoffset: 0, duration: 0.6, stagger: 0.05, ease: "power2.inOut" },
-        "<0.1",
-      );
-    }
-    dessin
-      .fromTo(
-        points,
-        { scale: 0, autoAlpha: 0 },
-        { scale: 1, autoAlpha: 1, duration: 0.35, stagger: 0.05, ease: "power2.out" },
-        "<0.3",
-      )
-      .fromTo(note, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.6 }, "<0.2");
-    return () => {};
-  }
-
-  // Sur téléphone : le titre monte, la photo se découvre, puis la planche se
-  // lit au défilement (voir lirePlanche).
   /**
    * @param {string | Element} declencheur
    * @param {string} debut
@@ -144,16 +105,40 @@ export function initBroche(outils, bureau, planche) {
   gsap.fromTo(
     titre.lines,
     { yPercent: 120 },
-    { yPercent: 0, duration: 0.9, stagger: 0.08, ease: "power3.out", scrollTrigger: enEntrant(".anatomie", "top 75%") },
+    { yPercent: 0, duration: 0.9, stagger: 0.08, ease: "power3.out", scrollTrigger: enEntrant(".anatomie", bureau ? "top 40%" : "top 75%") },
   );
-  gsap.fromTo(photo, { clipPath: "inset(100% 0% 0% 0%)" }, { ...decouvrirPhoto, scrollTrigger: enEntrant(photo, "top 85%") });
+  gsap.fromTo(
+    photo,
+    { clipPath: "inset(100% 0% 0% 0%)" },
+    {
+      clipPath: "inset(0% 0% 0% 0%)",
+      duration: 1,
+      ease: "power3.inOut",
+      scrollTrigger: enEntrant(bureau ? ".anatomie" : photo, bureau ? "top 30%" : "top 85%"),
+    },
+  );
   gsap.fromTo(
     note,
     { autoAlpha: 0, y: 16 },
-    { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out", scrollTrigger: enEntrant(note, "top 90%") },
+    {
+      autoAlpha: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out",
+      scrollTrigger: bureau ? enEntrant(".anatomie", "top 25%") : enEntrant(note, "top 90%"),
+    },
   );
 
-  return lirePlanche(outils, photo, points, ingredients);
+  if (bureau) {
+    // La photo recule doucement pendant la lecture.
+    gsap.fromTo(
+      element("img", photo),
+      { scale: 1.08 },
+      { scale: 1, ease: "none", scrollTrigger: { trigger: ".anatomie", start: "top top", end: "bottom bottom", scrub: true } },
+    );
+  }
+
+  return lirePlanche(outils, photo, points, ingredients, bureau && planche ? planche.traits : [], bureau);
 }
 
 /**
@@ -166,9 +151,11 @@ export function initBroche(outils, bureau, planche) {
  * @param {HTMLElement} photo
  * @param {HTMLElement[]} points
  * @param {HTMLElement[]} ingredients
+ * @param {SVGPathElement[]} traits les traits de la légende (grand écran)
+ * @param {boolean} bureau
  * @returns {() => void} rend la planche telle quelle (changement de mise en page)
  */
-function lirePlanche(outils, photo, points, ingredients) {
+function lirePlanche(outils, photo, points, ingredients, traits, bureau) {
   const planche = /** @type {HTMLElement} */ (photo.closest(".planche"));
 
   let ligne = photo.querySelector(".planche__lecture");
@@ -195,37 +182,39 @@ function lirePlanche(outils, photo, points, ingredients) {
       const vu = hauteur <= niveau;
       points[index].classList.toggle("est-vu", vu);
       ingredients[index].classList.toggle("est-vu", vu);
+      traits[index]?.classList.toggle("est-vu", vu);
       if (vu) dernier = index;
     });
     lecture.classList.toggle("est-active", progression > 0 && progression < 1);
     if (dernier === courant) return;
     courant = dernier;
     points.forEach((point, index) => point.classList.toggle("est-courant", index === dernier));
+    ingredients.forEach((ingredient, index) => ingredient.classList.toggle("est-courant", index === dernier));
+    traits.forEach((trait, index) => trait.classList.toggle("est-courant", index === dernier));
     if (dernier >= 0) etiquette.textContent = `${dernier + 1} · ${noms[dernier]}`;
   };
 
   planche.classList.add("planche--lue");
 
-  outils.gsap.fromTo(
-    lecture,
-    { top: "0%" },
-    {
-      top: "100%",
-      ease: "none",
-      scrollTrigger: {
-        trigger: photo,
-        start: "top 62%",
-        end: "bottom 62%",
-        scrub: true,
-        onUpdate: (/** @type {any} */ declencheur) => lire(declencheur.progress),
-        onRefresh: (/** @type {any} */ declencheur) => lire(declencheur.progress),
-      },
-    },
-  );
+  // Sur grand écran, la scène est collée : la ligne la parcourt pendant les
+  // trois premiers quarts du défilement, puis la planche reste lue, entière,
+  // le temps de la regarder. Sur téléphone, la photo passe sous le milieu de
+  // l'écran.
+  const parcours = bureau
+    ? { trigger: ".anatomie", start: "top top", end: "bottom bottom" }
+    : { trigger: photo, start: "top 62%", end: "bottom 62%" };
+  const etendue = bureau ? 0.75 : 1;
+  const avancer = (/** @type {any} */ declencheur) => {
+    const progression = Math.min(1, declencheur.progress / etendue);
+    lecture.style.top = `${progression * 100}%`;
+    lire(progression);
+  };
+
+  outils.ScrollTrigger.create({ ...parcours, onUpdate: avancer, onRefresh: avancer });
 
   return () => {
     planche.classList.remove("planche--lue");
-    [...points, ...ingredients].forEach((el) => el.classList.remove("est-vu", "est-courant"));
+    [...points, ...ingredients, ...traits].forEach((el) => el.classList.remove("est-vu", "est-courant"));
     lecture.classList.remove("est-active");
   };
 }

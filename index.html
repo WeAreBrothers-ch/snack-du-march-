@@ -148,6 +148,15 @@
           <span class="hero__mot hero__mot--droite">Marché</span>
         </h1>
 
+        <!-- Sur grand écran, quand le nom est monté sur l'enseigne, deux
+             photos encadrées montent de part et d'autre : la vitrine. -->
+        <span class="hero__cote hero__cote--gauche" aria-hidden="true">
+          <span class="hero__image"><img src="assets/photos/comptoir-decoupe.webp" alt="" width="765" height="1020" loading="lazy" decoding="async" /></span>
+        </span>
+        <span class="hero__cote hero__cote--droite" aria-hidden="true">
+          <span class="hero__image"><img src="assets/photos/assiette-frites.webp" alt="" width="765" height="1020" loading="lazy" decoding="async" /></span>
+        </span>
+
         <div class="hero__bas">
           <p class="hero__info libelle etat" data-etat data-ouvert="non">
             <span class="etat__point" aria-hidden="true"></span>
@@ -183,77 +192,93 @@
           <div class="histoire__cadre"><img src="assets/photos/frites-terrasse.webp" alt="" loading="lazy" decoding="async" /></div>
           <div class="histoire__cadre"><img src="assets/photos/comptoir-vitrine.webp" alt="" loading="lazy" decoding="async" /></div>
           <div class="histoire__cadre"><img src="assets/photos/assiette-frites.webp" alt="" loading="lazy" decoding="async" /></div>
-          <div class="histoire__cadre"><img src="assets/photos/equipe-comptoir.webp" alt="" loading="lazy" decoding="async" /></div>
+          <div class="histoire__cadre"><img src="assets/photos/sandwich-veau-agneau.webp" alt="" loading="lazy" decoding="async" /></div>
         </div>
         <span class="histoire__recul" aria-hidden="true"></span>
       </div>
 
-      <div class="histoire__etapes">
-        <div class="histoire__pause histoire__pause--intro" aria-hidden="true"></div>
+      <!-- Le temps que la vitrine s'ouvre, l'intro reste en place. -->
+      <div class="histoire__pause histoire__pause--intro" aria-hidden="true"></div>
 
-        <article class="etape" id="etape-1" aria-labelledby="titre-etape-1">
-          <div class="etape__contenu">
-            <p class="etape__annee">1998</p>
-            <div class="etape__tete">
-              <h3 class="etape__titre" id="titre-etape-1">L'ouverture</h3>
-              <p class="etape__texte">Hüseyin Celik ouvre le Snack du Marché, rue Pré-du-Marché, à deux pas de la place de la Riponne. La broche est montée à la main dès le premier jour&nbsp;: veau et agneau entiers, jamais reconstitués.</p>
+      <!-- La frise : trois chapitres. Sur le côté (en haut, sur téléphone),
+           l'année reste en place et ses chiffres roulent, comme un compteur,
+           d'un chapitre à l'autre ; la table des chapitres suit la lecture. -->
+      <div class="frise">
+        <div class="frise__repere" aria-hidden="true">
+          <p class="frise__annee" data-frise-annee><span class="roue"><span class="roue__bande"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="roue"><span class="roue__bande"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="roue"><span class="roue__bande"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="roue"><span class="roue__bande"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></p>
+          <ol class="frise__table">
+            <li class="frise__entree est-courante" data-frise-entree><span>L'ouverture</span><span>1998</span></li>
+            <li class="frise__entree" data-frise-entree><span>La presse</span><span>2018</span></li>
+            <li class="frise__entree" data-frise-entree><span>Deux générations</span><span>2026</span></li>
+          </ol>
+        </div>
+
+        <ol class="frise__chapitres">
+          <li class="chapitre" data-annee="1998">
+            <figure class="chapitre__photo">
+              <img src="assets/photos/enseigne.webp" alt="L'enseigne lumineuse du Snack du Marché" width="1020" height="1020" loading="lazy" decoding="async" />
+            </figure>
+            <div class="chapitre__texte">
+              <p class="chapitre__annee">1998</p>
+              <h3 class="chapitre__titre">L'ouverture</h3>
+              <p class="chapitre__recit">Hüseyin Celik ouvre le Snack du Marché, rue Pré-du-Marché, à deux pas de la place de la Riponne. La broche est montée à la main dès le premier jour&nbsp;: veau et agneau entiers, jamais reconstitués.</p>
             </div>
-          </div>
-          <div class="etape__cadre etape__cadre--paysage">
-            <img src="assets/photos/deux-generations.webp" alt="Hüseyin et Sertaç Celik derrière le comptoir du Snack du Marché" width="530" height="353" loading="lazy" decoding="async" />
-          </div>
-          <span class="etape__voile" aria-hidden="true"></span>
-        </article>
-
-        <div class="histoire__pause" aria-hidden="true"></div>
-
-        <article class="etape etape--inverse" id="etape-2" aria-labelledby="titre-etape-2">
-          <div class="etape__contenu">
-            <p class="etape__annee">2018</p>
-            <div class="etape__tete">
-              <h3 class="etape__titre" id="titre-etape-2">La presse</h3>
-              <p class="etape__texte">Le Temps parle de «&nbsp;haute gastronomie&nbsp;», 24 heures titre «&nbsp;Vingt ans que le Snack du Marché régale de ses broches épicées&nbsp;». Le comptoir de quartier devient une adresse.</p>
+          </li>
+          <li class="chapitre" data-annee="2018">
+            <figure class="chapitre__photo">
+              <img src="assets/photos/equipe-comptoir.webp" alt="L'équipe du Snack du Marché au comptoir" width="765" height="1020" loading="lazy" decoding="async" />
+            </figure>
+            <div class="chapitre__texte">
+              <p class="chapitre__annee">2018</p>
+              <h3 class="chapitre__titre">La presse</h3>
+              <blockquote class="chapitre__citation">«&nbsp;Vingt ans que le Snack du Marché régale de ses broches épicées&nbsp;»<cite>24 heures, mai 2018</cite></blockquote>
+              <p class="chapitre__recit">Le Temps parle de «&nbsp;haute gastronomie&nbsp;». Le comptoir de quartier devient une adresse.</p>
             </div>
-          </div>
-          <div class="etape__cadre">
-            <img src="assets/photos/equipe-comptoir.webp" alt="L'équipe du Snack du Marché au comptoir" width="765" height="1020" loading="lazy" decoding="async" />
-          </div>
-          <span class="etape__voile" aria-hidden="true"></span>
-        </article>
-
-        <div class="histoire__pause" aria-hidden="true"></div>
-
-        <article class="etape" id="etape-3" aria-labelledby="titre-etape-3">
-          <div class="etape__contenu">
-            <p class="etape__annee">2026</p>
-            <div class="etape__tete">
-              <h3 class="etape__titre" id="titre-etape-3">Deux générations</h3>
-              <p class="etape__texte">Sertaç, le fils, tranche aujourd'hui la broche aux côtés de son père. Les étudiants d'hier amènent leurs enfants. Les recettes des grands-mères, elles, n'ont pas bougé.</p>
+          </li>
+          <li class="chapitre" data-annee="2026">
+            <figure class="chapitre__photo">
+              <img src="assets/photos/deux-generations.webp" alt="Hüseyin et Sertaç Celik derrière le comptoir du Snack du Marché" width="530" height="353" loading="lazy" decoding="async" />
+            </figure>
+            <div class="chapitre__texte">
+              <p class="chapitre__annee">2026</p>
+              <h3 class="chapitre__titre">Deux générations</h3>
+              <p class="chapitre__recit">Sertaç, le fils, tranche aujourd'hui la broche aux côtés de son père. Les étudiants d'hier amènent leurs enfants. Les recettes des grands-mères, elles, n'ont pas bougé.</p>
             </div>
-          </div>
-          <div class="etape__cadre">
-            <img src="assets/photos/comptoir-decoupe.webp" alt="La broche tranchée au couteau, derrière le comptoir" width="765" height="1020" loading="lazy" decoding="async" />
-          </div>
-          <span class="etape__voile" aria-hidden="true"></span>
-        </article>
-
-        <!-- La dernière carte reste, elle aussi, le temps d'être lue. -->
-        <div class="histoire__pause" aria-hidden="true"></div>
+          </li>
+        </ol>
       </div>
     </section>
 
     <div class="espace"></div>
 
     <!-- La broche et son anatomie -------------------------------------------
-         Sur grand écran, l'accroche reste en place et le panneau cobalt de
-         l'anatomie monte par-dessus (position: sticky). -->
+         L'accroche, la broche et ses trois gestes ; puis le panneau cobalt de
+         l'anatomie monte. -->
     <div class="broche-bloc" id="broche">
       <section class="broche" aria-labelledby="titre-broche">
         <h2 class="broche__accroche" id="titre-broche">Une broche montée à la main, tranche après tranche</h2>
-        <p class="broche__texte">Du veau et de l'agneau entiers, jamais de viande reconstituée. Les épices viennent de Gaziantep, la recette vient du père.</p>
         <div class="broche__apercu">
           <img src="assets/photos/broche-decoupe.webp" alt="La broche de veau et d'agneau, tranchée au couteau" width="1125" height="632" loading="lazy" decoding="async" />
         </div>
+        <!-- Trois gestes, ceux qui font la différence avec une broche
+             industrielle. -->
+        <ol class="gestes">
+          <li class="geste">
+            <span class="geste__num" aria-hidden="true">01</span>
+            <h3 class="geste__titre">La viande entière</h3>
+            <p class="geste__texte">Du veau et de l'agneau, empilés tranche par tranche sur la broche. Jamais de viande reconstituée.</p>
+          </li>
+          <li class="geste">
+            <span class="geste__num" aria-hidden="true">02</span>
+            <h3 class="geste__titre">La recette du père</h3>
+            <p class="geste__texte">La famille vient de Gaziantep. Certaines épices de la marinade arrivent de Turquie depuis vingt ans.</p>
+          </li>
+          <li class="geste">
+            <span class="geste__num" aria-hidden="true">03</span>
+            <h3 class="geste__titre">Tranchée au couteau</h3>
+            <p class="geste__texte">Au comptoir, par le père et le fils. Les sauces aussi sont faites par la maison.</p>
+          </li>
+        </ol>
       </section>
 
       <!-- La planche : chaque repère est placé en pourcentage de la photo
@@ -262,6 +287,7 @@
            deux colonnes ; sur grand écran, data-cote et --rang la rangent de
            part et d'autre de la photo, reliée par des traits. -->
       <section class="anatomie" id="anatomie" aria-labelledby="titre-anatomie">
+        <div class="anatomie__scene">
         <h2 class="anatomie__titre" id="titre-anatomie">Anatomie d'un veau-agneau</h2>
         <figure class="planche">
           <div class="planche__photo">
@@ -287,6 +313,7 @@
           </ol>
         </figure>
         <p class="anatomie__note">Et ce qui ne se voit pas&nbsp;: les épices de Gaziantep dans la viande, le sumac, la sauce piquante maison.</p>
+        </div>
       </section>
     </div>
 
@@ -376,7 +403,7 @@
           <blockquote>«&nbsp;Accueil chaleureux du patron et de son fils.&nbsp;»</blockquote>
           <figcaption>Avis Google</figcaption>
         </figure>
-        <div class="quartier__photo"><img src="assets/photos/enseigne.webp" alt="L'enseigne lumineuse du Snack du Marché" width="1020" height="1020" loading="lazy" decoding="async" /></div>
+        <div class="quartier__photo"><img src="assets/photos/frites-terrasse.webp" alt="Une assiette de frites sur la terrasse, la rue du quartier en arrière-plan" width="765" height="1020" loading="lazy" decoding="async" /></div>
       </div>
     </section>
 
@@ -385,23 +412,34 @@
 
   <!-- Pied de page ------------------------------------------------------------- -->
   <footer class="pied" id="pied">
-    <div class="pied__contenu">
-      <p class="pied__geant"><span class="pied__ligne">Snack</span></p>
-      <p class="pied__geant"><span class="pied__ligne">du Marché</span></p>
-      <div class="pied__carte" data-pied-carte>
-        <p class="pied__voeu"><svg class="drapeau" aria-hidden="true" focusable="false"><use href="#drapeau-tr"/></svg><span>Afiyet olsun</span></p>
-        <p class="pied__adresse">Rue Pré-du-Marché 3<br />1004 Lausanne</p>
-        <p class="pied__horaires">Tous les jours<br />11&nbsp;h – 22&nbsp;h</p>
-        <a class="pied__tel" href="tel:+41792431113">079&nbsp;243&nbsp;11&nbsp;13</a>
+    <p class="pied__voeu"><svg class="drapeau" aria-hidden="true" focusable="false"><use href="#drapeau-tr"/></svg><span lang="tr">Afiyet olsun</span><span class="pied__traduction">— bon appétit</span></p>
+
+    <!-- Les trois choses qu'on vient chercher en bas de page, en grand. -->
+    <div class="pied__infos">
+      <div class="pied__bloc">
+        <p class="pied__intitule">Adresse</p>
+        <p class="pied__valeur"><span class="pied__rue">Rue Pré-du-Marché 3</span><br />1004 Lausanne</p>
+        <a class="pied__action" href="https://www.google.com/maps/dir/?api=1&amp;destination=Rue+Pr%C3%A9-du-March%C3%A9+3%2C+1004+Lausanne" target="_blank" rel="noopener noreferrer">Itinéraire</a>
+      </div>
+      <div class="pied__bloc">
+        <p class="pied__intitule">Horaires</p>
+        <p class="pied__valeur">Tous les jours<br />11&nbsp;h – 22&nbsp;h</p>
+        <p class="pied__etat etat" data-etat data-ouvert="non"><span class="etat__point" aria-hidden="true"></span><span data-etat-texte>Tous les jours, 11&nbsp;h – 22&nbsp;h</span></p>
+      </div>
+      <div class="pied__bloc">
+        <p class="pied__intitule">Téléphone</p>
+        <a class="pied__valeur pied__tel" href="tel:+41792431113">079&nbsp;243&nbsp;11&nbsp;13</a>
+        <p class="pied__reseaux">
+          <a class="pied__action" href="https://www.instagram.com/snackdumarche/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a class="pied__action" href="https://www.facebook.com/snackdumarche/" target="_blank" rel="noopener noreferrer">Facebook</a>
+        </p>
       </div>
     </div>
+
+    <p class="pied__nom" aria-hidden="true">Snack du Marché</p>
+
     <div class="pied__bas">
       <p>© 2026 Snack du Marché · Site créé par <a href="https://wearebrothers.ch" target="_blank" rel="noopener noreferrer">WeAreBrothers</a></p>
-      <div class="pied__liens">
-        <a href="https://www.instagram.com/snackdumarche/" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <a href="https://www.facebook.com/snackdumarche/" target="_blank" rel="noopener noreferrer">Facebook</a>
-        <a href="https://www.google.com/maps/dir/?api=1&destination=Rue+Pr%C3%A9-du-March%C3%A9+3%2C+1004+Lausanne" target="_blank" rel="noopener noreferrer">Itinéraire</a>
-      </div>
       <a class="pied__haut" href="#accueil">Remonter</a>
     </div>
   </footer>
